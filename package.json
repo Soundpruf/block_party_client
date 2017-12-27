@@ -28,5 +28,5 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "${process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'https://block-party-server.herokuapp.com'}"
+  "proxy": "https://block-party-server.herokuapp.com"
 }
