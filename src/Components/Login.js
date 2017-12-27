@@ -35,7 +35,6 @@ export default class Login extends Component {
               '&response_type=token';
         }
         const url = getLoginURL(scopes)
-        console.log(url)
         let width = 450
         let height = 730
         let left = (window.width / 2) - (width / 2)

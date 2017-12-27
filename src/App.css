@@ -1,11 +1,45 @@
 body {
-    
+    font-family: 'Lato', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6, .ui.header {
-    font-family: 'Fjalla One', sans-serif!important;
+    font-family: 'Oswald', sans-serif!important;
 }
 
 .ui.secondary.inverted.pointing.menu {
     border: none!important;
 }
+
+#splash {
+    background: url(/tape.jpg);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    /* opacity: 0.6; */
+    z-index: 10;
+    filter: saturate(20%);
+    
+}
+
+#splash::after {
+    content: "";
+    background: rgba(0,0,0,0.8) url(/code2.jpg);
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(100%);
+    opacity: 0.1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    
+  }
+  #mainNav {
+    position: relative;
+  }
+  #fixedNav, #mainNav {
+    background-color: #333;
+    color: #fff;      
+    z-index: 100;
+  }

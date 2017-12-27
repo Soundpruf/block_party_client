@@ -31,15 +31,15 @@ const site_routes = [
 const menu_items = site_routes.map((route) => (<Menu.Item className=''><Link to={`${route.path}`}>{route.name}</Link></Menu.Item>))
 
 const FixedMenu = () => (
-    <Menu fixed='top' size='large'>
+    <Menu fixed='top' size='large' id="fixedNav">
         <Container>
             {menu_items}
             <Menu.Menu position='right'>
                 <Menu.Item className='item'>
-                    <Button as='a' primary><Link to='/login'>Login</Link></Button>
+                    <Link to='/login'>Login</Link>
                 </Menu.Item>
                 <Menu.Item>
-                    <Button as='a' primary><Link to='/signup'>Sign up</Link></Button>
+                    <Link to='/signup'>Sign up</Link>
                 </Menu.Item>
             </Menu.Menu>
         </Container>
@@ -68,18 +68,19 @@ export default class Home extends Component {
                     <Segment
                         inverted
                         textAlign='center'
-                        style={{ minHeight: 700, padding: '1em 0em', backgroundImage: 'url(neon.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+                        id="splash"
+                        style={{ minHeight: 700, padding: '1em 0em' }}
                         vertical
                     >
                         <Container>
-                            <Menu inverted pointing secondary size='large'>
+                            <Menu inverted pointing secondary size='large' id="mainNav">
                                 {menu_items}
                                 <Menu.Menu position='right'>
                                     <Menu.Item className='item'>
-                                        <Button as='a'><Link to='/login'>Login</Link></Button>
+                                        <Link to='/login'>Login</Link>
                                     </Menu.Item>
                                     <Menu.Item>
-                                        <Button as='a'><Link to='/signup'>Sign up</Link></Button>
+                                        <Link to='/signup'>Sign up</Link>
                                     </Menu.Item>
                                 </Menu.Menu>
                             </Menu>
@@ -120,7 +121,7 @@ export default class Home extends Component {
                                     bordered
                                     rounded
                                     size='large'
-                                    src='tape.jpg'
+                                    src='neon.jpg'
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -140,7 +141,7 @@ export default class Home extends Component {
                             </Grid.Column>
                             <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                                 <Header as='h3' style={{ fontSize: '2em' }}>"Oh Fuck"</Header>
-                                <p style={{ fontSize: '1.33em' }}><Icon name='spy' /><b>Nan</b> Record Labels</p>
+                                <p style={{ fontSize: '1.33em' }}><Icon name='spy' /><b>The</b> Record Labels</p>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

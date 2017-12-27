@@ -159,13 +159,16 @@ export default class Dashboard extends Component {
     playThatTrack() {
         const counter = this.state.counter
         const _this = this
+        const URL = process.env.NODE_ENV === 'development' ? '/mine' : 'https://block-party-server.herokuapp.com/mine'
+
+
         this.setState({
             soundIs_: 'PLAYING'
         })
-
+        
         Axios({
             method: 'post',
-            url: '/mine',
+            url: URL,
             data: {
                 musician_id: _this.state.playlist[counter].artist[0],
                 user_id: _this.state.user_name
