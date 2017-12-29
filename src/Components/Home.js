@@ -102,19 +102,14 @@ export default class Home extends Component {
                                 inverted
                                 style={{ fontSize: '1.7em', fontWeight: 'normal', color: 'black' }}
                             />
-                            <Menu fixed='top' size='large' id="fixedNav">
-                                <Container>
-                                    
-                                    <Menu.Menu position='right'>
-                                        <Menu.Item className='item'>
-                                            <Link to='/artists/signup'>Artists</Link>
-                                        </Menu.Item>
-                                        <Menu.Item>
-                                            <Link to='/signup'>Listeners</Link>
-                                        </Menu.Item>
-                                    </Menu.Menu>
-                                </Container>
-                            </Menu>
+                            <div id="signUpMenu">
+                                <Button>
+                                    <Link to='/artists/signup'>Artists</Link>
+                                </Button>
+                                <Button>
+                                    <Link to='/signup'>Listeners</Link>
+                                </Button>
+                            </div>
                         </Container>
                     </Segment>
                 </Visibility>
@@ -123,14 +118,14 @@ export default class Home extends Component {
                     <Grid celled='internally' columns='equal' stackable>
                         <Grid.Row textAlign='left'>
                             <Grid.Column style={{ padding: '5em', }} className="artist_first">
-                            <Header className="title_bg" as='h3' style={{ fontSize: '2em' }}>Artist First</Header>
+                                <Header className="title_bg" as='h3' style={{ fontSize: '2em' }}>Artist First</Header>
                                 <Image
                                     bordered
                                     rounded
                                     size='medium'
                                     src='neon-min.jpg' />
 
-                                <p style={{ marginTop: '20px'}}>BlockParty is the first music platform that can honestly say it puts the Artist first.</p>
+                                <p style={{ marginTop: '20px' }}>BlockParty is the first music platform that can honestly say it puts the Artist first.</p>
                                 <Button size='huge'>Check Us Out</Button>
                             </Grid.Column>
                             <Grid.Column style={{ padding: '5em', }} className="listen_and_earn">
@@ -140,8 +135,8 @@ export default class Home extends Component {
                                     rounded
                                     size='medium'
                                     src='headphones-min.jpg' />
-                                
-                                    <p style={{ marginTop: '20px'}}>
+
+                                <p style={{ marginTop: '20px' }}>
                                     With the advent of Blockchain technology we've created a platform where every second you listen to your favorite artist you're mining on the block. Here's what's incredible: It pays you and your artist.
                             Remember when Kings Of Leon was cool? Remember when they looked like Porny Southern Mechanics? So do we. What if every artist you got in on before they broke big paid you a share of their success?
                             I mean you invested your ears. Now invest your mine.

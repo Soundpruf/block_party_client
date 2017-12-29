@@ -177,6 +177,19 @@ h1 {
     color: #fff;      
     z-index: 100;
   }
+  #signUpMenu {
+      position: absolute;
+      bottom: 300px;
+      right: 300px;
+      z-index: 1000;
+      width: auto;
+  }
+  #signUpMenu button {
+      margin: 10px;
+      background: white;
+      border: 2px solid #333;
+      color: black;
+  }
 
   .listen_and_earn, .artist_first  {
     padding: 0 40px;
@@ -187,4 +200,13 @@ h1 {
   }
   .artist_first button, .listen_and_earn button {
       clear: both!important;
+  }
+  #ArtistSignUp {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-image: url(/headphones-min.jpg);
+      background-size: cover;
+      background-position: center;
   }
