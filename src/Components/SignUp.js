@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Axios from 'axios'
+import Firebase from '../Firebase'
 import { Link } from 'react-router-dom'
+import Loader from './Loader'
 import {    
     Container, 
     Step, 
@@ -9,14 +11,15 @@ import {
     Card, 
     Icon, 
     Image,
-    Divider,
     Header,
     List,
     Menu,
     Segment,
+    Divider,
     Visibility,
     Form, 
-    Message
+    Message,
+    Checkbox
 } from 'semantic-ui-react'
 
 const site_routes = [
@@ -34,19 +37,111 @@ const site_routes = [
     }
 ]
 const menu_items = site_routes.map((route) => (<Menu.Item className=''><Link to={`${route.path}`}>{route.name}</Link></Menu.Item>))
+const FirebaseUI = require('firebaseui')
+const UI = new FirebaseUI.auth.AuthUI(Firebase.auth())
 
+const uiConfig = {
+    signInSuccessUrl: '/users/:user_id/profile/',
+    signInOptions: [
+      // Leave the lines as is for the providers you want to offer your users.
+      Firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      Firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+      Firebase.auth.PhoneAuthProvider.PROVIDER_ID
+    ],
+    // Terms of service url.
+    tosUrl: '/'
+  };
 
-
-
+     
 export default class SignUp extends Component {
     constructor(props) {
         super(props)
 
+        this.state = {
+            user_email: '',
+            user_password: '',
+            is_listener: false,
+            showLoader: false
+        }
 
     }
     componentDidMount() {
+        UI.start('#firebaseui-auth-container', uiConfig)
 
     }
+    // initAuth() {
+    //     Firebase.auth().onAuthStateChanged(function(user) {
+    //       if (user) {
+    //         console.log(user)
+    //         var displayName = user.displayName;
+    //         var email = user.email;
+    //         var emailVerified = user.emailVerified;
+    //         var photoURL = user.photoURL;
+    //         var uid = user.uid;
+    //         var phoneNumber = user.phoneNumber;
+    //         var providerData = user.providerData;
+
+
+    //         user.getIdToken().then(function(accessToken) {
+    //             console.log(accessToken)
+    //         })
+    //       } else {
+    //         // User is signed out.
+    //         console.log('No user is signed in')
+    //       }
+    //     }, function(error) {
+    //       console.log(error);
+    //     })
+    //   }
+    
+    handleListenertCheckBox(e) {
+        e.preventDefault()
+
+        this.setState({
+            is_listener: true
+        })
+    }
+    handleCustomSignUp(e) {
+        e.preventDefault()
+        
+        // this.initAuth()
+    }
+    launchLoader(e) {
+        e.preventDefault()
+        this.setState({
+            showLoader: true
+        })
+    }
+    handleSpotifyLogin(e) {
+        e.preventDefault()
+        this.login()
+    }
+    handleUserName(e) {
+        e.preventDefault()
+        console.log(e.target.value)
+
+        this.setState({
+            user_name: e.target.value
+        })
+    }
+    handleUserEmail(e) {
+        e.preventDefault()
+        console.log(e.target.value)
+
+        this.setState({
+            user_email: e.target.value
+        })
+    }
+
+    handleUserPassword(e) {
+        e.preventDefault()
+        console.log(e.target.value)
+
+        this.setState({
+            user_password: e.target.value
+        })
+    }
+
     login(callback) {
         const CLIENT_ID = 'e86c9d8c7e084cf494d82947a0ea1252'
         const CLIENT_SECRET = '860af304d691469b9f73ed5cf7201fcc'
@@ -76,22 +171,18 @@ export default class SignUp extends Component {
         const _win = window.open(url,
             'Spotify',
             'menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left
-        );
-
-    }
-
-
-    handleCustomSignUp(e) {
-        e.preventDefault()
-    }
-    handleSpotifyLogin(e) {
-        e.preventDefault()
-        this.login()
+        )
+        
     }
     render() {
+        let LOADER
+        if(this.state.showLoader) {
+            LOADER = <Loader />
+        }
         return (
-
-            <Container>
+            <div>
+                {LOADER}
+                 <Container>
                 
                     <Menu inverted pointing secondary size='large' id="mainNav">
                         {menu_items}
@@ -118,7 +209,7 @@ export default class SignUp extends Component {
                         <Icon name='credit card alternative' />
                         <Step.Content>
                             <Step.Title>Create a Wallet</Step.Title>
-                            <Step.Description>This will be the 100% secure destination for your BlockNote Payouts</Step.Description>
+                            <Step.Description>A 100% secure destination for your Payouts</Step.Description>
                         </Step.Content>
                     </Step>
 
@@ -129,49 +220,79 @@ export default class SignUp extends Component {
                         </Step.Content>
                     </Step>
                 </Step.Group>
+
+                <Divider />
+
                 <Grid columns='equal'>
                     <Grid.Row stretched>
-                        <Grid.Column width={2}></Grid.Column>
-                        <Grid.Column width={6}>
-                            <Card.Group>
+                        <Grid.Column width={5}></Grid.Column>
+                        
+                        <Grid.Column width={5}>
+                            <Segment stacked>
+                                <Header as='h2' color='teal' textAlign='center'>
+                                    Sign Up here. We'll handle the details later
+                                </Header>
                                 <Card>
-                                    <Image src='spotify.jpeg' />
-                                    <Card.Content>
-                                        <Card.Header>
-                                            Sign In With Spotify
-                                </Card.Header>
-                                    </Card.Content>
-                                    <Card.Content extra>
-                                        <div className='ui two buttons'>
-                                            <Button basic color='green' onClick={this.handleSpotifyLogin.bind(this)}>Sign In</Button>
-                                            <Button basic color='red'>Already Registered?</Button>
-                                        </div>
-                                    </Card.Content>
-                                </Card>
-                                <Card>
-                                    <Image src='https://images.unsplash.com/photo-1502179752592-b1d28abbb841?auto=format&fit=crop&w=1600&q=80' />
-                                    <Card.Content>
-                                        <Card.Header>
-                                            Join the Block Party
-                                </Card.Header>
-                                    </Card.Content>
-                                    <Card.Content extra>
-                                        <div className='ui two buttons'>
-                                            <Button basic color='green' onClick={this.handleCustomSignUp.bind(this)}>Sign Up</Button>
-                                            <Button basic color='red'>Already Registered?</Button>
-                                        </div>
-                                    </Card.Content>
-                                </Card>
-                            </Card.Group>
+                                <Image src='spotify.jpeg' />
+                                <Card.Content>
+                                    <Card.Header>
+                                        <Button basic color='green' onClick={this.handleSpotifyLogin.bind(this)}>Sign Up with Spotify</Button>
+                                    </Card.Header>
+                                    <Divider horizontal>Or</Divider>
+                                    <div id='firebaseui-auth-container' onClick={this.launchLoader.bind(this)}></div>
+                                </Card.Content>
+                            
+                            </Card>
+                            </Segment>
                         </Grid.Column>
-
-                        <Grid.Column width={2}></Grid.Column>
-
                     </Grid.Row>
                 </Grid>
             </Container>
 
 
+            </div>
         )
     }
 }
+
+// <Grid.Column width={5}>
+//                                 <Card>
+//                                     <Form size='medium' onSubmit={this.handleCustomSignUp.bind(this)}>
+//                                         <Segment stacked>
+//                                             <Header as='h2' color='teal' textAlign='center'>
+//                                             Sign Up here. We'll handle the details later
+//                                         </Header>
+//                                             <Form.Input
+//                                                 onChange={this.handleUserName.bind(this)}
+//                                                 value={this.state.user_name}
+//                                                 fluid
+//                                                 icon='user'
+//                                                 iconPosition='left'
+//                                                 placeholder='User Name or Group Name'
+//                                             />
+//                                             <Form.Input
+//                                                 onChange={this.handleUserEmail.bind(this)}
+//                                                 value={this.state.user_email}
+//                                                 fluid
+//                                                 icon='user'
+//                                                 iconPosition='left'
+//                                                 placeholder='E-mail address'
+//                                             />
+//                                             <Form.Input
+//                                                 onChange={this.handleUserPassword.bind(this)}
+//                                                 value={this.state.user_password}
+//                                                 fluid
+//                                                 icon='lock'
+//                                                 iconPosition='left'
+//                                                 placeholder='Password'
+//                                                 type='password'
+//                                             />
+//                                             <Segment compact>
+//                                                 <Checkbox value={this.state.is_listener} label='Are you an Artist or Musician?' onChange={this.handleListenertCheckBox.bind(this)}/>
+//                                             </Segment>
+                            
+//                                             <Button color='teal' fluid size='large'>Create Account</Button>
+//                                         </Segment>
+//                                     </Form>
+//                                 </Card>
+//                         </Grid.Column>
