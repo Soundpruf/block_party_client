@@ -59,6 +59,22 @@ export default class Home extends Component {
         return (
             <div>
                 {visible ? <FixedMenu /> : null}
+                <div className="dotstyle dotstyle-smalldotstroke">
+                    <ul>
+                        <li className="current"><Link to='/'>
+                            <span> Home</span>
+                        </Link></li>
+                        <li className="current"><Link to='/about'>
+                            <span> About</span>
+                        </Link></li>
+                        <li className="current"><Link to='/login'>
+                            <span> Log In</span>
+                        </Link></li>
+                        <li className="current"><Link to='/signup'>
+                            <span> Sign Up</span>
+                        </Link></li>
+                    </ul>
+                </div>
 
                 <Visibility
                     onBottomPassed={this.showFixedMenu}
@@ -69,65 +85,67 @@ export default class Home extends Component {
                         inverted
                         textAlign='center'
                         id="splash"
-                        style={{ minHeight: 700, padding: '1em 0em' }}
+                        style={{ minHeight: 800, padding: '1em 0em' }}
                         vertical
                     >
-                        <Container>
-                            <Menu inverted pointing secondary size='large' id="mainNav">
-                                {menu_items}
-                                <Menu.Menu position='right'>
-                                    <Menu.Item className='item'>
-                                        <Link to='/login'>Login</Link>
-                                    </Menu.Item>
-                                    <Menu.Item>
-                                        <Link to='/signup'>Sign up</Link>
-                                    </Menu.Item>
-                                </Menu.Menu>
-                            </Menu>
-                        </Container>
-
                         <Container text>
+
                             <Header
                                 as='h1'
                                 content='Block Party'
                                 inverted
-                                style={{ fontSize: '4em', fontWeight: 'normal', marginBottom: 0, marginTop: '5em' }}
+                                style={{ fontSize: '4em', fontWeight: 'normal', marginBottom: 0, marginTop: '3em', color: 'black' }}
                             />
                             <Header
                                 as='h2'
                                 content='The first streaming platform on the Block...chain'
                                 inverted
-                                style={{ fontSize: '1.7em', fontWeight: 'normal' }}
+                                style={{ fontSize: '1.7em', fontWeight: 'normal', color: 'black' }}
                             />
+                            <Menu fixed='top' size='large' id="fixedNav">
+                                <Container>
+                                    
+                                    <Menu.Menu position='right'>
+                                        <Menu.Item className='item'>
+                                            <Link to='/artists/signup'>Artists</Link>
+                                        </Menu.Item>
+                                        <Menu.Item>
+                                            <Link to='/signup'>Listeners</Link>
+                                        </Menu.Item>
+                                    </Menu.Menu>
+                                </Container>
+                            </Menu>
                         </Container>
                     </Segment>
                 </Visibility>
 
-                <Segment style={{ padding: '8em 0em' }} vertical>
-                    <Grid container stackable verticalAlign='middle'>
-                        <Grid.Row>
-                            <Grid.Column width={8}>
-                                <Header as='h3' style={{ fontSize: '2em' }}>Artist First</Header>
-                                <p style={{ fontSize: '1.33em' }}>BlockParty is the first music platform that can honestly say it puts the Artist first.</p>
-                                <Header as='h3' style={{ fontSize: '2em' }}>Listen and Earn</Header>
-                                <p style={{ fontSize: '1.33em' }}>
-                                    With the advent of Blockchain technology we've created a platform where every second you listen to your favorite artist you're mining on the block. Here's what's incredible: It pays you and your artist.
-                                    Remember when Kings Of Leon was cool? Remember when they looked like Porny Southern Mechanics? So do we. What if every artist you got in on before they broke big paid you a share of their success?
-                                    I mean you invested your ears. Now invest your mine.
-                                </p>
-                            </Grid.Column>
-                            <Grid.Column floated='right' width={6}>
+                <Segment style={{ padding: '5em 0' }} vertical>
+                    <Grid celled='internally' columns='equal' stackable>
+                        <Grid.Row textAlign='left'>
+                            <Grid.Column style={{ padding: '5em', }} className="artist_first">
+                            <Header className="title_bg" as='h3' style={{ fontSize: '2em' }}>Artist First</Header>
                                 <Image
                                     bordered
                                     rounded
-                                    size='large'
-                                    src='neon.jpg'
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column textAlign='center'>
+                                    size='medium'
+                                    src='neon-min.jpg' />
+
+                                <p style={{ marginTop: '20px'}}>BlockParty is the first music platform that can honestly say it puts the Artist first.</p>
                                 <Button size='huge'>Check Us Out</Button>
+                            </Grid.Column>
+                            <Grid.Column style={{ padding: '5em', }} className="listen_and_earn">
+                                <Header className="title_bg" as='h3' style={{ fontSize: '2em' }}>Listen and Earn</Header>
+                                <Image
+                                    bordered
+                                    rounded
+                                    size='medium'
+                                    src='headphones-min.jpg' />
+                                
+                                    <p style={{ marginTop: '20px'}}>
+                                    With the advent of Blockchain technology we've created a platform where every second you listen to your favorite artist you're mining on the block. Here's what's incredible: It pays you and your artist.
+                            Remember when Kings Of Leon was cool? Remember when they looked like Porny Southern Mechanics? So do we. What if every artist you got in on before they broke big paid you a share of their success?
+                            I mean you invested your ears. Now invest your mine.
+                        </p>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
