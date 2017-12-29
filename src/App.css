@@ -17,7 +17,7 @@ h1 {
 }
 .title_bg {
     background-color: black;
-    padding: 20px;
+    padding: 20px!important;
     width: max-content;
     color: white!important;
 
@@ -196,7 +196,11 @@ h1 {
     clear: both;
   }
   .artist_first img, .listen_and_earn img {
-      float: left
+      float: left;
+      margin: 10px;
+  }
+  .artist_first p, .listen_and_earn p  {
+      padding: 10px;
   }
   .artist_first button, .listen_and_earn button {
       clear: both!important;

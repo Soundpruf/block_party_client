@@ -125,7 +125,7 @@ export default class Home extends Component {
                                     size='medium'
                                     src='neon-min.jpg' />
 
-                                <p style={{ marginTop: '20px' }}>BlockParty is the first music platform that can honestly say it puts the Artist first.</p>
+                                <p style={{ margin: '20px' }}>BlockParty is the first music platform that can honestly say it puts the Artist first.</p>
                                 <Button size='huge'>Check Us Out</Button>
                             </Grid.Column>
                             <Grid.Column style={{ padding: '5em', }} className="listen_and_earn">
@@ -136,7 +136,7 @@ export default class Home extends Component {
                                     size='medium'
                                     src='headphones-min.jpg' />
 
-                                <p style={{ marginTop: '20px' }}>
+                                <p style={{ margin: '20px' }}>
                                     With the advent of Blockchain technology we've created a platform where every second you listen to your favorite artist you're mining on the block. Here's what's incredible: It pays you and your artist.
                             Remember when Kings Of Leon was cool? Remember when they looked like Porny Southern Mechanics? So do we. What if every artist you got in on before they broke big paid you a share of their success?
                             I mean you invested your ears. Now invest your mine.
