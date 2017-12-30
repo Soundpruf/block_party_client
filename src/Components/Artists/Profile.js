@@ -25,7 +25,7 @@ export default class Profile extends Component {
     getCurrentUser() {
 
         const _this = this
-        const URL = process.env.NODE_ENV === 'development' ? '/users/signup' : 'https://block-party-server.herokuapp.com/users/signup'
+        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/users/signup' : 'https://block-party-server.herokuapp.com/users/signup'
 
         const initAuth = () => {
             Firebase.auth().onAuthStateChanged(function (user) {
@@ -54,7 +54,7 @@ export default class Profile extends Component {
                             alert(`Congrats! Welcome to Block Party!`)
                         }
                     }).catch((error) => {
-                        alert(error)
+                        console.log(error)
                     })
 
                 } else {

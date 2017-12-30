@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "animejs": "^2.2.0",
     "axios": "^0.17.1",
     "bodymovin": "^4.13.0",
     "firebase": "^4.8.1",
@@ -14,8 +15,10 @@
     "react-responsive-music-player": "^0.2.4",
     "react-router-dom": "^4.2.2",
     "react-sound": "^0.10.0",
+    "react-svg-use": "^2.1.0",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.77.1",
+    "socket.io": "^2.0.4",
     "spotify-web-api-js": "^0.23.0",
     "spotify-web-api-node": "^2.5.0"
   },

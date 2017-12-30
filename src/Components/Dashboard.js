@@ -250,6 +250,17 @@ export default class Dashboard extends Component {
                                             {this.state.playlist[counter].title}, {this.state.playlist[counter].artist[0]}
                                         </h1>
                                     </Card.Header>
+                                    <div className="har-loader">
+                                        <div className="har-sound-1"></div>
+                                        <div className="har-sound-2"></div>
+                                        <div className="har-sound-3"></div>
+                                        <div className="har-sound-4"></div>
+                                        <div className="har-sound-5"></div>
+                                        <div className="har-sound-6"></div>
+                                        <div className="har-sound-7"></div>
+                                        <div className="har-sound-8"></div>
+                                        <div className="har-sound-9"></div>
+                                    </div>
                                     <Card.Description>
                                         <List>
                                             <Icon name='play' onClick={this.playThatTrack.bind(this)} />
