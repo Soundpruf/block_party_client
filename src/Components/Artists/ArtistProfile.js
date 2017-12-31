@@ -40,12 +40,12 @@ export default class Profile extends Component {
 
     render() {
         
-        const counter = this.state.counter
+        console.log(this.state)
         return (
             <div>
 
                 <Container style={{ padding: '5em 0em', marginTop: '40px' }}>
-                    <OnboardArtist />
+                    <OnboardArtist name={this.state.name} wallet_address={this.state.wallet_address}/>
                 </Container>
             </div>
         )

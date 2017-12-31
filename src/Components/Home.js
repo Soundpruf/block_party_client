@@ -32,6 +32,7 @@ export default class Home extends Component {
     }
 
     render() {
+        const square = { width: 175, height: 175 }
 
         return (
             <div>
@@ -59,12 +60,23 @@ export default class Home extends Component {
                     </div>
                 
                     <div id="signUpMenu">
-                    <Button>
-                        <Link to='/artists/signup'>Artists</Link>
-                    </Button>
-                    <Button>
-                        <Link to='/signup'>Listeners</Link>
-                    </Button>
+                    <Segment circular inverted style={square}>
+                        <Header as='h2' inverted>
+                            <Header.Subheader>
+                                Sign up as a 
+                            </Header.Subheader>
+                            <Link to='/artists/signup'>Artists</Link>
+                        </Header>
+                    </Segment>
+                    <Segment circular inverted style={square}>
+                        <Header as='h2' inverted>
+                            <Header.Subheader>
+                                Sign up as a 
+                            </Header.Subheader>
+                            <Link to='/signup'>Listeners</Link>
+                        </Header>
+                    </Segment>
+          
                 </div>
                 </div>
                 <Divider />

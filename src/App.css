@@ -1853,7 +1853,7 @@ h1 {
 
 
   /* Artist OnBoarding */
-  #OnboardArtist .ui.steps .step {
+  #OnboardArtist .ui.steps .step, #ArtistSignUp .ui.steps .step {
     display: block;
   }
 
