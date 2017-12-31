@@ -7,6 +7,7 @@ import SignUp from './Components/SignUp'
 import Listen from './Components/Listen'
 import ArtistSignUp from './Components/Artists/ArtistSignUp'
 import Profile from './Components/Artists/Profile'
+import ArtistProfile from './Components/Artists/ArtistProfile'
 
 
 const site_routes = [
@@ -42,8 +43,8 @@ const site_routes = [
 	{
 		path: '/artists/:id/profile',
 		exact: true,
-		component: Profile,
-		name: 'Profile'
+		component: ArtistProfile,
+		name: 'Artist Profile'
 	},
 	{
 		path: '/users/:id/profile',

@@ -1849,3 +1849,17 @@ h1 {
     }
   }
   
+
+
+
+  /* Artist OnBoarding */
+  #OnboardArtist .ui.steps .step {
+    display: block;
+  }
+
+  .block_party_svg {
+    height: 100px;
+    display: block;
+    margin: 10px auto 20px;
+    width: 100px;
+  }
