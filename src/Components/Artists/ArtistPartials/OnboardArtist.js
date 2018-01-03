@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Divider, Grid, TextArea, Dropdown, Header, Menu, Form, Message, Popup, Rating, Step, Segment, Table, Button, Card, Image, Feed, List, Icon } from 'semantic-ui-react'
-import Firebase from '../../../Firebase'
+import {Firebase} from '../../../Firebase'
 import Axios from 'axios'
 import Dropzone from 'react-dropzone'
+
 
 export default class OnboardArtist extends Component {
     constructor(props) {
@@ -22,10 +23,25 @@ export default class OnboardArtist extends Component {
 
     }
     onDrop(music_files) {
+
+        const Storage = Firebase.app().storage("gs://thrive-app-neural.appspot.com")
+        const StorageRef = Storage.ref()
+        const musicRef = StorageRef.child('/music')
         console.log(music_files)
+
         this.setState({
-            music_files
+            music_files: [music_files]
         })
+        
+        music_files.forEach((file) => {
+            let musicFileRef = StorageRef.child(`/music/${file.name}`)
+            musicFileRef.put(file).then((snapshot) => {
+                console.log(snapshot)
+                console.log("file uploaded!")
+            })
+        })
+        
+
     }
     onPhotoDrop(photo) {
         console.log(photo)

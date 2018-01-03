@@ -14,19 +14,15 @@ const playlist = [
         url: '/songs/Nikes.mp3',
         cover: 'spotify.jpeg',
         title: 'Nikes',
-        artist: {
-            name: 'Frank Ocean',
-            id: 42
-        }
+        artist: 'Frank Ocean',
+        artist_id: 42
     },
     {
         url: '/songs/Ivy.mp3',
         cover: 'spotify.jpeg',
         title: 'Ivy',
-        artist: {
-            name: 'Frank Ocean',
-            id: 42
-        }
+        artist: 'Frank Ocean',
+        artist_id: 42
     }
 ]
 
@@ -215,19 +211,11 @@ export default class Dashboard extends Component {
     playSpotifyTrack(track) {
         console.log(track)
 
-
-        // transferMyPlayback
-        Spotify.play(
-            {
-                headers: { 'Authorization': `Bearer ${this.state.accessToken}` },
-                data: { 'uris': [track.uri] }
-            })
-
-        // this.setState({
-        //     soundIs_: 'PLAYING',
-        //     playlist: [track],
-        //     counter: 0
-        // })
+        this.setState({
+            soundIs_: 'PLAYING',
+            playlist: [track],
+            counter: 0
+        })
     }
     playThatTrack() {
         const counter = this.state.counter
@@ -274,6 +262,16 @@ export default class Dashboard extends Component {
     render() {
  
         const counter = this.state.counter
+        let playSignal 
+        if (this.state.soundIs_ === 'PLAYING') {
+            playSignal = {
+                display: 'flex'
+            }
+        } else {
+            playSignal = {
+                display: 'none'
+            }
+        }
         return (
             <div>
                 
@@ -314,13 +312,13 @@ export default class Dashboard extends Component {
                                     playFromPosition={0 /* in milliseconds */}
 
                                 />
-                                <Card.Content>
+                                <Card.Content textAlign='center'>
                                     <Card.Header>
                                         <h1>
-                                            {this.state.playlist[counter].title}, {this.state.playlist[counter].artist.name}
+                                            {this.state.playlist[counter].title}, {this.state.playlist[counter].artist}
                                         </h1>
                                     </Card.Header>
-                                    <div className="har-loader">
+                                    <div className="har-loader" style={playSignal}>
                                         <div className="har-sound-1"></div>
                                         <div className="har-sound-2"></div>
                                         <div className="har-sound-3"></div>
