@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Form, Grid, Header, Image, Container, Message, Segment, Step } from 'semantic-ui-react'
 import { Checkbox } from 'semantic-ui-react'
-import Firebase from '../../Firebase'
+import {Firebase} from '../../Firebase'
 import Axios from 'axios'
 
 export default class ArtistSignUp extends Component {

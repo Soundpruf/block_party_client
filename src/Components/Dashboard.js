@@ -4,9 +4,7 @@ import SpotifyWebApi from 'spotify-web-api-js'
 import { Link } from 'react-router-dom'
 import { Container, Divider, Grid, Header, Menu, Message, Segment, Table, Button, Card, Image, Feed, List, Icon } from 'semantic-ui-react'
 import Sound from 'react-sound'
-
-import Amplitude from 'amplitudejs'
-
+import { Firebase } from '../Firebase'
 
 const Spotify = new SpotifyWebApi()
 
@@ -75,51 +73,13 @@ export default class Dashboard extends Component {
             user_spotify_devices: []
         }
     }
-    componentWillMount() {
-
-    }
-    syncSpotifyLoginWithBlockPartyAuth(spotify_user_data) {
-        const _this = this
-        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/users/signup' : 'https://block-party-server.herokuapp.com/users/signup'
-        
-        // Firebase.auth().createUserWithEmailAndPassword(this.state.artist_email, this.state.artist_password)
-        //   .then((response) => {
-        //     console.log(response)
-    
-        //     Axios({
-        //       method: 'post',
-        //       url: URL,
-        //       data: {
-        //         artist_name: _this.state.artist_name,
-        //         email: _this.state.artist_email,
-        //         password: _this.state.artist_password
-        //       }
-        //     }).then((response) => {
-        //       console.log(response)
-        //       const artist_id = response.data.artist.id
-    
-        //       localStorage.setItem('artist_id', artist_id)
-        //       console.log(localStorage.getItem('artist_id'))
-    
-        //       _this.sendVerificationEmail(artist_id)
-    
-        //     }).catch((error) => {
-        //       console.log(error)
-        //     })
-    
-        //   })
-        //   .catch((error) => {
-        //     console.log(error)
-        //     const errorCode = error.code;
-        //     const errorMessage = error.message;
-    
-        //   })
-    }
     componentDidMount() {
 
         const hash = this.props.location.hash
-        let queries = hash.replace(/^\?/, '').split('&')
+        const queries = hash.replace(/^\?/, '').split('&')
         const accessToken = queries[0].replace('#access_token=', '')
+
+
         Spotify.setAccessToken(accessToken)
 
         this.getUserData(accessToken).then((response) => {
@@ -130,16 +90,24 @@ export default class Dashboard extends Component {
             const followers = response.data.followers.total
             const platforms = ['spotify']
             const account_tier = response.data.product
+            const email = response.data.email
+            const spotify_platform = {
+                name: 'Spotify',
+                id: response.data.id,
+                accessToken: accessToken
 
+            }
             const user_data = {
                 user_name: user_name,
                 profile_photo: profile_photo,
+                email: email,
                 followers: followers,
-                platforms: platforms,
-                account_tier: account_tier
+                platforms: [spotify_platform],
+                account_tier: account_tier,
+                accessToken: accessToken
             }
 
-            this.syncSpotifyLoginWithBlockPartyAuth(user_data)
+            this.syncSpotifyLoginWithBlockPartyOnBoard(user_data)
 
             this.setState({
                 user_name: user_name,
@@ -156,11 +124,58 @@ export default class Dashboard extends Component {
         this.getUsersListeningData()
 
     }
-    getUserData(accessToken) {
+    syncSpotifyLoginWithBlockPartyOnBoard(user_data) {
+
+        const _this = this
+        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/users/signup' : 'https://block-party-server.herokuapp.com/users/signup'
+
+        Firebase.auth().createUserWithEmailAndPassword(user_data.email, user_data.accessToken)
+            .then((response) => {
+                console.log(response)
+
+                _this.sendVerificationEmail(() => {
+                    Axios({
+                        method: 'post',
+                        url: URL,
+                        data: {
+                            platform: true,
+                            platform_user: user_data
+                        }
+                    }).then((response) => {
+                        console.log(response)
+                    
+                    }).catch((error) => {
+                        console.log(error)
+                    })
+                })
+            })
+            .catch((error) => {
+                console.log(error)
+                const errorCode = error.code;
+                const errorMessage = error.message;
+
+            })
+    }
+    sendVerificationEmail(callback) {
+
+        const _this = this
+        const user = Firebase.auth().currentUser
         
-        this.setState({
-            accessToken: accessToken
+
+        user.sendEmailVerification().then(() => {
+
+            console.log('email sent')
+
+            callback()
+            // _this.props.history.push(`${artist_id}/profile`)
+        }).catch((error) => {
+            console.log(error)
         })
+
+    }
+    getUserData(accessToken) {
+
+        this.setState({ accessToken: accessToken })
         return Axios({ method: 'get', url: 'https://api.spotify.com/v1/me', headers: { 'Authorization': 'Bearer ' + accessToken } })
     }
     getUsersListeningData() {
@@ -227,18 +242,18 @@ export default class Dashboard extends Component {
     getCurrentlyPlaying() {
 
     }
- 
+
     playSpotifyTrack(track) {
         console.log(track)
-        
-        
+
+
         // transferMyPlayback
         Spotify.play(
-           { 
-            headers: {'Authorization': `Bearer ${this.state.accessToken}`},
-            data: {'uris': [track.uri]}
+            {
+                headers: { 'Authorization': `Bearer ${this.state.accessToken}` },
+                data: { 'uris': [track.uri] }
             })
-        
+
         // this.setState({
         //     soundIs_: 'PLAYING',
         //     playlist: [track],
@@ -254,12 +269,12 @@ export default class Dashboard extends Component {
         this.setState({
             soundIs_: 'PLAYING'
         })
-        
+
         Axios({
             method: 'post',
             url: URL,
             data: {
-               artist: _this.state.playlist[counter].artist,
+                artist: _this.state.playlist[counter].artist,
                 user_id: _this.state.user_name
             }
         }).then((response) => {
@@ -384,7 +399,7 @@ export default class Dashboard extends Component {
                                                     <Feed.Date>
                                                         <List horizontal>
                                                             <List.Item icon='signal' content={track.popularity} />
-                                                            <List.Item icon='play' onClick={this.playSpotifyTrack.bind(this, track)}/>
+                                                            <List.Item icon='play' onClick={this.playSpotifyTrack.bind(this, track)} />
                                                         </List>
                                                     </Feed.Date>
                                                     <Feed.Summary>

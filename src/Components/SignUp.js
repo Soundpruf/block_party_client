@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Axios from 'axios'
-import Firebase from '../Firebase'
+import {Firebase} from '../Firebase'
 import { Link } from 'react-router-dom'
 import Loader from './Loader'
 import {    
@@ -235,45 +235,3 @@ export default class SignUp extends Component {
         )
     }
 }
-
-// <Grid.Column width={5}>
-//                                 <Card>
-//                                     <Form size='medium' onSubmit={this.handleCustomSignUp.bind(this)}>
-//                                         <Segment stacked>
-//                                             <Header as='h2' color='teal' textAlign='center'>
-//                                             Sign Up here. We'll handle the details later
-//                                         </Header>
-//                                             <Form.Input
-//                                                 onChange={this.handleUserName.bind(this)}
-//                                                 value={this.state.user_name}
-//                                                 fluid
-//                                                 icon='user'
-//                                                 iconPosition='left'
-//                                                 placeholder='User Name or Group Name'
-//                                             />
-//                                             <Form.Input
-//                                                 onChange={this.handleUserEmail.bind(this)}
-//                                                 value={this.state.user_email}
-//                                                 fluid
-//                                                 icon='user'
-//                                                 iconPosition='left'
-//                                                 placeholder='E-mail address'
-//                                             />
-//                                             <Form.Input
-//                                                 onChange={this.handleUserPassword.bind(this)}
-//                                                 value={this.state.user_password}
-//                                                 fluid
-//                                                 icon='lock'
-//                                                 iconPosition='left'
-//                                                 placeholder='Password'
-//                                                 type='password'
-//                                             />
-//                                             <Segment compact>
-//                                                 <Checkbox value={this.state.is_listener} label='Are you an Artist or Musician?' onChange={this.handleListenertCheckBox.bind(this)}/>
-//                                             </Segment>
-                            
-//                                             <Button color='teal' fluid size='large'>Create Account</Button>
-//                                         </Segment>
-//                                     </Form>
-//                                 </Card>
-//                         </Grid.Column>

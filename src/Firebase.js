@@ -1,4 +1,4 @@
-import Firebase from 'firebase'
+import _Firebase from 'firebase'
 
   // Initialize Firebase
   const config = {
@@ -10,6 +10,6 @@ import Firebase from 'firebase'
     messagingSenderId: "786349530257"
   }
 
-  Firebase.initializeApp(config)
-
-  export default Firebase
+  _Firebase.initializeApp(config)
+  
+  export const Firebase = _Firebase

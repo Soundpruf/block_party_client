@@ -36,28 +36,24 @@ export default class Home extends Component {
 
         return (
             <div>
-                <div className="dotstyle dotstyle-smalldotstroke">
-                    <ul>
-                        <li className="current"><Link to='/'>
-                            <span> Home</span>
-                        </Link></li>
-                        <li className="current"><Link to='/about'>
-                            <span> About</span>
-                        </Link></li>
-                        <li className="current"><Link to='/login'>
-                            <span> Log In</span>
-                        </Link></li>
-                        <li className="current"><Link to='/signup'>
-                            <span> Sign Up</span>
-                        </Link></li>
-                    </ul>
-                </div>
+                 <div className="dotstyle dotstyle-smalldotstroke">
+                        <ul>
+                            <li className="current"><Link to='/'>
+                                <span> Home</span>
+                            </Link></li>
+                            <li className="current"><Link to='/about'>
+                                <span> About</span>
+                            </Link></li>
+                            <li className="current"><Link to='/login'>
+                                <span> Log In</span>
+                            </Link></li>
+                            <li className="current"><Link to='/signup'>
+                                <span> Sign Up</span>
+                            </Link></li>
+                        </ul>
+                    </div>
                 <div id="splash">
                     <div className='site_intro'>
-                        <div className="header_content">
-                            <h1>Block Party</h1>
-                            <h3>The first Music Streaming Community on the Block</h3>
-                        </div>
                         <svg id="logoAnimation" width="100" height="100" viewBox="0 0 300 300">
                             <defs>
                                 <linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse"
@@ -79,11 +75,12 @@ export default class Home extends Component {
                                     <rect className="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
                                 </clipPath>
                             </defs>
-                            <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+                            <rect className="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
                         </svg>
 
+                        <h1>Block Party</h1>
+                        <h3>The first Music Streaming Community on the Block</h3>
                     </div>
-
                     <div id="signUpMenu">
                         <Segment circular inverted style={square}>
                             <Header as='h2' inverted>
@@ -103,6 +100,8 @@ export default class Home extends Component {
                         </Segment>
 
                     </div>
+
+
                 </div>
                 <Divider />
 

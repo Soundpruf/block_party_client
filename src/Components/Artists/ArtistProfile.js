@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Divider, Grid, Header, Menu, Message, Segment, Table, Button, Card, Image, Feed, List, Icon } from 'semantic-ui-react'
-import Firebase from '../../Firebase'
+import {Firebase} from '../../Firebase'
 import Axios from 'axios'
 import OnboardArtist from './ArtistPartials/OnboardArtist'
 

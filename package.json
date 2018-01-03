@@ -8,6 +8,7 @@
     "axios": "^0.17.1",
     "bodymovin": "^4.13.0",
     "firebase": "^4.8.1",
+    "firebase-admin": "^5.6.0",
     "firebaseui": "^2.5.1",
     "foreman": "^2.0.0",
     "logrocket": "^0.6.1",

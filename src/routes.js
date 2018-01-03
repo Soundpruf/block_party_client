@@ -4,7 +4,6 @@ import Home from './Components/Home'
 import Login from './Components/Login'
 import Dashboard from './Components/Dashboard'
 import SignUp from './Components/SignUp'
-import Listen from './Components/Listen'
 import ArtistSignUp from './Components/Artists/ArtistSignUp'
 import Profile from './Components/Artists/Profile'
 import ArtistProfile from './Components/Artists/ArtistProfile'
@@ -52,12 +51,7 @@ const site_routes = [
 		component: Profile,
 		name: 'Profile'
 	},
-	{
-		path: '/listen',
-		exact: true,
-		component: Listen,
-		name: 'Listen'
-	}, {
+{
 		path: '/callback',
 		exact: true,
 		component: Dashboard,
