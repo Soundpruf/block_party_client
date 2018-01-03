@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import Axios from 'axios'
-import {Firebase} from '../Firebase'
+import { Firebase } from '../Firebase'
 import { Link } from 'react-router-dom'
 import Loader from './Loader'
-import {    
-    Container, 
-    Step, 
-    Grid, 
-    Button, 
-    Card, 
-    Icon, 
+import {
+    Container,
+    Step,
+    Grid,
+    Button,
+    Card,
+    Icon,
     Image,
     Header,
     List,
@@ -17,7 +17,7 @@ import {
     Segment,
     Divider,
     Visibility,
-    Form, 
+    Form,
     Message,
     Checkbox
 } from 'semantic-ui-react'
@@ -43,16 +43,16 @@ const UI = new FirebaseUI.auth.AuthUI(Firebase.auth())
 const uiConfig = {
     signInSuccessUrl: '/users/:user_id/profile/',
     signInOptions: [
-      // Leave the lines as is for the providers you want to offer your users.
-      Firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      Firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-      Firebase.auth.PhoneAuthProvider.PROVIDER_ID
+        // Leave the lines as is for the providers you want to offer your users.
+        Firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        Firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        Firebase.auth.PhoneAuthProvider.PROVIDER_ID
     ],
     // Terms of service url.
     tosUrl: '/'
-  };
+};
 
-     
+
 export default class SignUp extends Component {
     constructor(props) {
         super(props)
@@ -68,7 +68,7 @@ export default class SignUp extends Component {
     componentDidMount() {
         UI.start('#firebaseui-auth-container', uiConfig)
 
-    }    
+    }
     handleListenertCheckBox(e) {
         e.preventDefault()
 
@@ -78,7 +78,7 @@ export default class SignUp extends Component {
     }
     handleCustomSignUp(e) {
         e.preventDefault()
-        
+
         // this.initAuth()
     }
     launchLoader(e) {
@@ -153,82 +153,69 @@ export default class SignUp extends Component {
             'Spotify',
             'menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left
         )
-        
+
     }
     render() {
         let LOADER
-        if(this.state.showLoader) {
+        if (this.state.showLoader) {
             LOADER = <Loader />
         }
         return (
             <div>
                 {LOADER}
-                 <Container>
-                
-                    <Menu inverted pointing secondary size='large' id="mainNav">
-                        {menu_items}
-                        <Menu.Menu position='right'>
-                            <Menu.Item className='item'>
-                                <Link to='/login'>Login</Link>
-                            </Menu.Item>
-                            <Menu.Item>
-                                <Link to='/signup'>Sign up</Link>
-                            </Menu.Item>
-                        </Menu.Menu>
-                    </Menu>
-                
-                <Step.Group>
-                    <Step active>
-                        <Icon name='sign in' />
-                        <Step.Content>
-                            <Step.Title>Sign Up</Step.Title>
-                            <Step.Description>Create and Account and Connect a Streaming Platform of your Choice</Step.Description>
-                        </Step.Content>
-                    </Step>
+                <Container>
+                    <Step.Group>
+                        <Step active>
+                            <Icon name='sign in' />
+                            <Step.Content>
+                                <Step.Title>Sign Up</Step.Title>
+                                <Step.Description>Create and Account and Connect a Streaming Platform of your Choice</Step.Description>
+                            </Step.Content>
+                        </Step>
 
-                    <Step>
-                        <Icon name='credit card alternative' />
-                        <Step.Content>
-                            <Step.Title>Create a Wallet</Step.Title>
-                            <Step.Description>A 100% secure destination for your Payouts</Step.Description>
-                        </Step.Content>
-                    </Step>
+                        <Step>
+                            <Icon name='credit card alternative' />
+                            <Step.Content>
+                                <Step.Title>Create a Wallet</Step.Title>
+                                <Step.Description>A 100% secure destination for your Payouts</Step.Description>
+                            </Step.Content>
+                        </Step>
 
-                    <Step disabled>
-                        <Icon name='hand spock' />
-                        <Step.Content>
-                            <Step.Title>Confirm</Step.Title>
-                        </Step.Content>
-                    </Step>
-                </Step.Group>
+                        <Step disabled>
+                            <Icon name='hand spock' />
+                            <Step.Content>
+                                <Step.Title>Confirm</Step.Title>
+                            </Step.Content>
+                        </Step>
+                    </Step.Group>
 
-                <Divider />
+                    <Divider />
 
-                <Grid columns='equal'>
-                    <Grid.Row stretched>
-                        <Grid.Column width={5}></Grid.Column>
-                        
-                        <Grid.Column width={5}>
-                            <Segment stacked>
-                                <Header as='h2' color='teal' textAlign='center'>
-                                    Sign Up here. We'll handle the details later
+                    <Grid columns='equal'>
+                        <Grid.Row stretched>
+                            <Grid.Column width={5}></Grid.Column>
+
+                            <Grid.Column width={5}>
+                                <Segment stacked>
+                                    <Header as='h2' color='teal' textAlign='center'>
+                                        Sign Up here. We'll handle the details later
                                 </Header>
-                                <Card>
-                                <Image src='spotify.jpeg' />
-                                <Card.Content>
-                                    <Card.Header>
-                                        <Button basic color='green' onClick={this.handleSpotifyLogin.bind(this)}>Sign Up with Spotify</Button>
-                                    </Card.Header>
-                                    <Divider horizontal>Or</Divider>
-                                    <div id='firebaseui-auth-container' onClick={this.launchLoader.bind(this)}></div>
-                                </Card.Content>
-                            
-                            </Card>
-                            </Segment>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Container>
+                                    <Card>
+                                        <Image src='/spotify.jpeg' />
+                                        <Card.Content>
+                                            <Card.Header textAlign='center'>
+                                                <Button basic color='green' onClick={this.handleSpotifyLogin.bind(this)}>Sign Up with Spotify</Button>
+                                            </Card.Header>
+                                            <Divider horizontal>Or</Divider>
+                                            <div id='firebaseui-auth-container' onClick={this.launchLoader.bind(this)}></div>
+                                        </Card.Content>
+
+                                    </Card>
+                                </Segment>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Container>
 
 
             </div>

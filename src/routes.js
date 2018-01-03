@@ -22,7 +22,7 @@ const site_routes = [
 		name: 'Dashboard'
 	},
 	{
-		path: '/signup',
+		path: '/users/signup',
 		exact: true,
 		component: SignUp,
 		name: 'SignUp'
@@ -49,7 +49,7 @@ const site_routes = [
 		path: '/users/:id/profile',
 		exact: true,
 		component: Profile,
-		name: 'Profile'
+		name: 'UserProfile'
 	},
 {
 		path: '/callback',

@@ -8,32 +8,7 @@ import { Firebase } from '../Firebase'
 
 const Spotify = new SpotifyWebApi()
 
-const site_routes = [
-    {
-        path: '/',
-        name: 'Home'
-    },
-    {
-        path: '/users/dashboard/:user_id',
-        name: 'Dashboard'
-    },
-    {
-        path: '/listen',
-        name: 'Listen'
-    }
-]
-const menu_items = site_routes.map((route) => (<Menu.Item className=''><Link to={`${route.path}`}>{route.name}</Link></Menu.Item>))
 
-const FixedMenu = () => (
-    <Menu fixed='top' size='large'>
-        <Container>
-            <Menu.Item className=''><Link to='/'><h1>Block Party</h1></Link></Menu.Item>
-            <Menu.Menu position='right'>
-                {menu_items}
-            </Menu.Menu>
-        </Container>
-    </Menu>
-)
 const playlist = [
     {
         url: '/songs/Nikes.mp3',
@@ -70,7 +45,14 @@ export default class Dashboard extends Component {
             playlist: playlist,
             counter: 0,
             soundIs_: 'STOPPED',
-            user_spotify_devices: []
+            user_spotify_devices: [],
+            userIsSignedIn_: false
+        }
+    }
+    componentWillMount() {
+        const isSignedIn = localStorage.getItem('userIsSignedIn?')
+        if (isSignedIn) {
+            this.setState({userIsSignedIn_: true})
         }
     }
     componentDidMount() {
@@ -79,16 +61,17 @@ export default class Dashboard extends Component {
         const queries = hash.replace(/^\?/, '').split('&')
         const accessToken = queries[0].replace('#access_token=', '')
 
+        this.completeUserOnBoard(accessToken)
 
+    }
+    completeUserOnBoard(accessToken) {
         Spotify.setAccessToken(accessToken)
-
         this.getUserData(accessToken).then((response) => {
             console.log(response)
 
             const user_name = response.data.display_name
             const profile_photo = response.data.images[0].url
             const followers = response.data.followers.total
-            const platforms = ['spotify']
             const account_tier = response.data.product
             const email = response.data.email
             const spotify_platform = {
@@ -97,17 +80,19 @@ export default class Dashboard extends Component {
                 accessToken: accessToken
 
             }
+            const platforms = [spotify_platform]
             const user_data = {
                 user_name: user_name,
                 profile_photo: profile_photo,
                 email: email,
                 followers: followers,
-                platforms: [spotify_platform],
+                platforms: platforms,
                 account_tier: account_tier,
                 accessToken: accessToken
             }
-
-            this.syncSpotifyLoginWithBlockPartyOnBoard(user_data)
+            if (!this.state.userIsSignedIn_) {
+                this.syncSpotifyLoginWithBlockPartyOnBoard(user_data)
+            }
 
             this.setState({
                 user_name: user_name,
@@ -120,9 +105,7 @@ export default class Dashboard extends Component {
         }).catch((err) => {
             console.log(err)
         })
-        // opener.document.close()
         this.getUsersListeningData()
-
     }
     syncSpotifyLoginWithBlockPartyOnBoard(user_data) {
 
@@ -131,8 +114,6 @@ export default class Dashboard extends Component {
 
         Firebase.auth().createUserWithEmailAndPassword(user_data.email, user_data.accessToken)
             .then((response) => {
-                console.log(response)
-
                 _this.sendVerificationEmail(() => {
                     Axios({
                         method: 'post',
@@ -142,8 +123,10 @@ export default class Dashboard extends Component {
                             platform_user: user_data
                         }
                     }).then((response) => {
-                        console.log(response)
-                    
+                        
+                        _this.setState({userIsSignedIn_: true})
+                        localStorage.setItem('userIsSignedIn?', true)
+
                     }).catch((error) => {
                         console.log(error)
                     })
@@ -157,24 +140,16 @@ export default class Dashboard extends Component {
             })
     }
     sendVerificationEmail(callback) {
-
         const _this = this
         const user = Firebase.auth().currentUser
-        
 
         user.sendEmailVerification().then(() => {
-
-            console.log('email sent')
-
             callback()
-            // _this.props.history.push(`${artist_id}/profile`)
         }).catch((error) => {
             console.log(error)
         })
-
     }
     getUserData(accessToken) {
-
         this.setState({ accessToken: accessToken })
         return Axios({ method: 'get', url: 'https://api.spotify.com/v1/me', headers: { 'Authorization': 'Bearer ' + accessToken } })
     }
@@ -232,17 +207,11 @@ export default class Dashboard extends Component {
 
             }).catch((error) => {
                 console.log(error)
-
-                // if (!error.withCredentials) {
-                //     alert('Session has timed out please sign in again')
-                //     _this.props.history.push('/')
-                // }
             })
     }
     getCurrentlyPlaying() {
 
     }
-
     playSpotifyTrack(track) {
         console.log(track)
 
@@ -303,14 +272,11 @@ export default class Dashboard extends Component {
 
     }
     render() {
-        // onLoading={this.handleSongLoading}
-        //                             onPlaying={this.handleSongPlaying}
-        //                             onFinishedPlaying={this.handleSongFinishedPlaying}
-
+ 
         const counter = this.state.counter
         return (
             <div>
-                <FixedMenu />
+                
                 <Container style={{ padding: '5em 0em', marginTop: '40px' }}>
                     <Grid columns={3}>
 

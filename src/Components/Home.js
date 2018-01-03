@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import bodymovin from 'bodymovin'
 import {
     Button,
     Container,
@@ -17,41 +16,16 @@ import {
 
 
 export default class Home extends Component {
-
-    componentDidMount() {
-        var animData = {
-            wrapper: document.querySelector('#Loader'),
-            animType: 'svg',
-            loop: true,
-            prerender: true,
-            autoplay: true,
-            path: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/35984/LEGO_loader.json'
-        };
-        var anim = bodymovin.loadAnimation(animData);
-        anim.setSpeed(1);
-    }
+    state = { activeItem: 'Home' }
 
     render() {
-        const square = { width: 175, height: 175 }
+        const square = { width: 175, height: 175, color: 'white' }
+        
 
         return (
             <div>
-                 <div className="dotstyle dotstyle-smalldotstroke">
-                        <ul>
-                            <li className="current"><Link to='/'>
-                                <span> Home</span>
-                            </Link></li>
-                            <li className="current"><Link to='/about'>
-                                <span> About</span>
-                            </Link></li>
-                            <li className="current"><Link to='/login'>
-                                <span> Log In</span>
-                            </Link></li>
-                            <li className="current"><Link to='/signup'>
-                                <span> Sign Up</span>
-                            </Link></li>
-                        </ul>
-                    </div>
+
+                
                 <div id="splash">
                     <div className='site_intro'>
                         <svg id="logoAnimation" width="100" height="100" viewBox="0 0 300 300">
@@ -80,28 +54,25 @@ export default class Home extends Component {
 
                         <h1>Block Party</h1>
                         <h3>The first Music Streaming Community on the Block</h3>
-                    </div>
-                    <div id="signUpMenu">
-                        <Segment circular inverted style={square}>
-                            <Header as='h2' inverted>
+                        <div id="signUpMenu">
+
+                            <Header as='h2' icon>
+                                <Icon name='music' />
+                                Sign up as an
                                 <Header.Subheader>
-                                    Sign up as a
-                            </Header.Subheader>
-                                <Link to='/artists/signup'>Artists</Link>
+                                    <Link to='/artists/signup'>Artists</Link>
+                                </Header.Subheader>
                             </Header>
-                        </Segment>
-                        <Segment circular inverted style={square}>
-                            <Header as='h2' inverted>
+                            
+                            <Header as='h2' icon>
+                                <Icon name='sound' />
+                                Sign up as an
                                 <Header.Subheader>
-                                    Sign up as a
-                            </Header.Subheader>
-                                <Link to='/signup'>Listeners</Link>
+                                    <Link to='/users/signup'>Listener</Link>
+                                </Header.Subheader>
                             </Header>
-                        </Segment>
-
+                        </div>
                     </div>
-
-
                 </div>
                 <Divider />
 
