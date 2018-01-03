@@ -124,11 +124,17 @@ export default class SignUp extends Component {
         const scopes = [
             'user-read-currently-playing',
             'ugc-image-upload',
+            'user-read-playback-state',
+            'playlist-modify-public',
+            'user-modify-playback-state',
             'streaming',
             'playlist-read-private',
             'user-library-read',
             'user-read-private',
-            'user-top-read'
+            'user-top-read',
+            'user-read-recently-played',
+            'user-read-email',
+            'playlist-read-collaborative'
         ]
 
         const getLoginURL = (the_scopes) => {

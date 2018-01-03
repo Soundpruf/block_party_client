@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "amplitudejs": "^3.2.3",
     "animejs": "^2.2.0",
     "axios": "^0.17.1",
     "bodymovin": "^4.13.0",

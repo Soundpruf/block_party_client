@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import { Container, Divider, Grid, Header, Menu, Message, Segment, Table, Button, Card, Image, Feed, List, Icon } from 'semantic-ui-react'
 import Sound from 'react-sound'
 
+import Amplitude from 'amplitudejs'
+
 
 const Spotify = new SpotifyWebApi()
 
@@ -39,17 +41,19 @@ const playlist = [
         url: '/songs/Nikes.mp3',
         cover: 'spotify.jpeg',
         title: 'Nikes',
-        artist: [
-            'Frank Ocean'
-        ]
+        artist: {
+            name: 'Frank Ocean',
+            id: 42
+        }
     },
     {
         url: '/songs/Ivy.mp3',
         cover: 'spotify.jpeg',
         title: 'Ivy',
-        artist: [
-            'Frank Ocean'
-        ]
+        artist: {
+            name: 'Frank Ocean',
+            id: 42
+        }
     }
 ]
 
@@ -67,8 +71,49 @@ export default class Dashboard extends Component {
             top_artists: [],
             playlist: playlist,
             counter: 0,
-            soundIs_: 'STOPPED'
+            soundIs_: 'STOPPED',
+            user_spotify_devices: []
         }
+    }
+    componentWillMount() {
+
+    }
+    syncSpotifyLoginWithBlockPartyAuth(spotify_user_data) {
+        const _this = this
+        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/users/signup' : 'https://block-party-server.herokuapp.com/users/signup'
+        
+        // Firebase.auth().createUserWithEmailAndPassword(this.state.artist_email, this.state.artist_password)
+        //   .then((response) => {
+        //     console.log(response)
+    
+        //     Axios({
+        //       method: 'post',
+        //       url: URL,
+        //       data: {
+        //         artist_name: _this.state.artist_name,
+        //         email: _this.state.artist_email,
+        //         password: _this.state.artist_password
+        //       }
+        //     }).then((response) => {
+        //       console.log(response)
+        //       const artist_id = response.data.artist.id
+    
+        //       localStorage.setItem('artist_id', artist_id)
+        //       console.log(localStorage.getItem('artist_id'))
+    
+        //       _this.sendVerificationEmail(artist_id)
+    
+        //     }).catch((error) => {
+        //       console.log(error)
+        //     })
+    
+        //   })
+        //   .catch((error) => {
+        //     console.log(error)
+        //     const errorCode = error.code;
+        //     const errorMessage = error.message;
+    
+        //   })
     }
     componentDidMount() {
 
@@ -86,6 +131,16 @@ export default class Dashboard extends Component {
             const platforms = ['spotify']
             const account_tier = response.data.product
 
+            const user_data = {
+                user_name: user_name,
+                profile_photo: profile_photo,
+                followers: followers,
+                platforms: platforms,
+                account_tier: account_tier
+            }
+
+            this.syncSpotifyLoginWithBlockPartyAuth(user_data)
+
             this.setState({
                 user_name: user_name,
                 profile_photo: profile_photo,
@@ -102,7 +157,10 @@ export default class Dashboard extends Component {
 
     }
     getUserData(accessToken) {
-        console.log(accessToken)
+        
+        this.setState({
+            accessToken: accessToken
+        })
         return Axios({ method: 'get', url: 'https://api.spotify.com/v1/me', headers: { 'Authorization': 'Bearer ' + accessToken } })
     }
     getUsersListeningData() {
@@ -116,7 +174,9 @@ export default class Dashboard extends Component {
                     _song.title = song.name
                     _song.artist = song.artists[0].name
                     _song.popularity = song.popularity
-                    _song.photo = song.album.images[2].url
+                    _song.photo = song.album.images[1].url
+                    _song.url = song.preview_url
+                    _song.uri = song.uri
                     songs.push(_song)
                 })
                 // ** Setting the state twice in a series of async calls seems messy
@@ -144,17 +204,46 @@ export default class Dashboard extends Component {
                     console.log(error)
                 })
 
+                Spotify.getMyDevices((error, response) => {
+                    if (error) {
+                        console.log(error)
+                    } else {
+                        console.log(response)
+                        _this.setState({
+                            user_spotify_devices: response.devices
+                        })
+                    }
+                })
+
             }).catch((error) => {
                 console.log(error)
 
-                if (!error.withCredentials) {
-                    alert('Session has timed out please sign in again')
-                    _this.props.history.push('/')
-                }
+                // if (!error.withCredentials) {
+                //     alert('Session has timed out please sign in again')
+                //     _this.props.history.push('/')
+                // }
             })
     }
     getCurrentlyPlaying() {
 
+    }
+ 
+    playSpotifyTrack(track) {
+        console.log(track)
+        
+        
+        // transferMyPlayback
+        Spotify.play(
+           { 
+            headers: {'Authorization': `Bearer ${this.state.accessToken}`},
+            data: {'uris': [track.uri]}
+            })
+        
+        // this.setState({
+        //     soundIs_: 'PLAYING',
+        //     playlist: [track],
+        //     counter: 0
+        // })
     }
     playThatTrack() {
         const counter = this.state.counter
@@ -170,7 +259,7 @@ export default class Dashboard extends Component {
             method: 'post',
             url: URL,
             data: {
-                musician_id: _this.state.playlist[counter].artist[0],
+               artist: _this.state.playlist[counter].artist,
                 user_id: _this.state.user_name
             }
         }).then((response) => {
@@ -236,7 +325,7 @@ export default class Dashboard extends Component {
 
                         <Grid.Column>
                             <Card>
-                                <Image src={this.state.soundIs_ != 'PLAYING' ? 'tape.jpg' : this.state.playlist[counter].cover} />
+                                <Image src={this.state.soundIs_ != 'PLAYING' ? '/tape-min.jpg' : this.state.playlist[counter].photo} />
 
                                 <Sound
                                     url={this.state.playlist[counter].url}
@@ -247,7 +336,7 @@ export default class Dashboard extends Component {
                                 <Card.Content>
                                     <Card.Header>
                                         <h1>
-                                            {this.state.playlist[counter].title}, {this.state.playlist[counter].artist[0]}
+                                            {this.state.playlist[counter].title}, {this.state.playlist[counter].artist.name}
                                         </h1>
                                     </Card.Header>
                                     <div className="har-loader">
@@ -295,6 +384,7 @@ export default class Dashboard extends Component {
                                                     <Feed.Date>
                                                         <List horizontal>
                                                             <List.Item icon='signal' content={track.popularity} />
+                                                            <List.Item icon='play' onClick={this.playSpotifyTrack.bind(this, track)}/>
                                                         </List>
                                                     </Feed.Date>
                                                     <Feed.Summary>
