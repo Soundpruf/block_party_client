@@ -6,6 +6,10 @@ import Axios from 'axios'
 import Dropzone from 'react-dropzone'
 
 
+const Storage = Firebase.app().storage("gs://thrive-app-neural.appspot.com")
+const StorageRef = Storage.ref()
+
+
 export default class OnboardArtist extends Component {
     constructor(props) {
         super(props)
@@ -13,19 +17,13 @@ export default class OnboardArtist extends Component {
         this.state = {
             music_files: [],
             genres: ['pop', 'rap', 'jazz'],
-            bio: ''
+            bio: '',
+            profile_photo:''
         }
-    }
-    componentDidMount() {
-
-    }
-    componentWillMount() {
-
+        
     }
     onDrop(music_files) {
 
-        const Storage = Firebase.app().storage("gs://thrive-app-neural.appspot.com")
-        const StorageRef = Storage.ref()
         const musicRef = StorageRef.child('/music')
         console.log(music_files)
 
@@ -45,9 +43,19 @@ export default class OnboardArtist extends Component {
     }
     onPhotoDrop(photo) {
         console.log(photo)
-        this.setState({
-            photo
+
+        photo.forEach((file) => {
+            let photo_url = URL.createObjectURL(file)
+            let photoFileRef = StorageRef.child(`/photo/${file.name}`)
+
+            photoFileRef.put(file).then((snapshot) => {
+                console.log(snapshot)
+                this.setState({
+                    profile_photo: photo_url
+                })
+            })
         })
+        
     }
     render() {
 
@@ -61,7 +69,7 @@ export default class OnboardArtist extends Component {
                     <Grid.Row>
                         <Grid.Column width={3}>
                             <Card
-                                image='/assets/images/avatar/large/elliot.jpg'
+                                image={this.state.profile_photo}
                                 header={this.props.name}
                                 meta={this.state.genres}
                                 description={this.state.bio}

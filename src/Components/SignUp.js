@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import Axios from 'axios'
-import { Firebase } from '../Firebase'
 import { Link } from 'react-router-dom'
 import Loader from './Loader'
+import { Firebase } from '../Firebase'
+import { FirebaseAuth } from 'react-firebaseui'
 import {
     Container,
     Step,
@@ -22,25 +23,8 @@ import {
     Checkbox
 } from 'semantic-ui-react'
 
-const site_routes = [
-    {
-        path: '/',
-        name: 'Home'
-    },
-    {
-        path: '/users/dashboard/:user_id',
-        name: 'Dashboard'
-    },
-    {
-        path: '/listen',
-        name: 'Listen'
-    }
-]
-const menu_items = site_routes.map((route) => (<Menu.Item className=''><Link to={`${route.path}`}>{route.name}</Link></Menu.Item>))
-const FirebaseUI = require('firebaseui')
-const UI = new FirebaseUI.auth.AuthUI(Firebase.auth())
-
 const uiConfig = {
+    signInFlow: 'popup',
     signInSuccessUrl: '/users/:user_id/profile/',
     signInOptions: [
         // Leave the lines as is for the providers you want to offer your users.
@@ -66,8 +50,7 @@ export default class SignUp extends Component {
 
     }
     componentDidMount() {
-        UI.start('#firebaseui-auth-container', uiConfig)
-
+        
     }
     handleListenertCheckBox(e) {
         e.preventDefault()
@@ -81,12 +64,7 @@ export default class SignUp extends Component {
 
         // this.initAuth()
     }
-    launchLoader(e) {
-        e.preventDefault()
-        this.setState({
-            showLoader: true
-        })
-    }
+
     handleSpotifyLogin(e) {
         e.preventDefault()
         this.login()
@@ -118,6 +96,7 @@ export default class SignUp extends Component {
     }
 
     login(callback) {
+
         const CLIENT_ID = 'e86c9d8c7e084cf494d82947a0ea1252'
         const CLIENT_SECRET = '860af304d691469b9f73ed5cf7201fcc'
         const REDIRECT_URI = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/callback/' : 'https://block-party-client.herokuapp.com/callback/'
@@ -156,13 +135,9 @@ export default class SignUp extends Component {
 
     }
     render() {
-        let LOADER
-        if (this.state.showLoader) {
-            LOADER = <Loader />
-        }
+     
         return (
             <div>
-                {LOADER}
                 <Container>
                     <Step.Group>
                         <Step active>
@@ -207,7 +182,7 @@ export default class SignUp extends Component {
                                                 <Button basic color='green' onClick={this.handleSpotifyLogin.bind(this)}>Sign Up with Spotify</Button>
                                             </Card.Header>
                                             <Divider horizontal>Or</Divider>
-                                            <div id='firebaseui-auth-container' onClick={this.launchLoader.bind(this)}></div>
+                                            <FirebaseAuth uiConfig={uiConfig} firebaseAuth={Firebase.auth()}/>
                                         </Card.Content>
 
                                     </Card>

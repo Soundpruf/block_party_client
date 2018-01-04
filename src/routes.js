@@ -7,6 +7,7 @@ import SignUp from './Components/SignUp'
 import ArtistSignUp from './Components/Artists/ArtistSignUp'
 import Profile from './Components/Artists/Profile'
 import ArtistProfile from './Components/Artists/ArtistProfile'
+import Browse from './Components/Browse'
 
 
 const site_routes = [
@@ -38,6 +39,12 @@ const site_routes = [
 		exact: true,
 		component: ArtistSignUp,
 		name: 'Artist Sign Up'
+	},
+	{
+		path: '/browse',
+		exact: true,
+		component: Browse,
+		name: 'Browse'
 	},
 	{
 		path: '/artists/:id/profile',

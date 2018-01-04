@@ -1,18 +1,58 @@
 import React, { Component } from 'react'
+import { Button, Form, Grid, Header, Image, Container, Card, Message, Segment, Step, Divider } from 'semantic-ui-react'
+import { Checkbox } from 'semantic-ui-react'
+import { Firebase } from '../Firebase'
+import { FirebaseAuth } from 'react-firebaseui'
 import Axios from 'axios'
-import { Grid, Button, Card, Icon, Image } from 'semantic-ui-react'
 
-
+const uiConfig = {
+    signInFlow: 'popup',
+    signInSuccessUrl: '/users/:user_id/profile/',
+    signInOptions: [
+        Firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        Firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        Firebase.auth.PhoneAuthProvider.PROVIDER_ID
+    ],
+    tosUrl: '/'
+};
 
 
 export default class Login extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            name: '',
+            email: '',
+            password: ''
+        }
 
-        
     }
     componentDidMount() {
         
+    }
+    handleCustomLogIn(e) {
+        e.preventDefault()
+    }
+    handleName(e) {
+        e.preventDefault()
+        this.setState({
+            name: e.target.value
+
+        })
+    }
+    handleEmail(e) {
+        e.preventDefault()
+        this.setState({
+            email: e.target.value
+
+        })
+    }
+    handlePassword(e) {
+        e.preventDefault()
+        this.setState({
+            password: e.target.value
+
+        })
     }
     login(callback) {
         const CLIENT_ID = 'e86c9d8c7e084cf494d82947a0ea1252'
@@ -27,79 +67,95 @@ export default class Login extends Component {
             'user-read-private',
             'user-top-read'
         ]
-        
+
         const getLoginURL = (the_scopes) => {
             return 'https://accounts.spotify.com/authorize?client_id=' + CLIENT_ID +
-              '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
-              '&scope=' + encodeURIComponent(the_scopes.join(' ')) +
-              '&response_type=token';
+                '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
+                '&scope=' + encodeURIComponent(the_scopes.join(' ')) +
+                '&response_type=token';
         }
         const url = getLoginURL(scopes)
         let width = 450
         let height = 730
         let left = (window.width / 2) - (width / 2)
         let top = (window.height / 2) - (height / 2)
-     
+
         const _win = window.open(url,
-                            'Spotify',
-                            'menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left
-                           );
-        
+            'Spotify',
+            'menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left
+        );
+
     }
 
-  
+
     handleCustomSignUp(e) {
         e.preventDefault()
     }
-    handleSpotifyLogin(e){
+    handleSpotifyLogin(e) {
         e.preventDefault()
         this.login()
     }
     render() {
         return (
             <Grid celled='internally'>
-                <Grid.Row>
-                    <Grid.Column width={3}>
-                    </Grid.Column>
-                    <Grid.Column width={10}>
-                        <Card.Group>
-                            <Card>
-                                <Image src='spotify.jpeg' />
-                                <Card.Content>
-                                    <Card.Header>
-                                        Sign In With Spotify
-                                </Card.Header>
-                                </Card.Content>
-                                <Card.Content extra>
-                                    <div className='ui two buttons'>
-                                        <Button basic color='green' onClick={this.handleSpotifyLogin.bind(this)}>Sign In</Button>
-                                        <Button basic color='red'>Already Registered?</Button>
-                                    </div>
-                                </Card.Content>
-                            </Card>
-                            <Card>
-                                <Image src='https://images.unsplash.com/photo-1502179752592-b1d28abbb841?auto=format&fit=crop&w=1600&q=80' />
-                                <Card.Content>
-                                    <Card.Header>
-                                        Join the Block Party Stereo Exchange
-                                </Card.Header>
-                                </Card.Content>
-                                <Card.Content extra>
-                                    <div className='ui two buttons'>
-                                        <Button basic color='green' onClick={this.handleCustomSignUp.bind(this)}>Sign Up</Button>
-                                        <Button basic color='red'>Already Registered?</Button>
-                                    </div>
-                                </Card.Content>
-                            </Card>
-                        </Card.Group>
+                <Container>
+                    <Grid columns='equal'>
+                        <Grid.Row >
+                            <Grid.Column width={5}>
+                                
+                                    <Card>
+                                        <Form size='large' onSubmit={this.handleCustomLogIn.bind(this)}>
+                                            <Segment stacked>
+                                                <Form.Input
+                                                    onChange={this.handleName.bind(this)}
+                                                    value={this.state.name}
+                                                    fluid
+                                                    icon='user'
+                                                    iconPosition='left'
+                                                    placeholder='Artist Name or Group Name'
+                                                />
+                                                <Form.Input
+                                                    onChange={this.handleEmail.bind(this)}
+                                                    value={this.state.email}
+                                                    fluid
+                                                    icon='user'
+                                                    iconPosition='left'
+                                                    placeholder='E-mail address'
+                                                />
+                                                <Form.Input
+                                                    onChange={this.handlePassword.bind(this)}
+                                                    value={this.state.password}
+                                                    fluid
+                                                    icon='lock'
+                                                    iconPosition='left'
+                                                    placeholder='Password'
+                                                    type='password'
+                                                />
+                                                <Button color='teal' fluid size='large'>Log In</Button>
+                                            </Segment>
+                                        </Form>
+                                    </Card>
+                                
+                            </Grid.Column>
 
-                    </Grid.Column>
-                    <Grid.Column width={3}>
+                            <Grid.Column width={5}>
+                                
+                                    <Card>
+                                        <Image src='/spotify.jpeg' />
+                                        <Card.Content>
+                                            <Card.Header textAlign='center'>
+                                                <Button basic color='green' onClick={this.handleSpotifyLogin.bind(this)}>Log in with Spotify</Button>
+                                            </Card.Header>
+                                            <Divider horizontal>Or</Divider>
+                                            <FirebaseAuth uiConfig={uiConfig} firebaseAuth={Firebase.auth()}/>
+                                        </Card.Content>
+                                    </Card>
+                                
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
 
-                    </Grid.Column>
-                </Grid.Row>
-
-
+                </Container>
             </Grid>
         )
     }
