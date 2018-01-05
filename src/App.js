@@ -9,6 +9,19 @@ import {
 class App extends Component {
     state = { activeItem: 'Home' }
 
+    componentWillMount() {
+
+        let songsList = localStorage.getItem('blockPartySongs')
+        console.log(songsList)
+
+        if (songsList) {
+            console.log(songsList)
+        } else {
+            localStorage.setItem('blockPartySongs', JSON.stringify([]))
+        }
+
+    }
+
     render() {
         const { activeItem } = this.state
         return (

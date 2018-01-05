@@ -1,13 +1,9 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Divider, Grid, TextArea, Dropdown, Header, Menu, Form, Message, Popup, Rating, Step, Segment, Table, Button, Card, Image, Feed, List, Icon } from 'semantic-ui-react'
-import {Firebase} from '../../../Firebase'
+import {Firebase, MusicRef, PhotoRef} from '../../../Firebase'
 import Axios from 'axios'
 import Dropzone from 'react-dropzone'
-
-
-const Storage = Firebase.app().storage("gs://thrive-app-neural.appspot.com")
-const StorageRef = Storage.ref()
 
 
 export default class OnboardArtist extends Component {
@@ -24,7 +20,6 @@ export default class OnboardArtist extends Component {
     }
     onDrop(music_files) {
 
-        const musicRef = StorageRef.child('/music')
         console.log(music_files)
 
         this.setState({
@@ -32,7 +27,13 @@ export default class OnboardArtist extends Component {
         })
         
         music_files.forEach((file) => {
-            let musicFileRef = StorageRef.child(`/music/${file.name}`)
+
+            let songsList = JSON.parse(localStorage.getItem('blockPartySongs'))
+            let musicFileRef = MusicRef.child(`/${file.name}`)
+
+            songsList.push(file.name)
+            localStorage.setItem('blockPartySongs', JSON.stringify(songsList))
+
             musicFileRef.put(file).then((snapshot) => {
                 console.log(snapshot)
                 console.log("file uploaded!")
@@ -45,8 +46,9 @@ export default class OnboardArtist extends Component {
         console.log(photo)
 
         photo.forEach((file) => {
+
             let photo_url = URL.createObjectURL(file)
-            let photoFileRef = StorageRef.child(`/photo/${file.name}`)
+            let photoFileRef = PhotoRef.child(`/${file.name}`)
 
             photoFileRef.put(file).then((snapshot) => {
                 console.log(snapshot)

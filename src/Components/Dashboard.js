@@ -4,7 +4,7 @@ import SpotifyWebApi from 'spotify-web-api-js'
 import { Link } from 'react-router-dom'
 import { Container, Divider, Grid, Header, Menu, Message, Segment, Table, Button, Card, Image, Feed, List, Icon } from 'semantic-ui-react'
 import Sound from 'react-sound'
-import { Firebase } from '../Firebase'
+import {Firebase, MusicRef, PhotoRef} from '../Firebase'
 
 const Spotify = new SpotifyWebApi()
 

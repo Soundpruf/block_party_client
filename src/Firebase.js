@@ -9,7 +9,14 @@ import _Firebase from 'firebase'
     storageBucket: "thrive-app-neural.appspot.com",
     messagingSenderId: "786349530257"
   }
-
   _Firebase.initializeApp(config)
+
+  const Storage = _Firebase.app().storage("gs://thrive-app-neural.appspot.com")
+  
   
   export const Firebase = _Firebase
+  export const StorageRef = Storage.ref()
+  export const MusicRef = StorageRef.child('/music')
+  export const PhotoRef =  StorageRef.child('/photos')
+  
+  

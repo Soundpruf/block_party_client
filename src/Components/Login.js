@@ -21,7 +21,6 @@ export default class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            name: '',
             email: '',
             password: ''
         }
@@ -32,13 +31,17 @@ export default class Login extends Component {
     }
     handleCustomLogIn(e) {
         e.preventDefault()
-    }
-    handleName(e) {
-        e.preventDefault()
-        this.setState({
-            name: e.target.value
+        
+        Firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.email).then((user) => {
+            console.log(user)
 
         })
+        .catch((error) => {
+            console.log(error)
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            
+          })
     }
     handleEmail(e) {
         e.preventDefault()
@@ -88,7 +91,7 @@ export default class Login extends Component {
     }
 
 
-    handleCustomSignUp(e) {
+    handleCustomLogin(e) {
         e.preventDefault()
     }
     handleSpotifyLogin(e) {
@@ -106,14 +109,6 @@ export default class Login extends Component {
                                     <Card>
                                         <Form size='large' onSubmit={this.handleCustomLogIn.bind(this)}>
                                             <Segment stacked>
-                                                <Form.Input
-                                                    onChange={this.handleName.bind(this)}
-                                                    value={this.state.name}
-                                                    fluid
-                                                    icon='user'
-                                                    iconPosition='left'
-                                                    placeholder='Artist Name or Group Name'
-                                                />
                                                 <Form.Input
                                                     onChange={this.handleEmail.bind(this)}
                                                     value={this.state.email}

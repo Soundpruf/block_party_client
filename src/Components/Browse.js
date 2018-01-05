@@ -1,69 +1,97 @@
 import React, {Component} from 'react'
 import { Card } from 'semantic-ui-react'
-import {Firebase} from '../Firebase'
+import {Firebase, MusicRef, PhotoRef} from '../Firebase'
 import Axios from 'axios'
+import Sound from 'react-sound'
+
+// const playlist = [
+//     {
+//         url: '/songs/Nikes.mp3',
+//         cover: 'spotify.jpeg',
+//         title: 'Nikes',
+//         artist: 'Frank Ocean',
+//         artist_id: 42
+//     },
+//     {
+//         url: '/songs/Ivy.mp3',
+//         cover: 'spotify.jpeg',
+//         title: 'Ivy',
+//         artist: 'Frank Ocean',
+//         artist_id: 42
+//     }
+// ]
 
 
-const Storage = Firebase.app().storage("gs://thrive-app-neural.appspot.com")
-const StorageRef = Storage.ref()
-const musicRef = StorageRef.child('/music')
-
-console.log(Storage)
-console.log(StorageRef)
-console.log(musicRef)
 export default class Browse extends Component {
-    state = {}
+    constructor(props) {
+        super(props)
+        this.state = {
+            songs: [],
+            activeSong:"",
+            test_link:''
+        }
+    }
+    
+
+    componentDidMount() {
+        let songsList = JSON.parse(localStorage.getItem('blockPartySongs'))
+        console.log(songsList)
+
+        const songs = []
+        songsList.forEach((song) => {
+            console.log(song)
+            MusicRef.child(song).getDownloadURL().then((url) => {
+                
+                
+                const xhr = new XMLHttpRequest()
+                xhr.onload = (event) => {
+
+                  const blob = xhr.response
+                  
+
+                  console.log(blob)
+
+                  const link = URL.createObjectURL(blob)
+                  console.log(link)
+                  songs.push(link)
+                  
+                  this.setState({
+                    songs: songs
+                    })
+                }
+
+                xhr.open('GET', url)
+                xhr.responseType = 'blob'
+                xhr.send()
+
+              })
+        })
+        
+    }
+    playSong(song) {
+        this.setState({
+            activeSong: song
+        })
+    }
 
     render() {
-       
+        // <a onClick={this.playSong.bind(this, song)}>SONG DOWNLOAD</a>
+    //     <Sound
+    //     url={this.state.activeSong}
+    //     playStatus={this.state.soundIs_}
+    //     playFromPosition={0 /* in milliseconds */}
+
+    // />
+
         return (
             <Card.Group itemsPerRow={4}>
-                <Card color='red'  />
-                <Card color='orange'  />
-                <Card color='yellow'  />
-                <Card color='olive'  />
-                <Card color='green'  />
-                <Card color='teal'  />
-                <Card color='blue'  />
-                <Card color='violet'  />
-                <Card color='purple'  />
-                <Card color='pink'  />
-                <Card color='brown'  />
-                <Card color='grey'  />
+                {this.state.songs.map((song) => (
+                    <audio controls>
+                        <source src={song} type="audio/mp3" />
+                        Your browser does not support the audio tag.
+                    </audio>
+                ))}
             </Card.Group>
         )
     }
 }
-
-// This could potentially pull all the files I need for the  browse featured
-
-// const functions = require('firebase-functions');
-// const gcs = require('@google-cloud/storage')();
-
-// // on file upload to google cloud storage
-// exports.fileUploaded = functions.storage.object().onChange(event => {
-
-//   const object = event.data; // the object that was just uploaded
-//   const bucket = gcs.bucket(object.bucket);
-//   const signedUrlConfig = { action: 'read', expires: '03-17-2025' }; // this is a signed url configuration object
-
-//   var fileURLs = []; // array to hold all file urls 
-
-//   // just for example. ideally you should get this from the object that is uploaded for this to be a better function :)
-//   // so that you can calculate the size of the folder it's uploaded to, and do something with it etc.
-//   const folderPath = "a/path/you/want/its/folder/size/calculated";
-
-//   bucket.getFiles({ prefix: folderPath }, function(err, files) {
-//     // files = array of file objects
-//     // not the contents of these files, we're not downloading the files. 
-
-//     files.forEach(function(file) {
-//       file.getSignedUrl(config, function(err, fileURL) {
-//         console.log(fileURL);
-//         fileURLs.push(fileURL);
-//       });
-//     });
-
-//   });
-
-// });
