@@ -17,10 +17,21 @@ a {
   color: black!important;
 }
 h2, h3, h4, h5, h6, .ui.header {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif!important;
 }
 h1 {
-    font-family: "Black Out";
+    font-family: "Black Out"!important;
+}
+h2 {
+  font-weight: bold;
+  font-size: 42px;
+} 
+.brief h3 {
+  font-size: 36px;
+  font-weight: bold;
+} 
+h4 {
+
 }
 .title_bg {
     background-color: black;
@@ -32,36 +43,30 @@ h1 {
 .circular.inverted.segment a {
   color: white!important;
 }
-
+#SiteNav {
+  margin: 0;
+}
+.siteLogo {
+  padding-bottom: 5px!important;
+}
 /* Side Nav */
 
-
-#splash {
-    /* background: url(/tape-min.jpg); */
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    /* opacity: 0.6; */
-    z-index: 10;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    /* filter: saturate(20%); */
-    
+.owl-carousel {
+  min-height: 450px;
+  height: 100%;
 }
-.site_intro {
+.site-intro {
   display: block;
   margin: auto;
   position: relative;
   
 }
 
-.site_intro h1 {
+.site-intro h1 {
   font-family: "Black Out"!important;
   font-size: 80px;
  }
- .site_intro h3 {
+ .site-intro h3 {
   
  }
  h2.ui.icon.header {
@@ -81,9 +86,12 @@ h1 {
       bottom: 50px;
       right: 300px;
       z-index: 1000; */
-      margin: auto;
+      margin: 20px auto 0;
       text-align: center;
       width: auto;
+  }
+  #signUpMenu h2, #signUpMenu .icon, #signUpMenu a {
+    color: white!important;
   }
   #signUpMenu button {
       margin: 10px;
@@ -106,6 +114,14 @@ h1 {
   .artist_first button, .listen_and_earn button {
       clear: both!important;
   }
+  .brief {
+    min-height: 300px;
+    height: 100%;
+  }
+  .brief .btn {
+    background: #6fe0de;
+    color: white;
+  }
   #ArtistSignUp {
       /* height: 100vh;
       display: flex;
@@ -120,8 +136,8 @@ h1 {
    
   #logoAnimation {
     position: absolute;
-    top: 50%;
-    left: -100px;
+    top: 25%;
+    left: -80px;
     transform: translate(-50%, -50%) rotate(45deg);
   }
   .gradient {
@@ -380,3 +396,8 @@ h1 {
     margin: 10px auto 20px;
     width: 100px;
   }
+
+  /* Browse */
+#Browse {
+  position: relative;
+}

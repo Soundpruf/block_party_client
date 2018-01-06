@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 import routes from './routes'
+import './Components/Pulse.css'
 import './App.css'
 import {
     Menu
@@ -27,9 +28,12 @@ class App extends Component {
         return (
             <BrowserRouter>
                 <div>
-                    <Menu pointing secondary>
-                        <Menu.Item active={activeItem === 'Home'}>
-                            <Link to='/'>Home</Link>
+                    <Menu pointing secondary id='SiteNav'>
+                        <Menu.Item active={activeItem === 'Home'} className='siteLogo'>
+                            <Link to='/'>  
+                                <img src="/images/logo.png" alt="." className="" align='center' height='30px' width='30px' style={{marginRight: '10px'}}/>
+                                <span className="hidden-folded inline">Block Party</span>
+                            </Link>
                         </Menu.Item>
                         <Menu.Item>
                             <Link to='/about'><span> About</span></Link>

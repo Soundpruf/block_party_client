@@ -22,7 +22,8 @@ export default class Login extends Component {
         super(props)
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            isArtist: false
         }
 
     }
@@ -31,10 +32,25 @@ export default class Login extends Component {
     }
     handleCustomLogIn(e) {
         e.preventDefault()
-        
-        Firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.email).then((user) => {
-            console.log(user)
+        const _this = this
 
+        Firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((user) => {
+            console.log(user)
+            if (!user.isAnonymous) {
+                Axios.post('/login', {
+                    data: _this.state
+                }).then((response) => {
+                    if (_this.state.isArtist && response.status === 200) {
+                        let artist_id = response.data.artist.id
+                        _this.props.history.push(`/artists/${artist_id}/profile`)
+                    } else if (!_this.state.isArtist && response.status === 200) {
+                        let user_id = response.data.user.id
+                        _this.props.history.push(`/artists/${user_id}/profile`)
+                    }
+                }).catch((error) => {
+                    console.log(error)
+                })
+            }
         })
         .catch((error) => {
             console.log(error)
@@ -55,6 +71,12 @@ export default class Login extends Component {
         this.setState({
             password: e.target.value
 
+        })
+    }
+    handleArtistCheckBox(e) {
+        e.preventDefault()
+        this.setState({
+            isArtist: true
         })
     }
     login(callback) {
@@ -104,10 +126,23 @@ export default class Login extends Component {
                 <Container>
                     <Grid columns='equal'>
                         <Grid.Row >
+                            <Grid.Column width={5}></Grid.Column>
+
                             <Grid.Column width={5}>
                                 
                                     <Card>
-                                        <Form size='large' onSubmit={this.handleCustomLogIn.bind(this)}>
+                                        <Image src='/images/b7.jpg' />
+                                        <Segment compact>
+                                            <Checkbox label='Are you an Artist or Musician?' onChange={this.handleArtistCheckBox.bind(this)} />
+                                        </Segment>
+                                        <Card.Content>
+                                            <Card.Header textAlign='center'>
+                                                <Button basic color='green' onClick={this.handleSpotifyLogin.bind(this)}>Log in with Spotify</Button>
+                                            </Card.Header>
+                                            <Divider horizontal>Or</Divider>
+                                            <FirebaseAuth uiConfig={uiConfig} firebaseAuth={Firebase.auth()}/>
+                                            <Divider horizontal>Or</Divider>
+                                            <Form size='large' onSubmit={this.handleCustomLogIn.bind(this)}>
                                             <Segment stacked>
                                                 <Form.Input
                                                     onChange={this.handleEmail.bind(this)}
@@ -129,20 +164,6 @@ export default class Login extends Component {
                                                 <Button color='teal' fluid size='large'>Log In</Button>
                                             </Segment>
                                         </Form>
-                                    </Card>
-                                
-                            </Grid.Column>
-
-                            <Grid.Column width={5}>
-                                
-                                    <Card>
-                                        <Image src='/spotify.jpeg' />
-                                        <Card.Content>
-                                            <Card.Header textAlign='center'>
-                                                <Button basic color='green' onClick={this.handleSpotifyLogin.bind(this)}>Log in with Spotify</Button>
-                                            </Card.Header>
-                                            <Divider horizontal>Or</Divider>
-                                            <FirebaseAuth uiConfig={uiConfig} firebaseAuth={Firebase.auth()}/>
                                         </Card.Content>
                                     </Card>
                                 

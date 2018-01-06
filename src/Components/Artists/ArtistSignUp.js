@@ -145,7 +145,7 @@ export default class ArtistSignUp extends Component {
               <Segment stacked>
                 <Header as='h2' color='teal' textAlign='center'>
                   Sign Up here. We'll handle the details later
-            </Header>
+              </Header>
                 <Form.Input
                   onChange={this.handleArtistName.bind(this)}
                   value={this.state.artist_name}
