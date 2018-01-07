@@ -74,11 +74,9 @@ export default class Browse extends Component {
         const _this = this
         const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/mine' : 'https://block-party-server.herokuapp.com/mine'
         let counter = 0
+        let user = JSON.parse(localStorage.getItem('currentUser'))
         
-        // const user = JSON.parse(localStorage.getItem('currentUser'))
-        const user = Firebase.auth().currentUser
-
-        console.log(user)
+       
         console.log(this.state.activeSong.artist)
 
         if (this.state.streaming) {

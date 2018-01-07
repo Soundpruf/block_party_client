@@ -42,7 +42,8 @@ export default class Dashboard extends Component {
             counter: 0,
             soundIs_: 'STOPPED',
             user_spotify_devices: [],
-            userIsSignedIn_: false
+            userIsSignedIn_: false,
+            loginFlow: false
         }
     }
     componentWillMount() {
@@ -52,7 +53,13 @@ export default class Dashboard extends Component {
         }
     }
     componentDidMount() {
-
+        console.log(this.props)
+        const paths = this.props.location.pathname.split('/')
+        if (paths.includes('login')) { 
+            this.setState({
+                loginFlow: true
+            })
+        }
         const hash = this.props.location.hash
         const queries = hash.replace(/^\?/, '').split('&')
         const accessToken = queries[0].replace('#access_token=', '')
@@ -63,8 +70,7 @@ export default class Dashboard extends Component {
     completeUserOnBoard(accessToken) {
         Spotify.setAccessToken(accessToken)
         this.getUserData(accessToken).then((response) => {
-            console.log(response)
-
+            
             const user_name = response.data.display_name
             const profile_photo = response.data.images[0].url
             const followers = response.data.followers.total
@@ -104,11 +110,39 @@ export default class Dashboard extends Component {
         this.getUsersListeningData()
     }
     syncSpotifyLoginWithBlockPartyOnBoard(user_data) {
-
         const _this = this
-        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/users/signup' : 'https://block-party-server.herokuapp.com/users/signup'
+        let URL
 
-        Firebase.auth().createUserWithEmailAndPassword(user_data.email, user_data.accessToken)
+        if (this.state.loginFlow) {
+
+            URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/login' : 'https://block-party-server.herokuapp.com/login'
+            Axios.post(URL, {
+                data: {
+                    platform: true,
+                    spotify_login: true,
+                    platform_user: user_data
+                }
+            }).then((response) => {
+                    
+                _this.setState({userIsSignedIn_: true})
+                localStorage.setItem('currentUserLoggedIn', true)
+                localStorage.setItem('currentUser', JSON.stringify(response.data.user))
+
+                Firebase.auth().signInWithEmailAndPassword(response.data.user.email, response.data.user.password)
+                .then((response) => {
+                    console.log(response)
+                }).catch((error) => {
+                    console.log(error)
+                })
+
+            }).catch((error) => {
+                console.log(error)
+            })
+           
+        } else {
+
+            URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/users/signup' : 'https://block-party-server.herokuapp.com/users/signup'
+            Firebase.auth().createUserWithEmailAndPassword(user_data.email, user_data.accessToken)
             .then((response) => {
                 _this.sendVerificationEmail(() => {
                     Axios({
@@ -130,10 +164,12 @@ export default class Dashboard extends Component {
             })
             .catch((error) => {
                 console.log(error)
-                const errorCode = error.code;
-                const errorMessage = error.message;
-
+                if (error.code === "auth/email-already-in-use") {
+                   
+                }
             })
+        }
+        
     }
     sendVerificationEmail(callback) {
         const _this = this

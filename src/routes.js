@@ -58,11 +58,17 @@ const site_routes = [
 		component: Profile,
 		name: 'UserProfile'
 	},
-{
+	{
 		path: '/callback',
 		exact: true,
 		component: Dashboard,
 		name: 'callback'
+	},
+	{
+		path: '/login/callback/',
+		exact: true,
+		component: Dashboard,
+		name: 'login callback'
 	},
 	{
 		path: '/__/auth/handler',
