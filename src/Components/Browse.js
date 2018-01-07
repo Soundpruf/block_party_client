@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Card, Grid, Menu, Icon } from 'semantic-ui-react'
+import { Card, Grid, Menu, Icon, Image } from 'semantic-ui-react'
 import { Firebase, MusicRef, PhotoRef } from '../Firebase'
+import FooterPlayer from './Players/FooterPlayer'
 import Axios from 'axios'
 import Sound from 'react-sound'
 import './Pulse.css'
@@ -12,32 +13,32 @@ export default class Browse extends Component {
         this.state = {
             songs: [],
             activeSong: "",
-            test_link: ''
+            test_link: '',
+            streaming: false
         }
     }
 
 
     componentDidMount() {
+        const all_audio = document.querySelectorAll('.card .item-media > audio')
+        console.log(all_audio)
+
+
         let songsList = JSON.parse(localStorage.getItem('blockPartySongs'))
-        console.log(songsList)
-
         const songs = []
+
         songsList.forEach((song) => {
-            console.log(song)
-            MusicRef.child(song).getDownloadURL().then((url) => {
+            
+            MusicRef.child(song.url).getDownloadURL().then((url) => {
 
-
+                let enriched_song = song 
                 const xhr = new XMLHttpRequest()
+
                 xhr.onload = (event) => {
 
                     const blob = xhr.response
-
-
-                    console.log(blob)
-
-                    const link = URL.createObjectURL(blob)
-                    console.log(link)
-                    songs.push(link)
+                    enriched_song.blob_url = URL.createObjectURL(blob)
+                    songs.push(enriched_song)
 
                     this.setState({
                         songs: songs
@@ -52,21 +53,62 @@ export default class Browse extends Component {
         })
 
     }
-    playSong(song) {
+    handleEndOfStreaming(element) {
+        console.log(element)
         this.setState({
-            activeSong: song
+            streaming: false
         })
     }
+    handlePlay(song, e) {
+        console.log(song)
+        console.log(e)
+
+        this.setState({
+            streaming: true,
+            activeSong: song
+        })
+
+    }
+    handleDuration(element) {
+
+        const _this = this
+        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/mine' : 'https://block-party-server.herokuapp.com/mine'
+        let counter = 0
+        
+        // const user = JSON.parse(localStorage.getItem('currentUser'))
+        const user = Firebase.auth().currentUser
+
+        console.log(user)
+        console.log(this.state.activeSong.artist)
+
+        if (this.state.streaming) {
+            // setInterval(() => {
+            //     counter ++
+            //     console.log('Im playing. Counter: ' + counter)
+            // }, 1000)
+
+            Axios({
+                method: 'post',
+                url: URL,
+                'data': {
+                    'artist_id': _this.state.activeSong.artist.id,
+                    'user_id': user.id
+                }
+            }).then((response) => {
+                console.log(response)
+                if (response.status === 200) {
+                    alert(`Congrats! You're now mining on Block Party with a ${response.data.message}, you've earned ${response.data.transactions[0].amount} BlockNote`)
+                }
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+    }
+    handleRef(element) {}
 
     render() {
-        // <a onClick={this.playSong.bind(this, song)}>SONG DOWNLOAD</a>
-        //     <Sound
-        //     url={this.state.activeSong}
-        //     playStatus={this.state.soundIs_}
-        //     playFromPosition={0 /* in milliseconds */}
 
-        // />
-
+        
         return (
             <div id="Browse">
 
@@ -173,12 +215,12 @@ export default class Browse extends Component {
                                                     {this.state.songs.map((song) => (
                                                         <Grid.Column>
                                                             <Card className="item r">
+                                                                <img src={song.artist.photo}/>
                                                                 <div className="item-media">
-                                                                    <audio controls>
-                                                                        <source src={song} type="audio/mp3" />
+                                                                    <audio ref={this.handleRef.bind(this)} controls onPlay={this.handlePlay.bind(this, song)} onPlaying={this.handleDuration.bind(this)} onEnded={this.handleEndOfStreaming.bind(this)} onPause={this.handleEndOfStreaming.bind(this)}>
+                                                                        <source src={song.blob_url} type="audio/mp3" />
                                                                         Your browser does not support the audio tag.
-                                                        </audio>
-
+                                                                    </audio>
                                                                     <div className="item-overlay center">
                                                                         <button className="btn-playpause">Play</button>
                                                                     </div>
@@ -190,10 +232,10 @@ export default class Browse extends Component {
                                                                         <div className="dropdown-menu pull-right black lt"></div>
                                                                     </div>
                                                                     <div className="item-title text-ellipsis">
-                                                                        <a href="track.detail.html">I Wanna Be In the Cavalry</a>
+                                                                        <a href="track.detail.html">{song.name}</a>
                                                                     </div>
                                                                     <div className="item-author text-sm text-ellipsis ">
-                                                                        <a href="artist.detail.html" className="text-muted">Jeremy Scott</a>
+                                                                        <a href="artist.detail.html" className="text-muted">{song.artist.name}</a>
                                                                     </div>
                                                                 </div>
                                                             </Card>
@@ -333,12 +375,11 @@ export default class Browse extends Component {
                                 </div>
                             </div>
                         </div>
-                </div>
+                    </div>
+                 </div>
+                 <FooterPlayer />
+            
             </div>
-            <div className="app-footer app-player grey bg">
-                    <div className="playlist"></div>
-                </div>
-        </div>
-                    )
+        )
     }
 }

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Sound from 'react-sound'
 
-export default class Player extends Component {
+export default class CompactPlayer extends Component {
     constructor(props) {
         super(props)
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { Firebase } from './Firebase'
 import routes from './routes'
 import './Components/Pulse.css'
 import './App.css'
@@ -8,7 +9,15 @@ import {
 } from 'semantic-ui-react'
 
 class App extends Component {
-    state = { activeItem: 'Home' }
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            activeItem: 'Home',
+            userLoggedIn: false
+        }
+    }
+    state = { }
 
     componentWillMount() {
 
@@ -22,9 +31,24 @@ class App extends Component {
         }
 
     }
+    componentDidMount() {
+        const user = Firebase.auth().currentUser
+        const potential_user = localStorage.getItem('currentUserLoggedIn')
+        console.log(potential_user)
+
+        if (user || potential_user) {
+            console.log(user)
+            this.setState({
+                userLoggedIn: true
+            })
+        }
+
+    }
 
     render() {
         const { activeItem } = this.state
+        const browse_html = (<Menu.Item><Link to='/browse'><span>Browse</span></Link></Menu.Item>)
+        const browse_link = this.state.userLoggedIn ? browse_html : null
         return (
             <BrowserRouter>
                 <div>
@@ -38,9 +62,7 @@ class App extends Component {
                         <Menu.Item>
                             <Link to='/about'><span> About</span></Link>
                         </Menu.Item>
-                        <Menu.Item>
-                            <Link to='/browse'><span>Browse</span></Link>
-                        </Menu.Item>
+                        {browse_link}
                         <Menu.Menu position='right'>
                             <Menu.Item><Link to='/login'><span> Log In</span></Link></Menu.Item>
                             <Menu.Item><Link to='/logout'><span> Log Out</span></Link></Menu.Item>

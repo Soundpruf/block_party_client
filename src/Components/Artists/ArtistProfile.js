@@ -16,26 +16,29 @@ export default class Profile extends Component {
         }
     }
     componentDidMount() {
-        this.getCurrentArtist()
+        
 
     }
     componentWillMount() {
-
+        this.getCurrentArtist()
     }
     getCurrentArtist() {
 
         const _this = this
-        const artist_id = localStorage.getItem('artist_id')
+        const artist_id = localStorage.getItem('artist_id') ? localStorage.getItem('artist_id') : this.props.match.params.id
         console.log(artist_id)
         const URL = process.env.NODE_ENV === 'development' ? `http://localhost:5000/artists/${artist_id}/onboard` : `https://block-party-server.herokuapp.com/artists/${artist_id}/onboard`
 
-        Axios.get(URL).then((response) => {
-            console.log(response)
-            this.setState(response.data)
-        }).catch((error) => {
-            console.log(error)
-        })
 
+        if (artist_id) {
+            Axios.get(URL).then((response) => {
+                console.log(response)
+                this.setState(response.data)
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+        
     }
 
     render() {

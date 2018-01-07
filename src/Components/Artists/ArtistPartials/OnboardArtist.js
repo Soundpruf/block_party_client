@@ -12,38 +12,45 @@ export default class OnboardArtist extends Component {
         super(props)
 
         this.state = {
-            music_files: [],
             genres: ['pop', 'rap', 'jazz'],
             bio: '',
-            profile_photo:''
+            profile_photo:'',
+            songs: JSON.parse(localStorage.getItem('blockPartySongs'))
         }
-        
     }
     onDrop(music_files) {
 
-        console.log(music_files)
-
-        this.setState({
-            music_files: [music_files]
-        })
-        
+        const _this = this
         music_files.forEach((file) => {
 
             let songsList = JSON.parse(localStorage.getItem('blockPartySongs'))
             let musicFileRef = MusicRef.child(`/${file.name}`)
+            let artist = JSON.parse(localStorage.getItem('currentUser'))
             let song = {}
-            song.name =
 
-            songsList.push(file.name)
+
+            song.name = file.name.replace('.m4a', '')
+            song.url = file.name
+            song.artist = {
+                name: artist.artist_name,
+                id: artist.id,
+                photo: this.state.profile_photo,
+                wallet_address: artist.wallet_address
+            }
+
+            songsList.push(song)
             localStorage.setItem('blockPartySongs', JSON.stringify(songsList))
 
             musicFileRef.put(file).then((snapshot) => {
                 console.log(snapshot)
-                console.log("file uploaded!")
+
+                _this.setState({
+                    songs: songsList
+                }, () => {
+                    console.log("file uploaded!")
+                })
             })
         })
-        
-
     }
     onPhotoDrop(photo) {
         console.log(photo)
@@ -81,6 +88,21 @@ export default class OnboardArtist extends Component {
                                 extra={this.props.wallet_address}
 
                             />
+                            <Feed>
+                                {this.state.songs.map((song) => (
+                                    <Feed.Event>
+                                        <Feed.Label>
+                                            <Icon name='music' />
+                                        </Feed.Label>
+                                        <Feed.Content>
+                                            <Feed.Summary>
+                                                <Feed.User>{song.name}</Feed.User> has been uploaded
+                                                <Feed.Date>1 Hour Ago</Feed.Date>
+                                            </Feed.Summary>
+                                        </Feed.Content>
+                                    </Feed.Event>
+                                ))}
+                            </Feed>
                         </Grid.Column>
                         <Grid.Column width={13}>
                             <Container style={{ marginTop: '40px' }} fluid>

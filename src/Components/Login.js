@@ -41,11 +41,21 @@ export default class Login extends Component {
                     data: _this.state
                 }).then((response) => {
                     if (_this.state.isArtist && response.status === 200) {
+
+                        localStorage.setItem('currentUserLoggedIn', true)
+                        localStorage.setItem('currentUser', JSON.stringify(response.data.artist))
+
                         let artist_id = response.data.artist.id
                         _this.props.history.push(`/artists/${artist_id}/profile`)
+
+
                     } else if (!_this.state.isArtist && response.status === 200) {
+
+
                         let user_id = response.data.user.id
                         _this.props.history.push(`/artists/${user_id}/profile`)
+
+                        
                     }
                 }).catch((error) => {
                     console.log(error)
@@ -132,9 +142,33 @@ export default class Login extends Component {
                                 
                                     <Card>
                                         <Image src='/images/b7.jpg' />
-                                        <Segment compact>
-                                            <Checkbox label='Are you an Artist or Musician?' onChange={this.handleArtistCheckBox.bind(this)} />
-                                        </Segment>
+                                        <Form size='large' onSubmit={this.handleCustomLogIn.bind(this)}>
+                                                
+                                                <Segment stacked>
+                                                    <Segment compact style={{margin: 'auto'}}>
+                                                        <Checkbox label='Are you an Artist or Musician?' onChange={this.handleArtistCheckBox.bind(this)} />
+                                                    </Segment>
+                                                    <br />
+                                                    <Form.Input
+                                                        onChange={this.handleEmail.bind(this)}
+                                                        value={this.state.email}
+                                                        fluid
+                                                        icon='user'
+                                                        iconPosition='left'
+                                                        placeholder='E-mail address'
+                                                    />
+                                                    <Form.Input
+                                                        onChange={this.handlePassword.bind(this)}
+                                                        value={this.state.password}
+                                                        fluid
+                                                        icon='lock'
+                                                        iconPosition='left'
+                                                        placeholder='Password'
+                                                        type='password'
+                                                    />
+                                                    <Button color='teal' fluid size='large'>Log In</Button>
+                                                </Segment>
+                                            </Form>
                                         <Card.Content>
                                             <Card.Header textAlign='center'>
                                                 <Button basic color='green' onClick={this.handleSpotifyLogin.bind(this)}>Log in with Spotify</Button>
@@ -142,28 +176,6 @@ export default class Login extends Component {
                                             <Divider horizontal>Or</Divider>
                                             <FirebaseAuth uiConfig={uiConfig} firebaseAuth={Firebase.auth()}/>
                                             <Divider horizontal>Or</Divider>
-                                            <Form size='large' onSubmit={this.handleCustomLogIn.bind(this)}>
-                                            <Segment stacked>
-                                                <Form.Input
-                                                    onChange={this.handleEmail.bind(this)}
-                                                    value={this.state.email}
-                                                    fluid
-                                                    icon='user'
-                                                    iconPosition='left'
-                                                    placeholder='E-mail address'
-                                                />
-                                                <Form.Input
-                                                    onChange={this.handlePassword.bind(this)}
-                                                    value={this.state.password}
-                                                    fluid
-                                                    icon='lock'
-                                                    iconPosition='left'
-                                                    placeholder='Password'
-                                                    type='password'
-                                                />
-                                                <Button color='teal' fluid size='large'>Log In</Button>
-                                            </Segment>
-                                        </Form>
                                         </Card.Content>
                                     </Card>
                                 

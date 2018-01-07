@@ -92,7 +92,7 @@ html {
     white-space: nowrap;
     vertical-align: baseline;
     font-weight: bold;
-    background-color: rgba(120, 130, 140, 0.6);
+    
     color: #fff;
     border-radius: .2rem; }
     .label.no-bg {
@@ -2557,6 +2557,7 @@ html {
   .item-info {
     position: relative;
     padding: 10px 0 20px 0;
+    text-align: center;
     border-radius: inherit; }
     .item-info .bottom {
       bottom: 100%; }
