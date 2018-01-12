@@ -33,7 +33,7 @@ export default class Login extends Component {
     handleCustomLogIn(e) {
         e.preventDefault()
         const _this = this
-        const LOGIN_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/login' : 'https://block-party-client.herokuapp.com/login'
+        const LOGIN_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/login' : 'https://block-party-server.herokuapp.com/login'
 
         Firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((user) => {
             console.log(user)
