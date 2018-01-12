@@ -40,6 +40,7 @@ export default class Login extends Component {
                 Axios.post('/login', {
                     data: _this.state
                 }).then((response) => {
+                    console.log(response)
                     if (_this.state.isArtist && response.status === 200) {
 
                         localStorage.setItem('currentUserLoggedIn', true)
@@ -61,14 +62,13 @@ export default class Login extends Component {
                     }
                 }).catch((error) => {
                     console.log(error)
+                    alert(error)
                 })
             }
         })
         .catch((error) => {
             console.log(error)
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            
+            alert(error)            
           })
     }
     handleEmail(e) {
@@ -85,8 +85,7 @@ export default class Login extends Component {
 
         })
     }
-    handleArtistCheckBox(e) {
-        e.preventDefault()
+    handleArtistCheckBox() {
         this.setState({
             isArtist: true
         })
