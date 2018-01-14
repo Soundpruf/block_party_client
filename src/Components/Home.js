@@ -25,10 +25,10 @@ export default class Home extends Component {
 
         return (
             <div>
-                <div className="owl-carousel black owl-theme owl-dots-bottom-center">
+                <div className="owl-carousel owl-theme owl-dots-bottom-center">
                     <div className="row-col">
-                        <div className="col-lg-2"></div>
-                        <div className="col-lg-8 text-center">
+                        <div className="col-xs-2"></div>
+                        <div className="col-xs-8 text-center">
                             <div className="p-a-lg site-intro">
                                 <svg id="logoAnimation" width="100" height="100" viewBox="0 0 300 300">
                                     <defs>
@@ -77,7 +77,7 @@ export default class Home extends Component {
                          
                             </div>
                         </div>
-                        <div className="col-lg-2"></div>
+                        <div className="col-xs-2"></div>
                     </div>
                 </div>
 

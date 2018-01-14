@@ -59,7 +59,7 @@ const site_routes = [
 		name: 'UserProfile'
 	},
 	{
-		path: '/callback',
+		path: '/users/signup/callback',
 		exact: true,
 		component: Dashboard,
 		name: 'callback'

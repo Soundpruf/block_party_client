@@ -61,6 +61,12 @@ h4 {
   position: relative;
   
 }
+.owl-carousel {
+  background-color: #ECEDDD;
+  background-image: linear-gradient(19deg, #ECEDDD 0%, #7BC9C5 100%);
+  
+}
+/* #ECEDDD ➡️ #7BC9C5 */
 
 .site-intro h1 {
   font-family: "Black Out"!important;
@@ -381,6 +387,8 @@ h4 {
       height: 60px;
     }
   }
+
+  
   
 
 
@@ -412,4 +420,16 @@ h4 {
   right: 0;
   margin: 0;
   z-index: 1030 !important;
+}
+
+/* Dashboard */
+#Dashboard {
+  height: 100vh;
+}
+#SideBarDashboard {
+
+}
+#SideBarDashboard .ui.card {
+  
+  width: 100%;
 }
