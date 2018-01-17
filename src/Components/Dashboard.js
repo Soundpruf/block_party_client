@@ -163,7 +163,7 @@ export default class Dashboard extends Component {
 
                 Spotify.getMyTopArtists().then((response) => {
                     const artists = []
-                    response.items.splice(0, 10).forEach((artist) => {
+                    response.items.forEach((artist) => {
                         let _artist = {}
                         _artist.title = artist.name
                         _artist.popularity = artist.popularity

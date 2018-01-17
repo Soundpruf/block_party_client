@@ -426,6 +426,18 @@ h4 {
 #Dashboard {
   height: 100vh;
 }
+/* PORTFOLIO */
+.label {
+  font-size: 100%;
+}
+/* .ui.small.image, .label .ui.small.image {
+  width: 150px;
+  height: auto;
+}
+.ui.medium.image, .ui.small.image, .ui.feed>.event>.label img.ui.medium.image {
+  width: 300px;
+  height: auto;
+} */
 #SideBarDashboard {
 
 }
