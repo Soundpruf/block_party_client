@@ -17,7 +17,7 @@ export default class FooterPlayer extends Component {
     playThatTrack() {
         const counter = this.state.counter
         const _this = this
-        const URL = process.env.NODE_ENV === 'development' ? '/mine' : 'https://block-party-server.herokuapp.com/mine'
+        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/mine' : process.env.REACT_APP_STAGING_API + 'mine'
 
 
         this.setState({

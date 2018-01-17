@@ -214,7 +214,7 @@ export default class Dashboard extends Component {
     // ---------- IF the user is logging in because they already exist in the database -------------- /**/
     syncSpotifyLoginFlowWithBlockPartyOnBoard(user_data) {
         const _this = this
-        const URL = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_LOCAL_API + 'login' : REACT_APP_STAGING_API + 'login'
+        const URL = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_LOCAL_API + 'login' : process.env.REACT_APP_STAGING_API + 'login'
         Axios.post(URL, {
             data: {
                 platform: true,
@@ -229,7 +229,7 @@ export default class Dashboard extends Component {
             console.log('log in flow user')
             console.log(currentUser)
             this.addRecentlyStreamedData(currentUser)
-            
+
             if (process.env.NODE_ENV === 'development') {
                 console.log('not executing Firebase sign in method')
             } else {
@@ -248,7 +248,7 @@ export default class Dashboard extends Component {
 
     // ---------- IF the user is signing up for the first time and going to be redirected to the dashboard -------------- /**/
     syncSpotifySignUpFlowWithBlockPartyOnBoard(user_data) {
-        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/users/signup' : 'https://block-party-server.herokuapp.com/users/signup'
+        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/users/signup' : process.env.REACT_APP_STAGING_API + 'users/signup'
         const _this = this
         Firebase.auth().createUserWithEmailAndPassword(user_data.email, user_data.accessToken)
             .then((response) => {
@@ -294,7 +294,7 @@ export default class Dashboard extends Component {
     }
     addRecentlyStreamedData(currentUser) {
         console.log('running #addRecentlyStreamedData')
-        const ADD_ARTIST = process.env.NODE_ENV === 'development' ? `http://localhost:5000/users/${currentUser.id}/stream/add-artists` : `https://block-party-server.herokuapp.com/users/${currentUser.id}/stream/add-artists`
+        const ADD_ARTIST = process.env.NODE_ENV === 'development' ? `http://localhost:5000/users/${currentUser.id}/stream/add-artists` : process.env.REACT_APP_STAGING_API + `users/${currentUser.id}/stream/add-artists`
 
         Axios.post(ADD_ARTIST, {
             data: {
@@ -322,7 +322,7 @@ export default class Dashboard extends Component {
     playThatTrack() {
         const counter = this.state.counter
         const _this = this
-        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/mine' : 'https://block-party-server.herokuapp.com/mine'
+        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/mine' : process.env.REACT_APP_STAGING_API + 'mine'
 
 
         this.setState({

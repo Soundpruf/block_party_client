@@ -72,7 +72,7 @@ export default class Browse extends Component {
     handleDuration(element) {
 
         const _this = this
-        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/mine' : 'https://block-party-server.herokuapp.com/mine'
+        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/mine' : process.env.REACT_APP_STAGING_API + 'mine'
         let counter = 0
         let user = JSON.parse(localStorage.getItem('currentUser'))
         

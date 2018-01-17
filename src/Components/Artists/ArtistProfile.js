@@ -27,7 +27,7 @@ export default class Profile extends Component {
         const _this = this
         const artist_id = localStorage.getItem('artist_id') ? localStorage.getItem('artist_id') : this.props.match.params.id
         console.log(artist_id)
-        const URL = process.env.NODE_ENV === 'development' ? `http://localhost:5000/artists/${artist_id}/onboard` : `https://block-party-server.herokuapp.com/artists/${artist_id}/onboard`
+        const URL = process.env.NODE_ENV === 'development' ? `http://localhost:5000/artists/${artist_id}/onboard` : process.env.REACT_APP_STAGING_API + `artists/${artist_id}/onboard`
 
 
         if (artist_id) {
