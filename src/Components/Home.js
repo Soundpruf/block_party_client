@@ -22,6 +22,7 @@ export default class Home extends Component {
     render() {
         const square = { width: 175, height: 175, color: 'white' }
         console.log(process.env.STAGING)
+        console.log(process.env.NODE_ENV)
         
 
         return (
