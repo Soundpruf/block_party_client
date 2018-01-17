@@ -214,7 +214,7 @@ export default class Dashboard extends Component {
     // ---------- IF the user is logging in because they already exist in the database -------------- /**/
     syncSpotifyLoginFlowWithBlockPartyOnBoard(user_data) {
         const _this = this
-        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/login' : 'https://block-party-server.herokuapp.com/login'
+        const URL = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_LOCAL_API + 'login' : REACT_APP_STAGING_API + 'login'
         Axios.post(URL, {
             data: {
                 platform: true,
@@ -226,17 +226,20 @@ export default class Dashboard extends Component {
             localStorage.setItem('currentUserLoggedIn', true)
             localStorage.setItem('currentUser', JSON.stringify(response.data.user))
             const currentUser = JSON.parse(localStorage.getItem('currentUser'))
-
             console.log('log in flow user')
             console.log(currentUser)
             this.addRecentlyStreamedData(currentUser)
             
-            // Firebase.auth().signInWithEmailAndPassword(response.data.user.email, response.data.user.password)
-            //     .then((response) => {
-            //         console.log(response)
-            //     }).catch((error) => {
-            //         console.log(error)
-            //     })
+            if (process.env.NODE_ENV === 'development') {
+                console.log('not executing Firebase sign in method')
+            } else {
+                Firebase.auth().signInWithEmailAndPassword(response.data.user.email, response.data.user.password)
+                .then((response) => {
+                    console.log(response)
+                }).catch((error) => {
+                    console.log(error)
+                })
+            }
 
         }).catch((error) => {
             console.log(error)
