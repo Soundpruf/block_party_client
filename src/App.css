@@ -430,16 +430,51 @@ h4 {
 .label {
   font-size: 100%;
 }
-/* .ui.small.image, .label .ui.small.image {
-  width: 150px;
-  height: auto;
+/* GENRE CHART */
+.genreChart_container {
+  width: 100%;
+  height: 400px;
+  margin: auto;
+  display: block;
+  text-align: center;
+ 
 }
-.ui.medium.image, .ui.small.image, .ui.feed>.event>.label img.ui.medium.image {
-  width: 300px;
-  height: auto;
-} */
+.ct-chart {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex!important;
+  justify-content: center!important;
+}
+.ct-chart .ct-chart-donut {
+  /* position: absolute; */
+  height: 300px;
+  width: auto;
+  transform: translateX(-50%);
+  /* transform: translateX(40%); */
+}
+.indie path {
+  fill: #ff626b;
+}
+.pop path {
+  fill: #c9c8c9;
+}
+.dance path {
+  fill: #fe4c59;
+}
+.rock path {
+  fill: #1a1e28;
+}
+.folk path {
+  fill: #222731;
+}
+.hipHop path {
+  fill: #1E2026;
+}
 #SideBarDashboard {
-
+  background-color: #1a1e28!important;
 }
 #SideBarDashboard .ui.card {
   

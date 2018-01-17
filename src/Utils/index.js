@@ -16,23 +16,62 @@ export const UTILS = {
         return data
     },
     analyzeUserGenres: (top_artists) => {
-        const data={}
+        let data={}
         const genres = []
         const genre_data = {}
-        const narrow_genre_data = {
-            indie: 1,
-            rock: 1,
-            rAndb: 1,
-            rap: 1,
-            pop: 1,
-            dance: 1,
-            hipHop: 1,
-            folk: 1,
+        const narrow_genre_data = [
+                {
+                value: 0,
+                name: 'indie',
+                className: 'indie',
+                meta: 'indie'
+              },
+              {
+                value: 0,
+                name: 'rock',
+                className: 'rock',
+                meta: 'rock'
+              },{
+                value: 0,
+                name: 'r&b',
+                className: 'rAndb',
+                meta: 'rAndb'
+              },
+              {
+                value: 0,
+                name: 'rap',
+                className: 'rap',
+                meta: 'rap'
+              },
+              {
+                value: 0,
+                name: 'pop',
+                className: 'pop',
+                meta: 'pop'
+              },
+              {
+                value: 0,
+                name: 'dance',
+                className: 'dance',
+                meta: 'dance'
+              },
+              {
+                value: 0,
+                name: 'hip hop',
+                className: 'hipHop',
+                meta: 'hip hop'
+              },
+              {
+                value: 0,
+                name: 'folk',
+                className: 'folk',
+                meta: 'folk'
+              }
+            ]
 
-        }
-        const narrow_genre_keys = Object.keys(narrow_genre_data)
-
+        const narrow_genre_keys = narrow_genre_data.map((g_data) => g_data.name)
         top_artists.forEach((artist) => genres.push(...artist.genres))
+
         genres.forEach((genre) => {
             if(genre_data.hasOwnProperty(genre)) {
                 genre_data[genre] ++
@@ -41,13 +80,12 @@ export const UTILS = {
             }
             narrow_genre_keys.forEach((genre_key) => {
                 if(genre.indexOf(genre_key) !== -1) {
-                    console.log(genre)
-                    narrow_genre_data[genre_key] += 1
+                    let that_specific_genre_object = narrow_genre_data.find((g_object) => g_object.name === genre_key)
+                    narrow_genre_data[narrow_genre_data.indexOf(that_specific_genre_object)].value ++
                 }
             })
-           
         })
-        data.genre_data = genre_data
+        // data.genre_data = genre_data
         data.narrow_genre_data = narrow_genre_data
         
         return data

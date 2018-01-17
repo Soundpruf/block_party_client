@@ -3,21 +3,77 @@ import { Link } from 'react-router-dom'
 import { UTILS } from '../../../Utils/index'
 import { List, Input, Menu, Segment, Feed, Image, Icon } from 'semantic-ui-react'
 import ChartistGraph from 'react-chartist'
-import {renderGenreChartData} from '../../../Data/chartData'
+import Chartist from 'chartist'
+import { renderGenreChartData } from '../../../Data/chartData'
 
 const TopGenres = (props) => {
-    const data = props.genre_data
+    const data = props.narrow_genre_data
+    const labels = data.map((g_data) => g_data.name)
     console.log(data)
-    const labels = Object.keys(data.narrow_genre_data)
-    const series = Object.values(data.narrow_genre_data)
-    const chart_data = renderGenreChartData({
-        labels:labels,
-        series: series
+
+    const options = {
+        width: 400,
+        height: 400
+    }
+
+    const chart = new Chartist.Pie('.ct-chart', {
+        series: data,
+        labels: labels
+
+    }, {
+        chartPadding: 30,
+        labelOffset: 50,
+        labelDirection: 'explode',
+        donut: true,
+        width: 400,
+        height: 400,
+        // donutWidth: 500,
+        donutSolid: true,
+        // startAngle: 270,
+        // total: 200,
+        showLabel: true
     })
-    
+
+    // chart.on('draw', function (data) {
+    //     if (data.type === 'slice') {
+    //         var pathLength = data.element._node.getTotalLength();
+    //         data.element.attr({
+    //             'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+    //         });
+
+    //         var animationDefinition = {
+    //             'stroke-dashoffset': {
+    //                 id: 'anim' + data.index,
+    //                 dur: 1000,
+    //                 from: -pathLength + 'px',
+    //                 to: '0px',
+    //                 easing: Chartist.Svg.Easing.easeOutQuint,
+    //                 fill: 'freeze'
+    //             }
+    //         };
+
+    //         if (data.index !== 0) {
+    //             animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+    //         }
+    //         data.element.attr({
+    //             'stroke-dashoffset': -pathLength + 'px'
+    //         });
+    //         data.element.animate(animationDefinition, false);
+    //     }
+    // });
+
+    // // For the sake of the example we update the chart every time it's created with a delay of 8 seconds
+    // chart.on('created', function () {
+    //     if (window.__anim21278907124) {
+    //         clearTimeout(window.__anim21278907124);
+    //         window.__anim21278907124 = null;
+    //     }
+    //     window.__anim21278907124 = setTimeout(chart.update.bind(chart), 10000);
+    // });
+
     return (
-        <div>
-            <ChartistGraph className={'ct-chart'} data={chart_data} type={'Pie'} />
+        <div className="genreChart_container">
+            <div className="ct-chart"></div>
         </div>
     )
 }
@@ -115,12 +171,11 @@ export default class Portfolio extends Component {
             }
         }
         const section = setActiveSection(activeItem)
-        console.log(top_artists)
-        const genre_data = UTILS.analyzeUserGenres(top_artists)
-        
+        const narrow_genre_data = UTILS.analyzeUserGenres(top_artists).narrow_genre_data
+
         return (
             <div>
-                <TopGenres genre_data={genre_data} />
+                <TopGenres narrow_genre_data={narrow_genre_data} />
                 <Menu attached='top' tabular>
                     {menu_items.map((item) => (
                         <Menu.Item name={item} active={activeItem === item} onClick={this.handleItemClick} />
