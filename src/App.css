@@ -27,7 +27,7 @@ body {
     font-weight: 400!important;
     letter-spacing: 1px;
     font-size: 12px!important;
-    background-color: #e8e8ea;
+    background-color: #c2c7c8!important;
     /* color: rgba(0, 0, 0, 0.87); */
     -webkit-font-smoothing: antialiased;
     font-size: 0.875rem;
@@ -110,7 +110,7 @@ body {
 }
 .word--6 .char5,
 .word--6 .char9 {
-	color: #dc2e2e;
+	color: #fe4c59;
 }
 a, a:hover {
     
@@ -170,14 +170,27 @@ h4 {
   color: white;
   
 }
-/* #ECEDDD ➡️ #7BC9C5 */
+#footer {
+  background-color: #1a1e28;
+}
+.brief-info {
+  padding: 20px;
+  text-align: center;
+}
+.brief-info h2 {
+  font-size: 8vh!important;
+  font-family: "Vision Heavy"!important;
+}
+.brief-info p {
+  font-size: 2vh!important;
+}
 
 #splash  h1 {
   font-family: "Vision Heavy"!important;
   
  }
  #splash  h3 {
-  
+  color: #fe4c59;
  }
  h2.ui.icon.header {
    margin: 20px;
@@ -193,7 +206,7 @@ h4 {
   }
   #signUpMenu {
       position: absolute;
-      bottom: 0;
+      bottom: 200px;
       padding: 40px auto 0;
       /* display: flex; */
       text-align: center;
