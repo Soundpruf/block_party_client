@@ -94,7 +94,7 @@ export default class Login extends Component {
     login(callback) {
         const CLIENT_ID = 'e86c9d8c7e084cf494d82947a0ea1252'
         const CLIENT_SECRET = '860af304d691469b9f73ed5cf7201fcc'
-        const REDIRECT_URI = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/login/callback/' : 'https://block-party-staging-server.herokuapp.com/' + 'login/callback/'
+        const REDIRECT_URI = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/login/callback/' : 'https://block-party-staging-client.herokuapp.com/' + 'login/callback/'
         const scopes = [
             'user-read-currently-playing',
             'ugc-image-upload',
