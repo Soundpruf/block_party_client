@@ -56,7 +56,7 @@ const TopArtistsChart = (props) => {
 
 
 const Streams = (props) => {
-    const {stream_data, narrow_genre_data, analyzedStreamedData} = props
+    const { stream_data, narrow_genre_data, analyzedStreamedData } = props
     return (
         <Grid columns={2} divided>
             <Grid.Row>
@@ -80,7 +80,7 @@ const Streams = (props) => {
                         ))}
                     </Feed>
                 </Grid.Column>
-                <Grid.Column className="stream-column">>
+                <Grid.Column className="stream-column">
                     <div className="chart_container">
                         <h2 className="chart-data__header--genre">Genres</h2>
                         <TopGenresChart narrow_genre_data={narrow_genre_data} />
@@ -95,26 +95,30 @@ const Streams = (props) => {
 }
 const TopArtists = (props) => (
     <Feed>
-        {console.log(props)}
         {props.top_artists.map((artist) => (
             <Feed.Event>
-                <Feed.Label image={artist.photo} />
+                <Feed.Label>
+                    <Icon name='music' />
+                </Feed.Label>
                 <Feed.Content>
-                    <Feed.Date>
-                        <List horizontal>
-                            <List.Item icon='signal' content={artist.popularity} />
-                            <List.Item icon='signal' content={artist.followers} />
-                        </List>
-                    </Feed.Date>
                     <Feed.Summary>
                         <a>{artist.title}</a> <br />
-                        <List horizontal>
-                            {artist.genres.splice(0, 3).map((genre) => (
-                                <List.Item icon='tag' content={genre} />
-                            ))}
-
-                        </List>
+                        <Feed.Date>
+                            <List horizontal>
+                                <List.Item content={'Popularity: ' + artist.popularity} />
+                                <List.Item content={'Followers: ' + artist.followers} />
+                            </List>
+                        </Feed.Date>
                     </Feed.Summary>
+                    <Feed.Extra images>
+                        <Link to='/'><Image circular={true} size='small' src={artist.photo} /></Link>
+                    </Feed.Extra>
+                    <br />
+                    <List horizontal>
+                        {artist.genres.splice(0, 3).map((genre) => (
+                            <List.Item icon='tag' content={genre} />
+                        ))}
+                    </List>
                 </Feed.Content>
             </Feed.Event>
         ))}
@@ -125,17 +129,22 @@ const TopTracks = (props) => (
     <Feed>
         {props.top_tracks.map((track) => (
             <Feed.Event>
-                <Feed.Label image={track.photo} />
+                <Feed.Label>
+                    <Icon name='music' />
+                </Feed.Label>
                 <Feed.Content>
                     <Feed.Date>
                         <List horizontal>
-                            <List.Item icon='signal' content={track.popularity} />
-                            <List.Item icon='play' />
+                            <List.Item icon='signal' content={'Popularity: ' + track.popularity} />
                         </List>
                     </Feed.Date>
                     <Feed.Summary>
                         {track.title} by <a>{track.artist}</a>
                     </Feed.Summary>
+                    <Feed.Extra images>
+                        <Link to='/'><Image circular={true} size='small' src={track.photo} /></Link>
+                        <Icon name='play' />
+                    </Feed.Extra>
                 </Feed.Content>
             </Feed.Event>
         ))}
@@ -158,7 +167,7 @@ export default class Portfolio extends Component {
 
         const setActiveSection = (active_section) => {
             if (active_section === 'streams') {
-                return <Streams stream_data={stream_data} narrow_genre_data={narrow_genre_data} analyzedStreamedData={analyzedStreamedData}/>
+                return <Streams stream_data={stream_data} narrow_genre_data={narrow_genre_data} analyzedStreamedData={analyzedStreamedData} />
             } else if (active_section === 'top_tracks') {
                 return <TopTracks top_tracks={top_tracks} />
             } else if (active_section === 'top_artists') {

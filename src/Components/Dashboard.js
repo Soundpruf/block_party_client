@@ -51,7 +51,8 @@ export default class Dashboard extends Component {
             visible: true,
             spotifySynced: false,
             user_streams: [],
-            contextRef: {}
+            contextRef: {},
+            wallet_address: ''
         }
     }
     componentWillMount() {
@@ -230,6 +231,9 @@ export default class Dashboard extends Component {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'))
             console.log('log in flow user')
             console.log(currentUser)
+            _this.setState({
+                wallet_address: response.data.user.wallet_address
+            })
             this.addRecentlyStreamedData(currentUser)
 
             if (process.env.NODE_ENV === 'development') {
@@ -392,34 +396,35 @@ export default class Dashboard extends Component {
                                         {this.state.account_tier}
                                     </Card.Meta>
                                     <Card.Description>
-
+                                        
                                     </Card.Description>
                                 </Card.Content>
                                 <Card.Content extra>
                                     <List>
-                                        <List.Item icon='users' content={`Followers: ${this.state.followers}`} />
-                                        <List.Item icon='marker' content='Spotify' />
+                                    <List.Item  content={`Wallet: ${this.state.wallet_address}`} />
+                                        <List.Item  content={`Followers: ${this.state.followers}`} />
+                                        <List.Item  content='Platforms: Spotify' />
                                     </List>
                                 </Card.Content>
                             </Card>
                         </Menu.Item>
                         <Menu.Item name='Home'>
-                            <Icon name='bar graph' />
-                            Home
+                            <Icon name='home' />
+                                <Link to='/'>Home</Link>
                             </Menu.Item>
-                        <Menu.Item name='line graph'>
+                        <Menu.Item name='Browse'>
                             <Icon name='headphone' />
-                            Browse
+                                <Link to='/browse'>Browse</Link>
                             </Menu.Item>
                         <Menu.Item name='line graph'>
                             <Icon name='line graph' />
-                            Trending
+                            <Link to='#'>Trending</Link>
                             </Menu.Item>
                     </Sidebar>
                     <Sidebar.Pusher >
-                        <Container>
+                        <div className="wrap">
                             <Portfolio streams={user_streams} top_tracks={top_tracks} top_artists={top_artists} bank={'bank'} breakList={'break list'}/>
-                        </Container>
+                        </div>
                     </Sidebar.Pusher>
                 </Sidebar.Pushable>
             </div>

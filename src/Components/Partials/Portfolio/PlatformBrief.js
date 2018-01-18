@@ -6,8 +6,17 @@ export default class PlatformBrief extends Component {
     render() {
         return (
             <div>
-                <Segment.Group horizontal>
-                    <Segment textAlign='center' id="IndustryData">
+                <Segment textAlign='center' >
+                    <Message
+                        textAlign='center'
+                        icon='money'
+                        header='Current Platform Exchange Rate'
+                        content=' USD: $0.50 | BTC: 0.00000005136 | ETH: 0.0230'
+                    />
+                </Segment>
+                <div style={{clear: 'both'}}>
+
+                    <Segment id="IndustryData" padded compact floated='left'>
                         <Table basic='very' celled collapsing>
                             <Table.Header>
                                 <Table.Row>
@@ -23,28 +32,41 @@ export default class PlatformBrief extends Component {
                                             <Image src='/assets/images/avatar/small/lena.png' rounded size='mini' />
                                             <Header.Content>
                                                 Drake
-                                    <Header.Subheader>Hip Hop</Header.Subheader>
+                             <Header.Subheader>Hip Hop</Header.Subheader>
                                             </Header.Content>
                                         </Header>
                                     </Table.Cell>
                                     <Table.Cell>
                                         22 Minutes streamed
-                        </Table.Cell>
+                 </Table.Cell>
                                 </Table.Row>
 
                             </Table.Body>
                         </Table>
                     </Segment>
-                    <Segment textAlign='center' >
-                        <Message
-                            textAlign='center'
-                            icon='money'
-                            header='Current Platform Exchange Rate'
-                            content=' USD: $0.50 | BTC: 0.00000005136 | ETH: 0.0230'
-                        />
-                    </Segment>
-                </Segment.Group>
+                    <Segment id="payOutData" padded compact floated='left'>
+                        <Table basic='very' celled collapsing>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell>Your Profits</Table.HeaderCell>
+                                    <Table.HeaderCell>Next Payout</Table.HeaderCell>
+                                </Table.Row>
+                            </Table.Header>
 
+                            <Table.Body>
+                                <Table.Row>
+                                    <Table.Cell>
+                                        ^10%
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        April 24th
+                                    </Table.Cell>
+                                </Table.Row>
+
+                            </Table.Body>
+                        </Table>
+                    </Segment>
+                </div>
 
             </div>
 
