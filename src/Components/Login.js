@@ -33,7 +33,7 @@ export default class Login extends Component {
     handleCustomLogIn(e) {
         e.preventDefault()
         const _this = this
-        const LOGIN_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/login' : process.env.REACT_APP_STAGING_API + 'login'
+        const LOGIN_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/login' : 'https://block-party-staging-server.herokuapp.com/' + 'login'
 
         Firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((user) => {
             console.log(user)
@@ -94,7 +94,7 @@ export default class Login extends Component {
     login(callback) {
         const CLIENT_ID = 'e86c9d8c7e084cf494d82947a0ea1252'
         const CLIENT_SECRET = '860af304d691469b9f73ed5cf7201fcc'
-        const REDIRECT_URI = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/login/callback/' : process.env.REACT_APP_STAGING_API + 'login/callback/'
+        const REDIRECT_URI = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/login/callback/' : 'https://block-party-staging-server.herokuapp.com/' + 'login/callback/'
         const scopes = [
             'user-read-currently-playing',
             'ugc-image-upload',

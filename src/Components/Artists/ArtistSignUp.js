@@ -18,7 +18,7 @@ export default class ArtistSignUp extends Component {
   handleSubmit(e) {
     e.preventDefault()
     const _this = this
-    const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/artists/signup' : process.env.REACT_APP_STAGING_API + 'artists/signup'
+    const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/artists/signup' : 'https://block-party-staging-server.herokuapp.com/' + 'artists/signup'
     Firebase.auth().createUserWithEmailAndPassword(this.state.artist_email, this.state.artist_password)
       .then((response) => {
         console.log(response)

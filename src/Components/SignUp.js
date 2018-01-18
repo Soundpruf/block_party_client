@@ -99,7 +99,7 @@ export default class SignUp extends Component {
 
         const CLIENT_ID = 'e86c9d8c7e084cf494d82947a0ea1252'
         const CLIENT_SECRET = '860af304d691469b9f73ed5cf7201fcc'
-        const REDIRECT_URI = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/users/signup/callback/' : 'https://block-party-client.herokuapp.com/users/signup/callback/'
+        const REDIRECT_URI = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/users/signup/callback/' : 'https://block-party-staging-client.herokuapp.com/users/signup/callback/'
         const scopes = [
             'user-read-currently-playing',
             'ugc-image-upload',
