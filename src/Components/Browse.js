@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Card, Grid, Menu, Icon, Image } from 'semantic-ui-react'
 import { Firebase, MusicRef, PhotoRef } from '../Firebase'
+import { Link } from 'react-router-dom'
 import FooterPlayer from './Players/FooterPlayer'
 import Axios from 'axios'
 import Sound from 'react-sound'
@@ -21,17 +22,14 @@ export default class Browse extends Component {
 
     componentDidMount() {
         const all_audio = document.querySelectorAll('.card .item-media > audio')
-        console.log(all_audio)
-
-
-        let songsList = JSON.parse(localStorage.getItem('blockPartySongs'))
+        const songsList = JSON.parse(localStorage.getItem('blockPartySongs'))
         const songs = []
 
         songsList.forEach((song) => {
-            
+
             MusicRef.child(song.url).getDownloadURL().then((url) => {
 
-                let enriched_song = song 
+                let enriched_song = song
                 const xhr = new XMLHttpRequest()
 
                 xhr.onload = (event) => {
@@ -75,8 +73,8 @@ export default class Browse extends Component {
         const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/mine' : process.env.REACT_APP_STAGING_API + 'mine'
         let counter = 0
         let user = JSON.parse(localStorage.getItem('currentUser'))
-        
-       
+
+
         console.log(this.state.activeSong.artist)
 
         if (this.state.streaming) {
@@ -102,100 +100,113 @@ export default class Browse extends Component {
             })
         }
     }
-    handleRef(element) {}
+    handleRef(element) { }
 
     render() {
 
-        
+
         return (
             <div id="Browse">
+                <Menu pointing secondary id='SiteNav'>
+                    <Menu.Item className='siteLogo'>
+                        <Link to='/'>
+                            <img src="/images/logo.png" alt="." className="" align='center' height='30px' width='30px' style={{ marginRight: '10px' }} />
+                            <span className="hidden-folded inline">Block Party</span>
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item><Link to='/about'><span> About</span></Link></Menu.Item>
+                    <Menu.Item><Link to='/browse'><span>Browse</span></Link></Menu.Item>
+                    <Menu.Menu position='right'>
+                        <Menu.Item><Link to='/login'><span> Log In</span></Link></Menu.Item>
+                        <Menu.Item><Link to='/logout'><span> Log Out</span></Link></Menu.Item>
+                    </Menu.Menu>
+                </Menu>
+                <div id="aside" className="app-aside modal fade nav-dropdown">
 
-            <div id="aside" className="app-aside modal fade nav-dropdown">
+                    <div className="left navside grey dk" data-layout="column">
 
-                <div className="left navside grey dk" data-layout="column">
-                   
-                    <div data-flex className="hide-scroll">
-                        <nav className="scroll nav-stacked nav-active-primary">
+                        <div data-flex className="hide-scroll">
+                            <nav className="scroll nav-stacked nav-active-primary">
 
-                            <ul className="nav" data-ui-nav>
-                                <li className="nav-header hidden-folded">
-                                    <span className="text-xs text-muted">Main</span>
-                                </li>
-                                <li>
-                                    <a href="player.html">
-                                        <span className="nav-icon">
-                                            <Icon name='headphone' />
-                                        </span>
-                                        <span className="nav-text">Discover</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="browse.html">
-                                        <span className="nav-icon">
-                                            <Icon name='sort' />
-                                        </span>
-                                        <span className="nav-text">Browse</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="chart.html">
-                                        <span className="nav-icon">
-                                            <Icon name='line graph' />
-                                        </span>
-                                        <span className="nav-text">Charts</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="artist.html">
-                                        <span className="nav-icon">
-                                           <Icon name='music' />
-                                        </span>
-                                        <span className="nav-text">Artist</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a data-toggle="modal" data-target="#search-modal">
-                                        <span className="nav-icon">
-                                           <Icon name='search' />
-                                        </span>
-                                        <span className="nav-text">Search</span>
-                                    </a>
-                                </li>
+                                <ul className="nav" data-ui-nav>
+                                    <li className="nav-header hidden-folded">
+                                        <span className="text-xs text-muted">Main</span>
+                                    </li>
+                                    <li>
+                                        <a href="player.html">
+                                            <span className="nav-icon">
+                                                <Icon name='headphone' />
+                                            </span>
+                                            <span className="nav-text">Discover</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="browse.html">
+                                            <span className="nav-icon">
+                                                <Icon name='sort' />
+                                            </span>
+                                            <span className="nav-text">Browse</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="chart.html">
+                                            <span className="nav-icon">
+                                                <Icon name='line graph' />
+                                            </span>
+                                            <span className="nav-text">Charts</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="artist.html">
+                                            <span className="nav-icon">
+                                                <Icon name='music' />
+                                            </span>
+                                            <span className="nav-text">Artist</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="modal" data-target="#search-modal">
+                                            <span className="nav-icon">
+                                                <Icon name='search' />
+                                            </span>
+                                            <span className="nav-text">Search</span>
+                                        </a>
+                                    </li>
 
 
-                                <li className="nav-header hidden-folded m-t">
-                                    <span className="text-xs text-muted">Your collection</span>
-                                </li>
-                                <li>
-                                    <a href="profile.html#tracks">
-                                        <span className="nav-label">
-                                            <b className="label">8</b>
-                                        </span>
-                                        <span className="nav-icon">
-                                           <Icon name='list' />
-                                        </span>
-                                        <span className="nav-text">Tracks</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="profile.html#playlists">
-                                        <span className="nav-icon">
-                                            <Icon name='heart' />
-                                        </span>
-                                        <span className="nav-text">Playlists</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="profile.html#likes">
-                                        <span className="nav-icon">
-                                           <Icon name='thumbs outline up' />
-                                        </span>
-                                        <span className="nav-text">Likes</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+                                    <li className="nav-header hidden-folded m-t">
+                                        <span className="text-xs text-muted">Your collection</span>
+                                    </li>
+                                    <li>
+                                        <a href="profile.html#tracks">
+                                            <span className="nav-label">
+                                                <b className="label">8</b>
+                                            </span>
+                                            <span className="nav-icon">
+                                                <Icon name='list' />
+                                            </span>
+                                            <span className="nav-text">Tracks</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="profile.html#playlists">
+                                            <span className="nav-icon">
+                                                <Icon name='heart' />
+                                            </span>
+                                            <span className="nav-text">Playlists</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="profile.html#likes">
+                                            <span className="nav-icon">
+                                                <Icon name='thumbs outline up' />
+                                            </span>
+                                            <span className="nav-text">Likes</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
 
@@ -213,7 +224,7 @@ export default class Browse extends Component {
                                                     {this.state.songs.map((song) => (
                                                         <Grid.Column>
                                                             <Card className="item r">
-                                                                <img src={song.artist.photo}/>
+                                                                <img src={song.artist.photo} />
                                                                 <div className="item-media">
                                                                     <audio ref={this.handleRef.bind(this)} controls onPlay={this.handlePlay.bind(this, song)} onPlaying={this.handleDuration.bind(this)} onEnded={this.handleEndOfStreaming.bind(this)} onPause={this.handleEndOfStreaming.bind(this)}>
                                                                         <source src={song.blob_url} type="audio/mp3" />
@@ -251,7 +262,7 @@ export default class Browse extends Component {
                                     </div>
                                 </div>
                                 <div className="col-lg-3 w-xxl w-auto-md">
-                                    <div className="padding"  data-ui-jp="stick_in_parent">
+                                    <div className="padding" data-ui-jp="stick_in_parent">
                                         <h6 className="text text-muted">5 Likes</h6>
                                         <div className="row item-list item-list-sm m-b">
                                             <div className="col-xs-12">
@@ -374,9 +385,9 @@ export default class Browse extends Component {
                             </div>
                         </div>
                     </div>
-                 </div>
-                 <FooterPlayer />
-            
+                </div>
+                <FooterPlayer />
+
             </div>
         )
     }

@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import Axios from 'axios'
 import SpotifyWebApi from 'spotify-web-api-js'
 import { Link } from 'react-router-dom'
-import { Container, Divider, Grid, Header, Menu, Message, Sidebar, Segment, Table, Button, Card, Image, Feed, List, Icon } from 'semantic-ui-react'
+import { Container, Divider, Grid, Header, Menu, Message, Sidebar, Segment, Table, Button, Card, Image, Feed, List, Icon, Sticky, Rail } from 'semantic-ui-react'
 import Sound from 'react-sound'
 import { Firebase, MusicRef, PhotoRef } from '../Firebase'
 import Loader from './Loader'
 import Portfolio from './Partials/Portfolio/Portfolio'
+
 
 
 const Spotify = new SpotifyWebApi()
@@ -49,7 +50,8 @@ export default class Dashboard extends Component {
             loginFlow: false,
             visible: true,
             spotifySynced: false,
-            user_streams: []
+            user_streams: [],
+            contextRef: {}
         }
     }
     componentWillMount() {
@@ -70,13 +72,13 @@ export default class Dashboard extends Component {
         this.completeUserOnBoard(accessToken)
     }
     componentDidMount() {
- 
+
     }
     componentDidUpdate(prevProps, prevState) {
-        
+
         if (prevState === this.state) {
 
-        } else if (this.state.email != undefined){
+        } else if (this.state.email != undefined) {
             const user_data = {
                 user_name: this.state.user_name,
                 profile_photo: this.state.profile_photo,
@@ -89,11 +91,11 @@ export default class Dashboard extends Component {
             if (this.state.loginFlow && !this.state.spotifySynced) {
                 this.syncSpotifyLoginFlowWithBlockPartyOnBoard(user_data)
                 // This line is so that I dont call the spotify recent tracks and database api's multiple times while the comopnent updates
-                this.setState({spotifySynced: true})
+                this.setState({ spotifySynced: true })
             } else if (this.state.signInFlow && !this.state.spotifySynced) {
                 this.syncSpotifySignUpFlowWithBlockPartyOnBoard(user_data)
                 // This line is so that I dont call the spotify recent tracks and database api's multiple times while the comopnent updates
-                this.setState({spotifySynced: true})
+                this.setState({ spotifySynced: true })
             }
         }
     }
@@ -210,7 +212,7 @@ export default class Dashboard extends Component {
                 console.log(error)
             })
     }
- 
+
     // ---------- IF the user is logging in because they already exist in the database -------------- /**/
     syncSpotifyLoginFlowWithBlockPartyOnBoard(user_data) {
         const _this = this
@@ -234,11 +236,11 @@ export default class Dashboard extends Component {
                 console.log('not executing Firebase sign in method')
             } else {
                 Firebase.auth().signInWithEmailAndPassword(response.data.user.email, response.data.user.password)
-                .then((response) => {
-                    console.log(response)
-                }).catch((error) => {
-                    console.log(error)
-                })
+                    .then((response) => {
+                        console.log(response)
+                    }).catch((error) => {
+                        console.log(error)
+                    })
             }
 
         }).catch((error) => {
@@ -357,6 +359,11 @@ export default class Dashboard extends Component {
     }
 
     toggleVisibility = () => this.setState({ visible: !this.state.visible })
+    handleContextRef = contextRef => {
+        console.log(contextRef)
+        this.setState({ contextRef: contextRef })
+    }
+
     render() {
         let playSignal
         if (this.state.soundIs_ === 'PLAYING') {
@@ -368,16 +375,16 @@ export default class Dashboard extends Component {
                 display: 'none'
             }
         }
-        const { visible, counter, top_tracks, top_artists, user_streams } = this.state
+        const { visible, counter, top_tracks, top_artists, user_streams, contextRef } = this.state
 
         return (
-            <div id='Dashboard'>
+            <div id='Dashboard' ref={this.handleContextRef}>
                 <Sidebar.Pushable as={Segment}>
                     <Sidebar as={Menu} animation='push' width='wide' visible={visible} icon='labeled' vertical inverted id='SideBarDashboard'>
                         <Menu.Item name='home'>
                             <Card>
                                 <Card.Content>
-                                    <Image floated='right' size='mini' src={this.state.profile_photo} />
+                                    <Image floated='left' size='mini' src={this.state.profile_photo} />
                                     <Card.Header>
                                         {this.state.user_name}
                                     </Card.Header>
@@ -396,17 +403,23 @@ export default class Dashboard extends Component {
                                 </Card.Content>
                             </Card>
                         </Menu.Item>
-                        <Menu.Item name='Portfolio'>
+                        <Menu.Item name='Home'>
                             <Icon name='bar graph' />
-                            Portfolio
-                        </Menu.Item>
+                            Home
+                            </Menu.Item>
+                        <Menu.Item name='line graph'>
+                            <Icon name='headphone' />
+                            Browse
+                            </Menu.Item>
                         <Menu.Item name='line graph'>
                             <Icon name='line graph' />
                             Trending
-                        </Menu.Item>
+                            </Menu.Item>
                     </Sidebar>
-                    <Sidebar.Pusher>
-                        <Portfolio streams={user_streams} top_tracks={top_tracks} top_artists={top_artists} />
+                    <Sidebar.Pusher >
+                        <Container>
+                            <Portfolio streams={user_streams} top_tracks={top_tracks} top_artists={top_artists} bank={'bank'} breakList={'break list'}/>
+                        </Container>
                     </Sidebar.Pusher>
                 </Sidebar.Pushable>
             </div>

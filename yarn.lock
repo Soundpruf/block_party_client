@@ -1733,6 +1733,10 @@ chardet@^0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.4.2.tgz#b5473b33dc97c424e5d98dc87d55d4d8a29c8bf2"
 
+charming@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/charming/-/charming-2.0.2.tgz#9bfd88bce75bd85657ddb6a9afac2fc051028805"
+
 chartist@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/chartist/-/chartist-0.11.0.tgz#84ba5e05490d096d93dcfa9343ebc31ef6a3bd28"

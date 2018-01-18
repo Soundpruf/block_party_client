@@ -1,5 +1,5 @@
 
-export const renderGenreChartData = (props) => {
+export const renderChartData = (props) => {
     const genreData = {
         labels: props.labels,
         series: props.series,

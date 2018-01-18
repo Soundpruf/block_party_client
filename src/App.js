@@ -52,22 +52,6 @@ class App extends Component {
         return (
             <BrowserRouter>
                 <div>
-                    <Menu pointing secondary id='SiteNav'>
-                        <Menu.Item active={activeItem === 'Home'} className='siteLogo'>
-                            <Link to='/'>  
-                                <img src="/images/logo.png" alt="." className="" align='center' height='30px' width='30px' style={{marginRight: '10px'}}/>
-                                <span className="hidden-folded inline">Block Party</span>
-                            </Link>
-                        </Menu.Item>
-                        <Menu.Item>
-                            <Link to='/about'><span> About</span></Link>
-                        </Menu.Item>
-                        {browse_link}
-                        <Menu.Menu position='right'>
-                            <Menu.Item><Link to='/login'><span> Log In</span></Link></Menu.Item>
-                            <Menu.Item><Link to='/logout'><span> Log Out</span></Link></Menu.Item>
-                        </Menu.Menu>
-                    </Menu>
                     {routes}
                 </div>
             </BrowserRouter>

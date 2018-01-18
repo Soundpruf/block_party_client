@@ -70,8 +70,8 @@ export const UTILS = {
             ]
 
         const narrow_genre_keys = narrow_genre_data.map((g_data) => g_data.name)
-        top_artists.forEach((artist) => genres.push(...artist.genres))
 
+        top_artists.forEach((artist) => genres.push(...artist.genres))
         genres.forEach((genre) => {
             if(genre_data.hasOwnProperty(genre)) {
                 genre_data[genre] ++
@@ -87,7 +87,21 @@ export const UTILS = {
         })
         // data.genre_data = genre_data
         data.narrow_genre_data = narrow_genre_data
-        
         return data
+    },
+    analyzeTopArtistListens: (stream_data) => {
+        
+        const artists = Object.keys(stream_data)
+        let formatted_data = artists.map((artist) => {
+            return {
+                value: stream_data[artist].userTimeListened,
+                name: artist,
+                className: 'graph-artist',
+                meta: 'graph-'+ artist
+            }
+        })
+        
+        return formatted_data
+        
     }
 }

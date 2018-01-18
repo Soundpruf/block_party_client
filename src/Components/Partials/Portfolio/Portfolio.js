@@ -1,104 +1,96 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { UTILS } from '../../../Utils/index'
-import { List, Input, Menu, Segment, Feed, Image, Icon } from 'semantic-ui-react'
+import { List, Input, Menu, Segment, Feed, Image, Icon, Grid } from 'semantic-ui-react'
 import ChartistGraph from 'react-chartist'
 import Chartist from 'chartist'
-import { renderGenreChartData } from '../../../Data/chartData'
+import { renderChartData } from '../../../Data/chartData'
+import PlatformBrief from './PlatformBrief'
 
-const TopGenres = (props) => {
+const TopGenresChart = (props) => {
     const data = props.narrow_genre_data
     const labels = data.map((g_data) => g_data.name)
-    console.log(data)
-
-    const options = {
-        width: 400,
-        height: 400
-    }
-
-    const chart = new Chartist.Pie('.ct-chart', {
+    const chart = new Chartist.Pie('.genre-chart', {
         series: data,
         labels: labels
 
     }, {
-        chartPadding: 30,
-        labelOffset: 50,
-        labelDirection: 'explode',
-        donut: true,
-        width: 400,
-        height: 400,
-        // donutWidth: 500,
-        donutSolid: true,
-        // startAngle: 270,
-        // total: 200,
-        showLabel: true
-    })
+            chartPadding: 50,
+            labelOffset: 50,
+            labelDirection: 'explode',
+            donut: true,
+            width: 400,
+            height: 400,
+            // donutWidth: 500,
+            donutSolid: true,
+            // startAngle: 270,
+            // total: 500,
+            showLabel: true
+        })
 
-    // chart.on('draw', function (data) {
-    //     if (data.type === 'slice') {
-    //         var pathLength = data.element._node.getTotalLength();
-    //         data.element.attr({
-    //             'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
-    //         });
+    return <div className="genre-chart"></div>
+}
+const TopArtistsChart = (props) => {
+    const data = props.data
+    const labels = data.map((artist_data) => artist_data.name)
+    const chart = new Chartist.Pie('.artist-chart', {
+        series: data,
+        labels: labels
 
-    //         var animationDefinition = {
-    //             'stroke-dashoffset': {
-    //                 id: 'anim' + data.index,
-    //                 dur: 1000,
-    //                 from: -pathLength + 'px',
-    //                 to: '0px',
-    //                 easing: Chartist.Svg.Easing.easeOutQuint,
-    //                 fill: 'freeze'
-    //             }
-    //         };
+    }, {
+            chartPadding: 50,
+            labelOffset: 50,
+            labelDirection: 'explode',
+            donut: true,
+            width: 400,
+            height: 400,
+            // donutWidth: 500,
+            donutSolid: true,
+            // startAngle: 270,
+            // total: 200,
+            showLabel: true
+        })
 
-    //         if (data.index !== 0) {
-    //             animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
-    //         }
-    //         data.element.attr({
-    //             'stroke-dashoffset': -pathLength + 'px'
-    //         });
-    //         data.element.animate(animationDefinition, false);
-    //     }
-    // });
-
-    // // For the sake of the example we update the chart every time it's created with a delay of 8 seconds
-    // chart.on('created', function () {
-    //     if (window.__anim21278907124) {
-    //         clearTimeout(window.__anim21278907124);
-    //         window.__anim21278907124 = null;
-    //     }
-    //     window.__anim21278907124 = setTimeout(chart.update.bind(chart), 10000);
-    // });
-
-    return (
-        <div className="genreChart_container">
-            <div className="ct-chart"></div>
-        </div>
-    )
+    return <div className="artist-chart"></div>
 }
 
+
 const Streams = (props) => {
-    let stream_data = props.stream_data
+    const {stream_data, narrow_genre_data, analyzedStreamedData} = props
     return (
-        <Feed>
-            {Object.keys(stream_data).map((stream_object) => (
-                <Feed.Event>
-                    <Feed.Label>
-                        <Icon name='headphone' />
-                    </Feed.Label>
-                    <Feed.Content>
-                        <Feed.Summary>
-                            You've streamed {UTILS.convertTime(stream_data[stream_object].userTimeListened)} minutes of <a>{stream_object}</a>.
-                        <Feed.Date>Since [last listened]</Feed.Date>
-                        </Feed.Summary>
-                        <Feed.Extra images>
-                            <Link to='/'><Image circular={true} size='small' src={stream_data[stream_object].photo} />   </Link>
-                        </Feed.Extra>
-                    </Feed.Content>
-                </Feed.Event>
-            ))}
-        </Feed>
+        <Grid columns={2} divided>
+            <Grid.Row>
+                <Grid.Column className="stream-column">
+                    <Feed>
+                        {Object.keys(stream_data).map((stream_object) => (
+                            <Feed.Event>
+                                <Feed.Label>
+                                    <Icon name='headphone' />
+                                </Feed.Label>
+                                <Feed.Content>
+                                    <Feed.Summary>
+                                        You've streamed {UTILS.convertTime(stream_data[stream_object].userTimeListened)} minutes of <a>{stream_object}</a>.
+                                        <Feed.Date>Since [last listened]</Feed.Date>
+                                    </Feed.Summary>
+                                    <Feed.Extra images>
+                                        <Link to='/'><Image circular={true} size='small' src={stream_data[stream_object].photo} />   </Link>
+                                    </Feed.Extra>
+                                </Feed.Content>
+                            </Feed.Event>
+                        ))}
+                    </Feed>
+                </Grid.Column>
+                <Grid.Column className="stream-column">>
+                    <div className="chart_container">
+                        <h2 className="chart-data__header--genre">Genres</h2>
+                        <TopGenresChart narrow_genre_data={narrow_genre_data} />
+                        <h2 className="chart-data__header--artist">Artists</h2>
+                        <TopArtistsChart data={analyzedStreamedData} />
+                    </div>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+
     )
 }
 const TopArtists = (props) => (
@@ -116,7 +108,7 @@ const TopArtists = (props) => (
                     </Feed.Date>
                     <Feed.Summary>
                         <a>{artist.title}</a> <br />
-                        <List>
+                        <List horizontal>
                             {artist.genres.splice(0, 3).map((genre) => (
                                 <List.Item icon='tag' content={genre} />
                             ))}
@@ -161,9 +153,12 @@ export default class Portfolio extends Component {
         const menu_items = Object.keys(this.props)
         const { streams, top_artists, top_tracks } = this.props
         const stream_data = streams.length > 0 ? UTILS.aggregateTotalListens(streams) : []
+        const narrow_genre_data = UTILS.analyzeUserGenres(top_artists).narrow_genre_data
+        const analyzedStreamedData = streams.length > 0 ? UTILS.analyzeTopArtistListens(stream_data) : []
+
         const setActiveSection = (active_section) => {
             if (active_section === 'streams') {
-                return <Streams stream_data={stream_data} />
+                return <Streams stream_data={stream_data} narrow_genre_data={narrow_genre_data} analyzedStreamedData={analyzedStreamedData}/>
             } else if (active_section === 'top_tracks') {
                 return <TopTracks top_tracks={top_tracks} />
             } else if (active_section === 'top_artists') {
@@ -171,11 +166,12 @@ export default class Portfolio extends Component {
             }
         }
         const section = setActiveSection(activeItem)
-        const narrow_genre_data = UTILS.analyzeUserGenres(top_artists).narrow_genre_data
+
+
 
         return (
             <div>
-                <TopGenres narrow_genre_data={narrow_genre_data} />
+                <PlatformBrief />
                 <Menu attached='top' tabular>
                     {menu_items.map((item) => (
                         <Menu.Item name={item} active={activeItem === item} onClick={this.handleItemClick} />
