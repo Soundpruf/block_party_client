@@ -86,6 +86,7 @@ export const UTILS = {
             })
         })
         // data.genre_data = genre_data
+        console.log(genre_data)
         data.narrow_genre_data = narrow_genre_data
         return data
     },

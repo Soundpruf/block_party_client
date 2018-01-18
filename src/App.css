@@ -102,7 +102,7 @@ body {
 }
 
 .shapes {
-	position: fixed;
+	position: absolute;
   top: 0;
   height: 100%;
   width: 100%;
@@ -578,6 +578,7 @@ h4 {
 .stream-column, .wrap .ui.stacked.bottom.attached.segment {
   height: 80vh;
   overflow-y: scroll;
+  padding-bottom: 100px;
 }
 .wrap .ui.stacked.bottom.attached.segment:after, .wrap .ui.stacked.bottom.attached.segment:before, .wrap .ui.stacked.bottom.attached.segments:after, .wrap .ui.stacked.bottom.attached.segments:before {
   display: none;
@@ -594,7 +595,7 @@ h4 {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  padding-left: 100px;
+  padding: 0 0 200px 50px;
   
  
 }
@@ -750,6 +751,9 @@ h4 {
 }
 
 svg:not(:root), svg {
-  overflow: visible;
+  overflow: visible!important;
 }
   
+svg:not(:root) {
+
+}
