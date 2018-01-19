@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Divider, Grid, TextArea, Dropdown, Header, Menu, Form, Message, Popup, Rating, Input, Label, Step, Segment, Table, Button, Card, Image, Feed, List, Icon } from 'semantic-ui-react'
-import {Firebase, MusicRef, PhotoRef} from '../../../Firebase'
+import { Firebase, MusicRef, PhotoRef } from '../../../Firebase'
 import Axios from 'axios'
 import Dropzone from 'react-dropzone'
 import '../../Pulse.css'
@@ -14,23 +14,51 @@ export default class OnboardArtist extends Component {
         this.state = {
             genres: ['pop', 'rap', 'jazz'],
             bio: '',
-            profile_photo:'',
-            songs: JSON.parse(localStorage.getItem('blockPartySongs'))
+            songs: [],
+            uploadedSongName: '',
+            uploadedSong: {},
+            uploadedSongPhoto: ''
         }
+        this.handleSongNameInput = this.handleSongNameInput.bind(this)
+        this.handleSongSubmit = this.handleSongSubmit.bind(this)
+    }
+    handleSongSubmit(e) {
+        e.preventDefault()
+        const _this = this
+        let artist = JSON.parse(localStorage.getItem('currentUser'))
+        const URL = process.env.NODE_ENV === 'development' ? `http://localhost:5000/artists/${artist.id}/songs/add` : `https://block-party-staging-server.herokuapp.com/` + `artists/${artist.id}/songs/add`
+        
+        Axios({
+          method: 'post',
+          url: URL,
+          data: {
+            artist: _this.state.artist_name,
+            song: this.state.uploadedSong
+          }
+        }).then(response => {
+            console.log(response)
+        }).catch(error => {
+            console.log(error)
+        })
+
     }
     onDrop(music_files) {
 
         const _this = this
         music_files.forEach((file) => {
 
-            let songsList = JSON.parse(localStorage.getItem('blockPartySongs'))
-            let musicFileRef = MusicRef.child(`/${file.name}`)
+            console.log(file)
+            // This creates the file path and reference in our Google Cloud Storage database
+            let musicFileRef = MusicRef.child(`/${_this.state.uploadedSongName}`)
+
             let artist = JSON.parse(localStorage.getItem('currentUser'))
+            console.log(artist)
             let song = {}
 
 
-            song.name = file.name.replace('.m4a', '')
+            song.name = this.state.uploadedSongName
             song.url = file.name
+            song.photo = this.state.uploadedSongPhoto ? this.state.uploadedSongPhoto : this.state.profile_photo,
             song.artist = {
                 name: artist.artist_name,
                 id: artist.id,
@@ -38,126 +66,56 @@ export default class OnboardArtist extends Component {
                 wallet_address: artist.wallet_address
             }
 
-            songsList.push(song)
-            localStorage.setItem('blockPartySongs', JSON.stringify(songsList))
+            // songsList.push(song)
+            // localStorage.setItem('blockPartySongs', JSON.stringify(songsList))
 
             musicFileRef.put(file).then((snapshot) => {
                 console.log(snapshot)
 
                 _this.setState({
-                    songs: songsList
+                    uploadedSong: song
                 }, () => {
                     console.log("file uploaded!")
                 })
             })
         })
     }
-    onPhotoDrop(photo) {
-        console.log(photo)
-
-        photo.forEach((file) => {
-
-            let photo_url = URL.createObjectURL(file)
-            let photoFileRef = PhotoRef.child(`/${file.name}`)
-
-            photoFileRef.put(file).then((snapshot) => {
-                console.log(snapshot)
-                this.setState({
-                    profile_photo: photo_url
-                })
-            })
-        })
-        
+    onSongPhotoDrop(songPhoto) {
+        console.log(songPhoto)
+    }
+    handleSongNameInput(e) {
+        this.setState({ uploadedSongName: e.target.value })
     }
     render() {
 
 
         return (
             <div id="OnboardArtist">
-                <Message>
-                    Complete your profile
-                </Message>
-                <Grid celled>
-                    <Grid.Row>
-                        <Grid.Column width={3}>
-                            <Card
-                                image={this.state.profile_photo}
-                                header={this.props.name}
-                                meta={this.state.genres}
-                                description={this.state.bio}
-                                extra={this.props.wallet_address}
+                <Card.Group itemsPerRow={2}>
+                    <Card className="artist_upload upload_music">
+                        <Form size='large' onSubmit={this.handleSongSubmit}>
+                            <Input labelPosition='left' fluid type='text' placeholder='...'>
+                                <Label basic><Icon name='music' /> Song Name:</Label>
+                                <input value={this.state.uploadedSongName} onChange={this.handleSongNameInput} />
+                            </Input>
+                            <Input labelPosition='left' fluid type='text' placeholder='...'>
+                                <Label basic><Icon name='music' /> Song File:</Label>
+                                <Dropzone className="dropzone--song" onDrop={this.onDrop.bind(this)}></Dropzone>
+                            </Input>
+                            <Input labelPosition='left' fluid type='text' placeholder='...'>
+                                <Label basic><Icon name='image' /> Song Photo:</Label>
+                                <Dropzone className="dropzone--song" onDrop={this.onSongPhotoDrop.bind(this)}></Dropzone>
+                            </Input>
 
-                            />
-                            <Feed>
-                                {this.state.songs.map((song) => (
-                                    <Feed.Event>
-                                        <Feed.Label>
-                                            <Icon name='music' />
-                                        </Feed.Label>
-                                        <Feed.Content>
-                                            <Feed.Summary>
-                                                <Feed.User>{song.name}</Feed.User> has been uploaded
-                                                <Feed.Date>1 Hour Ago</Feed.Date>
-                                            </Feed.Summary>
-                                        </Feed.Content>
-                                    </Feed.Event>
-                                ))}
-                            </Feed>
-                        </Grid.Column>
-                        <Grid.Column width={13}>
-                            <Container style={{ marginTop: '40px' }} fluid>
-                                
-                                    <Card.Group itemsPerRow={2}>
-                                        <Card color='green' className="artist_upload upload_music">
-                                            <div className="black cover cover-gd" style={{backgroundImage: 'url(/images/b7.jpg)'}}>
-                                                <div className="p-a-lg text-center">
-                                                    <h3 className="display-3 m-y-lg">{this.props.name}</h3>
-                                                    <p className="text-muted text-md m-b-lg">Let's get you set up</p>
-                                                    
-                                                </div>
-                                            </div>
-                                            <Input labelPosition='right' type='text' placeholder='Amount'>
-                                                <Label basic>Song Name:</Label>
-                                                    <input />
-                                                <Label><Icon name='music' /></Label>
-                                            </Input>
-                                            
-                                            <Card.Content>
-                                                <h3>Click or Drag and Drop to upload Files</h3>
-                                                <Dropzone onDrop={this.onDrop.bind(this)}></Dropzone>
-                                            </Card.Content>
-                                            <span className="hidden-xs-down btn btn-sm rounded primary _600">Upload</span>
-                                        </Card>
+                            <Button.Group floated='right' style={{ padding: '10px 40px' }}>
+                                <Button compact size='medium' className="button button-cancel">Cancel</Button>
+                                <Button.Or />
+                                <Button compact size='medium' className="button button-upload" type='submit'>Save</Button>
+                            </Button.Group>
+                        </Form>
 
-                                        <Card color='blue'>
-                                            <Form size='large'>
-                                                <Segment stacked>
-                                                    <h3>Add your genres</h3>
-                                                    <Dropdown placeholder='Genres' fluid multiple search selection options={this.state.genres} />
-                                                </Segment>
-                                                <Segment stacked>
-                                                    <h3>Add your bandmates</h3>
-                                                    <Dropdown placeholder='Genres' fluid multiple search selection options={this.state.genres} />
-                                                </Segment>
-                                                <Segment stacked>
-                                                    <TextArea placeholder='Add a Bio' />
-                                                </Segment>
-                                                <Button color='teal' fluid size='large'>Submit</Button>
-                                            </Form>
-                                        </Card>
-                                        <Card color='blue'>
-                                        <svg className="block_party_svg" id="a32edc05-b509-44f4-b17f-44366bd21933" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="742.91" height="774.18" viewBox="0 0 742.91 774.18"><defs><linearGradient id="cf395ef9-d49d-46ff-9db3-33e65ce37b27" x1="574" y1="811" x2="574" y2="77" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="gray" stop-opacity="0.25"/><stop offset="0.54" stop-color="gray" stop-opacity="0.12"/><stop offset="1" stop-color="gray" stop-opacity="0.1"/></linearGradient><clipPath id="2abbe605-d77a-4e1a-85e6-b6952e8de959" transform="translate(-223.59 -77)"><path id="df258b0c-f8dc-4734-bcc5-717165b733e8" data-name="&lt;Clipping Path&gt;" d="M645.91,527.12H626.14V431.74a16.4,16.4,0,0,0-16.35-16.35H536.21a16.4,16.4,0,0,0-16.35,16.35v95.38H500.09c-106.79,0-194.16,87.37-194.16,194.16v63.37A16.4,16.4,0,0,0,322.28,801H823.72a16.4,16.4,0,0,0,16.35-16.35V721.28C840.07,614.49,752.7,527.12,645.91,527.12Z" fill="#ffd9cb"/></clipPath></defs><title>man</title><path d="M649,529.45H630.63L631,444c60.34-18.63,105.11-72.74,121.57-134a12.21,12.21,0,0,0,4.66.93h10.35a12.37,12.37,0,0,0,12.34-12.34V239.22a12.37,12.37,0,0,0-12.34-12.34H757.23a12.25,12.25,0,0,0-1.63.12C739.28,141.57,664.19,77,574,77S408.72,141.57,392.4,227a12.25,12.25,0,0,0-1.63-.12H380.42a12.37,12.37,0,0,0-12.34,12.34v59.37a12.37,12.37,0,0,0,12.34,12.34h10.35a12.21,12.21,0,0,0,4.66-.93c16.46,61.26,61.6,115.36,121.94,134v85.45H499c-109.78,0-199.6,89.82-199.6,199.6v65.15A16.86,16.86,0,0,0,316.26,811H831.74a16.86,16.86,0,0,0,16.81-16.81V729C848.55,619.27,758.73,529.45,649,529.45Z" transform="translate(-223.59 -77)" fill="url(#cf395ef9-d49d-46ff-9db3-33e65ce37b27)"/><path d="M511.74,130.07c12-2.69,23.59,6.36,35.87,6.64,9.59.22,18.5-4.92,28-6.12s18.78,1.5,28.15,2.86,19.82,1.07,27.1-5" transform="translate(-223.59 -77)" fill="#bf655b" opacity="0.2"/><path d="M511.74,146.42c12-2.69,23.59,6.36,35.87,6.64,9.59.22,18.5-4.92,28-6.12s18.78,1.5,28.15,2.86,19.82,1.07,27.1-5" transform="translate(-223.59 -77)" fill="#bf655b" opacity="0.2"/><circle id="319da30a-b754-4c25-967a-210e088b184d" data-name="&lt;Ellipse&gt;" cx="349.41" cy="189.86" r="179.86" fill="#ffd9cb"/><path d="M598.89,326.82c0,6.77-11.59,12.26-25.89,12.26s-25.89-5.49-25.89-12.26S558.7,314.55,573,314.55,598.89,320,598.89,326.82Z" transform="translate(-223.59 -77)" fill="#fff"/><circle cx="275.83" cy="154.44" r="17.71" fill="#383f4d"/><circle cx="422.99" cy="154.44" r="17.71" fill="#383f4d"/><circle cx="281.28" cy="148.98" r="5.45" fill="#fff"/><circle cx="428.44" cy="148.98" r="5.45" fill="#fff"/><path d="M679.28,193.28h-64a16.4,16.4,0,0,0-16.35,16.35v43.6a16.4,16.4,0,0,0,16.35,16.35h64a16.4,16.4,0,0,0,16.35-16.35v-43.6A16.4,16.4,0,0,0,679.28,193.28ZM682,242.34a16.4,16.4,0,0,1-16.35,16.35H628.87a16.4,16.4,0,0,1-16.35-16.35v-21.8a16.4,16.4,0,0,1,16.35-16.35h36.79A16.4,16.4,0,0,1,682,220.53Z" transform="translate(-223.59 -77)" fill="#69f0ae"/><path d="M450.37,209.63v43.6a16.4,16.4,0,0,0,16.35,16.35h64a16.4,16.4,0,0,0,16.35-16.35v-43.6a16.4,16.4,0,0,0-16.35-16.35h-64A16.4,16.4,0,0,0,450.37,209.63ZM464,220.53a16.4,16.4,0,0,1,16.35-16.35h36.79a16.4,16.4,0,0,1,16.35,16.35v21.8a16.4,16.4,0,0,1-16.35,16.35H480.34A16.4,16.4,0,0,1,464,242.34Z" transform="translate(-223.59 -77)" fill="#69f0ae"/><path d="M596.31,236.92a41.48,41.48,0,0,0-45.26,0c-3.78,2.42-8.93,2.93-12,.11l-3.85-3.85c-3-2.78-1.31-9.51,4.65-13.39a62,62,0,0,1,67.59,0c6,3.88,7.68,10.62,4.65,13.39L608.28,237C605.25,239.84,600.1,239.34,596.31,236.92Z" transform="translate(-223.59 -77)" fill="#69f0ae"/><path d="M554.91,399.44c1.36-5.54,7.84-8,13.5-8.76,8.4-1.17,18.36,0,23,7.13" transform="translate(-223.59 -77)" fill="#bf655b" opacity="0.2"/><rect x="515.64" y="155.8" width="34.06" height="81.76" rx="12" ry="12" fill="#ffd9cb"/><rect x="372.7" y="232.8" width="34.06" height="81.76" rx="12" ry="12" transform="translate(555.87 470.35) rotate(-180)" fill="#ffd9cb"/><path id="d0792c33-9ec1-4841-835c-a536abc3f381" data-name="&lt;Clipping Path&gt;" d="M645.91,527.12H626.14V431.74a16.4,16.4,0,0,0-16.35-16.35H536.21a16.4,16.4,0,0,0-16.35,16.35v95.38H500.09c-106.79,0-194.16,87.37-194.16,194.16v63.37A16.4,16.4,0,0,0,322.28,801H823.72a16.4,16.4,0,0,0,16.35-16.35V721.28C840.07,614.49,752.7,527.12,645.91,527.12Z" transform="translate(-223.59 -77)" fill="#ffd9cb"/><g clip-path="url(#2abbe605-d77a-4e1a-85e6-b6952e8de959)"><path d="M528,533.9c27.21,7.92,57.11,15.72,83.09,4.39,19.23-8.39,33.18-26.17,52.44-34.48,24.27-10.47,52.27-4.15,77.4,4a583.86,583.86,0,0,1,156.64,78.59c16.11,11.4,31.92,23.91,43,40.27,9.75,14.43,15.38,31.26,19.42,48.21,6.56,27.51,9.19,56.48,2.94,84.07s-22.13,53.74-46.35,68.34c-21.86,13.18-48.2,16-73.59,18.59-22.56,2.27-45.14,4.54-67.81,5.14-83.71,2.21-166.53-18.36-250.26-19.5-80.52-1.09-164.11,15.39-239.72-12.33-18.19-6.67-36.15-16.4-47.19-32.32-13.53-19.52-14.49-44.85-14.43-68.6,0-12.34.23-24.85,3.57-36.72,3.62-12.86,10.77-24.43,18.48-35.35,50.82-71.94,135-127.21,223.17-138.81C492,504.32,505.08,527.21,528,533.9Z" transform="translate(-223.59 -77)" fill="#6c63ff"/></g></svg>
-                                            <Card.Content>
-                                                <h3>Upload a profile photo</h3>
-                                                <Dropzone onDrop={this.onPhotoDrop.bind(this)}></Dropzone>
-                                            </Card.Content>
-                                        </Card>
-                                    </Card.Group>
-                                
-                            </Container>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                    </Card>
+                </Card.Group>
             </div>
         )
     }

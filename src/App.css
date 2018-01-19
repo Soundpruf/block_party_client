@@ -149,6 +149,7 @@ h4 {
 }
 #SiteNav {
   margin: 0;
+  background: white;
 }
 .siteLogo {
   padding-bottom: 5px!important;
@@ -754,3 +755,48 @@ svg:not(:root), svg {
   overflow: visible!important;
 }
   
+/* ARTIST SIGN UP */
+#ArtistSignUp .grid .message .header, .signup-form .segment label {
+  color: white!important;
+}
+.signup-form, .signup-form .segment, #ArtistSignUp .grid .message {
+  background-color: #1a1e28!important;
+}
+.signup-form--artist .segment .header {
+  color: #fe4c59;
+}
+
+/* ARTIST ON BOARD */
+.section-header--artist {
+  background-color: #c9c8c9;
+}
+
+.button-cancel {
+  background-color: #ff626b!important;
+  color: white!important;
+}
+.button-upload {
+  background-color: #1a1e28!important;
+  color: white!important;
+}
+#OnboardArtist {
+  padding: 0 40px;
+}
+#SideBarDashboard .item {
+  position: relative;
+}
+.profile-popup {
+  position: absolute;
+  top: 50px;
+  left: 300px;
+}
+.profile-card {
+  
+  margin: auto!important;
+}
+
+.dropzone--song {
+  border: none;
+  width: 100%;
+  height: auto;
+}

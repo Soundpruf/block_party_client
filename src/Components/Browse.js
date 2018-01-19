@@ -21,35 +21,40 @@ export default class Browse extends Component {
 
 
     componentDidMount() {
+        const BROWSE_URL = process.env.NODE_ENV === 'development' ? `http://localhost:5000/browse/songs/native-to-platform` : `https://block-party-staging-server.herokuapp.com/browse/songs/native-to-platform` 
         const all_audio = document.querySelectorAll('.card .item-media > audio')
-        const songsList = JSON.parse(localStorage.getItem('blockPartySongs'))
-        const songs = []
 
-        songsList.forEach((song) => {
-
-            MusicRef.child(song.url).getDownloadURL().then((url) => {
-
-                let enriched_song = song
-                const xhr = new XMLHttpRequest()
-
-                xhr.onload = (event) => {
-
-                    const blob = xhr.response
-                    enriched_song.blob_url = URL.createObjectURL(blob)
-                    songs.push(enriched_song)
-
-                    this.setState({
-                        songs: songs
-                    })
-                }
-
-                xhr.open('GET', url)
-                xhr.responseType = 'blob'
-                xhr.send()
-
+        Axios.get(BROWSE_URL).then(response => {
+            const platform_songs = response.data.platform_songs
+            const songs = []
+            platform_songs.forEach((song) => {
+                console.log(song)
+                MusicRef.child(song.name).getDownloadURL().then((url) => {
+                    console.log(url)
+                    let enriched_song = song
+                    console.log(song)
+                    const xhr = new XMLHttpRequest()
+    
+                    xhr.onload = (event) => {
+                        const blob = xhr.response
+                        console.log(blob)
+                        enriched_song.blob_url = URL.createObjectURL(blob)
+                        songs.push(enriched_song)
+    
+                        this.setState({
+                            songs: songs
+                        })
+                    }
+    
+                    xhr.open('GET', url)
+                    xhr.responseType = 'blob'
+                    xhr.send()
+    
+                })
             })
+        }).catch(error => {
+            console.log(error)
         })
-
     }
     handleEndOfStreaming(element) {
         console.log(element)

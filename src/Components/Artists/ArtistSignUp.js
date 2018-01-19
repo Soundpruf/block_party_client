@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Button, Form, Grid, Header, Image, Container, Message, Segment, Step } from 'semantic-ui-react'
-import { Checkbox } from 'semantic-ui-react'
-import {Firebase} from '../../Firebase'
+import { Button, Checkbox, Form, Grid, Header, Image, Menu, Container, Message, Segment, Step } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import { Firebase } from '../../Firebase'
 import Axios from 'axios'
 
 export default class ArtistSignUp extends Component {
@@ -33,6 +33,11 @@ export default class ArtistSignUp extends Component {
           }
         }).then((response) => {
           console.log(response)
+
+          localStorage.setItem('currentUserLoggedIn', true)
+          localStorage.setItem('currentUser', JSON.stringify(response.data.artist))
+          
+          const currentUser = JSON.parse(localStorage.getItem('currentUser'))
           const artist_id = response.data.artist.id
 
           localStorage.setItem('artist_id', artist_id)
@@ -98,8 +103,22 @@ export default class ArtistSignUp extends Component {
 
     return (
       <div id='ArtistSignUp'>
+        <Menu pointing secondary id='SiteNav'>
+          <Menu.Item className='siteLogo'>
+            <Link to='/'>
+              <img src="/images/logo.png" alt="." className="" align='center' height='30px' width='30px' style={{ marginRight: '10px' }} />
+              <span className="hidden-folded inline">Block Party</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item><Link to='/about'><span> About</span></Link></Menu.Item>
+          <Menu.Item><Link to='/browse'><span>Browse</span></Link></Menu.Item>
+          <Menu.Menu position='right'>
+            <Menu.Item><Link to='/login'><span> Log In</span></Link></Menu.Item>
+            <Menu.Item><Link to='/logout'><span> Log Out</span></Link></Menu.Item>
+          </Menu.Menu>
+        </Menu>
         <Container>
-       
+
           <Segment>
             <Step.Group fluid>
               <Step>
@@ -139,11 +158,11 @@ export default class ArtistSignUp extends Component {
 
         <Grid
           textAlign='center'>
-          <Grid.Column style={{ maxWidth: 450 , marginTop: '20px'}}>
+          <Grid.Column style={{ maxWidth: 450, marginTop: '20px' }}>
 
-            <Form size='large' onSubmit={this.handleSubmit.bind(this)}>
+            <Form size='large' onSubmit={this.handleSubmit.bind(this)} className="signup-form signup-form--artist">
               <Segment stacked>
-                <Header as='h2' color='teal' textAlign='center'>
+                <Header as='h2' textAlign='center'>
                   Sign Up here. We'll handle the details later
               </Header>
                 <Form.Input
@@ -172,14 +191,14 @@ export default class ArtistSignUp extends Component {
                   type='password'
                 />
                 <Segment compact>
-                  <Checkbox value={this.state.is_artist} label='Are you an Artist or Musician?' onChange={this.handleArtistCheckBox.bind(this)} />
+                  <Checkbox value={this.state.is_artist} label="I'm an Artist" onChange={this.handleArtistCheckBox.bind(this)} />
                 </Segment>
 
                 <Button color='teal' fluid size='large'>Create Account</Button>
               </Segment>
             </Form>
             <Message>
-              <Header as='h2' color='teal' textAlign='center'>
+              <Header as='h2' textAlign='center'>
                 <em> With Streaming payouts that blow Spotify out of the water!</em>
               </Header>
             </Message>

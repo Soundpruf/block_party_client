@@ -420,6 +420,46 @@ export default class Dashboard extends Component {
                             <Icon name='line graph' />
                             <Link to='#'>Trending</Link>
                             </Menu.Item>
+                            <Card>
+                                <Image src={this.state.soundIs_ != 'PLAYING' ? '/tape-min.jpg' : this.state.playlist[counter].photo} />
+
+                                <Sound
+                                    url={this.state.playlist[counter].url}
+                                    playStatus={this.state.soundIs_}
+                                    playFromPosition={0 /* in milliseconds */}
+                                />
+                                <Card.Content textAlign='center'>
+                                    <Card.Header>
+                                        <h1>
+                                            {this.state.playlist[counter].title}, {this.state.playlist[counter].artist}
+                                        </h1>
+                                    </Card.Header>
+                                    <div className="har-loader" style={playSignal}>
+                                        <div className="har-sound-1"></div>
+                                        <div className="har-sound-2"></div>
+                                        <div className="har-sound-3"></div>
+                                        <div className="har-sound-4"></div>
+                                        <div className="har-sound-5"></div>
+                                        <div className="har-sound-6"></div>
+                                        <div className="har-sound-7"></div>
+                                        <div className="har-sound-8"></div>
+                                        <div className="har-sound-9"></div>
+                                    </div>
+                                    <Card.Description>
+                                        <List>
+                                            <Icon name='play' onClick={this.playThatTrack.bind(this)} />
+                                            <Icon name='pause' onClick={this.pauseThatTrack.bind(this)} />
+                                            <Icon name='stop' onClick={this.stopThatTrack.bind(this)} />
+                                        </List>
+                                    </Card.Description>
+                                </Card.Content>
+                                <Card.Content extra>
+                                    <a>
+                                        <Icon name='user' />
+                                        22 Likes
+                                    </a>
+                                </Card.Content>
+                            </Card>
                     </Sidebar>
                     <Sidebar.Pusher >
                         <div className="wrap">
@@ -431,50 +471,3 @@ export default class Dashboard extends Component {
         )
     }
 }
-
-
-// OLD PLAYER
-
-// <Grid.Column>
-// <Card>
-//     <Image src={this.state.soundIs_ != 'PLAYING' ? '/tape-min.jpg' : this.state.playlist[counter].photo} />
-
-//     <Sound
-//         url={this.state.playlist[counter].url}
-//         playStatus={this.state.soundIs_}
-//         playFromPosition={0 /* in milliseconds */}
-
-//     />
-//     <Card.Content textAlign='center'>
-//         <Card.Header>
-//             <h1>
-//                 {this.state.playlist[counter].title}, {this.state.playlist[counter].artist}
-//             </h1>
-//         </Card.Header>
-//         <div className="har-loader" style={playSignal}>
-//             <div className="har-sound-1"></div>
-//             <div className="har-sound-2"></div>
-//             <div className="har-sound-3"></div>
-//             <div className="har-sound-4"></div>
-//             <div className="har-sound-5"></div>
-//             <div className="har-sound-6"></div>
-//             <div className="har-sound-7"></div>
-//             <div className="har-sound-8"></div>
-//             <div className="har-sound-9"></div>
-//         </div>
-//         <Card.Description>
-//             <List>
-//                 <Icon name='play' onClick={this.playThatTrack.bind(this)} />
-//                 <Icon name='pause' onClick={this.pauseThatTrack.bind(this)} />
-//                 <Icon name='stop' onClick={this.stopThatTrack.bind(this)} />
-//             </List>
-//         </Card.Description>
-//     </Card.Content>
-//     <Card.Content extra>
-//         <a>
-//             <Icon name='user' />
-//             22 Likes
-//         </a>
-//     </Card.Content>
-// </Card>
-// </Grid.Column>
