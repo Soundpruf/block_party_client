@@ -32,7 +32,7 @@ export default class ArtistUploads extends Component {
             method: 'post',
             url: URL,
             data: {
-                artist: _this.state.artist_name,
+                artist: artist,
                 song: this.state.uploadedSong
             }
         }).then(response => {
