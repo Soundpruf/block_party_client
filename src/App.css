@@ -523,10 +523,31 @@ h4 {
   }
 
   /* Browse */
+   /* Brand Colors
+ GRAY: #e8e8ea
+ Dark Blue/ Black: #1a1e28
+ Red: #fe4c59
+ Variant Red: #ff626b
+ Variant Gray: #c9c8c9i */
+
 #Browse {
   position: relative;
 }
+.scroll.nav-stacked.nav-active-primary {
 
+}
+.navside .nav li {
+  color: white;
+}
+.navside .nav li .nav-icon i.icon {
+  color: #ff626b;
+}
+.item-media img {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
 
 /* PLAYER -- FOOTER PLAYER */
@@ -767,6 +788,22 @@ svg:not(:root), svg {
 }
 
 /* ARTIST ON BOARD */
+.artist-menu, .artist-menu__column, .artist-inner-dashboard {
+  height: 90vh;
+  overflow-y: hidden;
+}
+.artist-inner-dashboard {
+  background: #f1f2f4;
+}
+.ui.tertiary.inverted.segment {
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+}
+.artist-menu__column {
+
+}
+.artist-menu {
+
+}
 .section-header--artist {
   background-color: #c9c8c9;
 }
@@ -779,11 +816,18 @@ svg:not(:root), svg {
   background-color: #1a1e28!important;
   color: white!important;
 }
-#OnboardArtist {
+#ArtistUploads {
   padding: 0 40px;
+}
+.ui.vertical.right.tabular.menu {
+  border-left: none!important;
 }
 #SideBarDashboard .item {
   position: relative;
+  
+}
+#SideBarDashboard .item a {
+  color: white!important;
 }
 .profile-popup {
   position: absolute;

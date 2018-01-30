@@ -18,39 +18,38 @@ export default class Browse extends Component {
             streaming: false
         }
     }
-
-
     componentDidMount() {
         const BROWSE_URL = process.env.NODE_ENV === 'development' ? `http://localhost:5000/browse/songs/native-to-platform` : `https://block-party-staging-server.herokuapp.com/browse/songs/native-to-platform` 
-        const all_audio = document.querySelectorAll('.card .item-media > audio')
-
+        
         Axios.get(BROWSE_URL).then(response => {
-            const platform_songs = response.data.platform_songs
+            console.log(response)
+            const {platform_songs} = response.data
             const songs = []
             platform_songs.forEach((song) => {
                 console.log(song)
+                const enriched_song = song
                 MusicRef.child(song.name).getDownloadURL().then((url) => {
-                    console.log(url)
-                    let enriched_song = song
-                    console.log(song)
                     const xhr = new XMLHttpRequest()
     
                     xhr.onload = (event) => {
                         const blob = xhr.response
-                        console.log(blob)
                         enriched_song.blob_url = URL.createObjectURL(blob)
-                        songs.push(enriched_song)
-    
-                        this.setState({
-                            songs: songs
+
+                        PhotoRef.child(song.artist.photo).getDownloadURL().then((url) => {
+                            enriched_song.artist_photo = url
+                            songs.push(enriched_song)
+                            
+                            this.setState({
+                                songs: songs
+                            })
                         })
                     }
-    
                     xhr.open('GET', url)
                     xhr.responseType = 'blob'
                     xhr.send()
-    
                 })
+                
+                
             })
         }).catch(error => {
             console.log(error)
@@ -75,25 +74,20 @@ export default class Browse extends Component {
     handleDuration(element) {
 
         const _this = this
-        const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/mine' : process.env.REACT_APP_STAGING_API + 'mine'
+        const STREAM_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/mine' : process.env.REACT_APP_STAGING_API + 'mine'
+        const { artist } = this.state.activeSong
+
         let counter = 0
         let user = JSON.parse(localStorage.getItem('currentUser'))
 
-
-        console.log(this.state.activeSong.artist)
-
         if (this.state.streaming) {
-            // setInterval(() => {
-            //     counter ++
-            //     console.log('Im playing. Counter: ' + counter)
-            // }, 1000)
 
             Axios({
                 method: 'post',
-                url: URL,
-                'data': {
-                    'artist_id': _this.state.activeSong.artist.id,
-                    'user_id': user.id
+                url: STREAM_URL,
+                data: {
+                    artist: artist,
+                    user: user.id
                 }
             }).then((response) => {
                 console.log(response)
@@ -127,12 +121,9 @@ export default class Browse extends Component {
                     </Menu.Menu>
                 </Menu>
                 <div id="aside" className="app-aside modal fade nav-dropdown">
-
                     <div className="left navside grey dk" data-layout="column">
-
                         <div data-flex className="hide-scroll">
                             <nav className="scroll nav-stacked nav-active-primary">
-
                                 <ul className="nav" data-ui-nav>
                                     <li className="nav-header hidden-folded">
                                         <span className="text-xs text-muted">Main</span>
@@ -229,22 +220,14 @@ export default class Browse extends Component {
                                                     {this.state.songs.map((song) => (
                                                         <Grid.Column>
                                                             <Card className="item r">
-                                                                <img src={song.artist.photo} />
                                                                 <div className="item-media">
+                                                                    <img src={song.artist_photo} />
                                                                     <audio ref={this.handleRef.bind(this)} controls onPlay={this.handlePlay.bind(this, song)} onPlaying={this.handleDuration.bind(this)} onEnded={this.handleEndOfStreaming.bind(this)} onPause={this.handleEndOfStreaming.bind(this)}>
                                                                         <source src={song.blob_url} type="audio/mp3" />
                                                                         Your browser does not support the audio tag.
                                                                     </audio>
-                                                                    <div className="item-overlay center">
-                                                                        <button className="btn-playpause">Play</button>
-                                                                    </div>
                                                                 </div>
                                                                 <div className="item-info">
-                                                                    <div className="item-overlay bottom text-right">
-                                                                        <a href="#" className="btn-favorite"><i className="fa fa-heart-o"></i></a>
-                                                                        <a href="#" className="btn-more" data-toggle="dropdown"><i className="fa fa-ellipsis-h"></i></a>
-                                                                        <div className="dropdown-menu pull-right black lt"></div>
-                                                                    </div>
                                                                     <div className="item-title text-ellipsis">
                                                                         <a href="track.detail.html">{song.name}</a>
                                                                     </div>
@@ -258,7 +241,6 @@ export default class Browse extends Component {
                                                     ))}
                                                 </Grid.Row>
                                             </Grid>
-
                                             <div className="text-center">
                                                 <a href="scroll.item.html" className="btn btn-sm white rounded jscroll-next">Show More</a>
                                             </div>
