@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - "stable"
+cache:
+  directories:
+  - node_modules
+script:
+  - npm test -- --coverage
+  - npm run build
+deploy:
+  provider: heroku
+  app:
+    production: block-party-client
+    staging: block-party-staging-client
+
+# after_script:
+#   - COVERALLS_REPO_TOKEN=$coveralls_repo_token npm run coveralls
+# deploy:
+#   provider: pages
+#   skip_cleanup: true
+#   github_token: $github_token
+#   local_dir: build
+#   on:
+#     branch: master
