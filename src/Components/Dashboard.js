@@ -60,6 +60,7 @@ export default class Dashboard extends Component {
         const hash = this.props.location.hash
         const queries = hash.replace(/^\?/, '').split('&')
         const accessToken = queries[0].replace('#access_token=', '')
+        console.log("accessToken: " + accessToken)
         if (paths.includes('login')) {
             this.setState({
                 loginFlow: true
