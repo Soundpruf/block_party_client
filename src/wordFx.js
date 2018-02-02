@@ -19,7 +19,7 @@ import charming from 'charming'
 
     // From http://snipplr.com/view/37687/random-number-float-generator/
     export function randomBetween(minValue,maxValue,precision) {
-        if( typeof(precision) == 'undefined' ) {
+        if( typeof(precision) === 'undefined' ) {
             precision = 2;
         }
         return parseFloat(Math.min(minValue + (Math.random() * (maxValue - minValue)),maxValue).toFixed(precision));
