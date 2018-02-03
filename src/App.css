@@ -33,113 +33,73 @@ body {
     font-size: 0.875rem;
     
 }
-/* HOME */
-
-
-/* Slideshow */
-.slideshow {
-	position: relative;
-	/* top: 0;
-	left: 0; */
-}
-
-.slide {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	display: flex;
-	align-content: center;
-	justify-content: center;
-	pointer-events: none;
-	opacity: 1;
-	pointer-events: auto;
-	z-index: 100;
-}
-
-/* .slide--current {
-	opacity: 1;
-	pointer-events: auto;
-	z-index: 100;
-} */
-
-.slide__bg {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-}
-
-.slide__bg--6 {
-	background-color: #1a1e28;
-}
-
-/* Word + SVG styles */
-.word {
-	position: relative;
-    display: flex;
-    flex-direction: row;
-    /* align-items: center; */
-    justify-content: center;
-    flex-wrap: wrap;
-    /* margin-top: -50px; */
-    cursor: default;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    grid-area: title;
-    font-size: 10vw;
-    font-weight: 400;
-}
-
-.word span {
-	display: block;
-	position: relative;
-	flex: none;
-	white-space: pre;
-}
-
-.shapes {
-	position: absolute;
-  top: 0;
-  height: 100%;
-  width: 100%;
-	left: 0;
-}
-.word--6 .char5,
-.word--6 .char9 {
-	color: #fe4c59;
-}
 a, a:hover {
-    
-    text-decoration: none;
+  
+  text-decoration: none;
 }
 
 a {
-  color: black!important;
+color: black!important;
 }
 h2, h3, h4, h5, h6, .ui.header {
-  font-family: "Vision";
+font-family: "Vision";
 }
 h1 {
-  font-family: "Vision Bold";
+font-family: "Vision Bold";
 }
 h2 {
-  font-weight: bold;
-  font-size: 42px;
+font-weight: bold;
+font-size: 42px;
 } 
 .brief h3 {
-  font-size: 36px;
-  font-weight: bold;
+font-size: 36px;
+font-weight: bold;
 } 
 h4 {
 
 }
+/* HOME */
+
+
+/* SPLASH */
+.brand-title__splash {
+
+}
+#splash {
+  background-color: #1a1e28;
+  min-height: 450px;
+  height: 100%;
+  color: white;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  
+}
+#splash video { width: 100%; }
+#splash svg { 
+  width: 100%;
+  position:absolute;
+  top: 0;
+  left: 0; 
+  height: 100%;
+}
+#splash svg text {
+  font-family: "Vision Heavy"!important;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 32px;
+  width: min-content;
+  letter-spacing: -3px;
+  text-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+}
+#splash svg rect {
+  fill: white;
+}
+#splash svg > rect {
+    -webkit-mask: url(#mask);
+    mask: url(#mask);
+}
+
 .title_bg {
     /* background-color: black; */
     padding: 20px!important;
@@ -152,14 +112,17 @@ h4 {
 }
 #SiteNav {
   margin: 0;
-  background: white;
+  background-color: #1a1e28;
+  color: white;
+}
+#SiteNav .item a {
+  color: white!important;
 }
 .siteLogo {
   padding-bottom: 5px!important;
 }
+
 /* Side Nav */
-
-
 
 .site-intro {
   display: block;
@@ -167,13 +130,7 @@ h4 {
   position: relative;
   
 }
-#splash {
-  background-color: #1a1e28;
-  min-height: 450px;
-  height: 100%;
-  color: white;
-  
-}
+
 #footer {
   background-color: #1a1e28;
 }
@@ -189,10 +146,6 @@ h4 {
   font-size: 2vh!important;
 }
 
-#splash  h1 {
-  font-family: "Vision Heavy"!important;
-  
- }
  #splash  h3 {
   color: #fe4c59;
  }
