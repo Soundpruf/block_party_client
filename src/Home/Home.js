@@ -3,17 +3,30 @@ import { Link } from 'react-router-dom'
 import { Intro } from './Intro'
 import { Artists } from './Artists'
 import { Listeners } from './Listeners'
-// import { Menu } from './Menu'
+import { Menu } from './Menu'
 import '../css/Home.css'
-{/*
-<p className=""> Remember when Kings Of Leon was cool? Remember when they looked like Porny Southern Mechanics? So do we. What if every artist you got in on before they broke big paid you a share of their success?         I mean you invested your ears. Now invest your mine.</p>
- */}
+
 export default class Home extends Component {
 	state = {
 		activeChild: 'intro',
-		children: ['intro', 'artists', 'listeners']
+		children: ['intro', 'artists', 'listeners'],
+		launchMenu: false
 	}
+	launchMenu(e) {
+		e.preventDefault()
 
+		const menuScriptHelper = document.createElement('script')
+		const menuScript = document.createElement('script')
+		const body = document.querySelector('body')
+
+		menuScriptHelper.src = 'home-menu-helper.js'
+		menuScript.src = 'home-menu.js'
+
+		[menuScriptHelper, menuScript].forEach((script) => {
+			body.appendChild(script)
+		})
+		this.setState({launchMenu: true})
+	}
 	handleNextChild(currentChild) {
 		const { children } = this.state
 		const currentChildIndex = children.indexOf(currentChild)
@@ -37,7 +50,7 @@ export default class Home extends Component {
 		}
 	}
 	render() {
-		const { activeChild } = this.state
+		const { activeChild, launchMenu } = this.state
 		const children = [
 			{
 				name: 'intro',
@@ -52,6 +65,7 @@ export default class Home extends Component {
 				component: <Listeners title='listeners' active={activeChild} />
 			}
 		]
+		const homeMenu = launchMenu ? <Menu /> : null
 
 		return (
 			<div id="HOME">
@@ -107,9 +121,8 @@ export default class Home extends Component {
 								<li className="menu__item"><Link to='/browse'><span>Browse</span></Link></li>
 								<li className="menu__item"><Link to='/login'><span> Log In</span></Link></li>
 								<li className="menu__item"><Link to='/logout'><span> Log Out</span></Link></li>
-								<li className="menu__item"><Link to='/logout'><span> Log Out</span></Link></li>
-								<li className="menu__item"><Link to='/logout'><span> <Link to='/users/signup'>Listener Sign Up</Link></span></Link></li>
-								<li className="menu__item"><Link to='/logout'><span> <Link to='/artists/signup'>Artist Sign Up</Link></span></Link></li>
+								<li className="menu__item"> <Link to='/users/signup'>Listener Sign Up</Link></li>
+								<li className="menu__item"> <Link to='/artists/signup'>Artist Sign Up</Link></li>
 							</ul>
 							<div className="menu__toggle">
 								<span className="menu__toggle-inner menu__toggle-inner--open">

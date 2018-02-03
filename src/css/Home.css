@@ -152,10 +152,15 @@ button:focus {
 	margin: 0 0 1.5rem;
 	font-weight: bold;
 	opacity: 0;
+	color: white!important;
+}
+.menu__item a {
+	color: white!important;
 }
 
 .menu--open .menu__item {
 	pointer-events: auto;
+	color: white;
 }
 
 .menu__item-link {

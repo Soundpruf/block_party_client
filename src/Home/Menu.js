@@ -39,9 +39,8 @@ export const Menu = () => (
           <Link className="menu__item" to='/browse'><span>Browse</span></Link>
           <Link className="menu__item" to='/login'><span> Log In</span></Link>
           <Link className="menu__item" to='/logout'><span> Log Out</span></Link>
-          <Link className="menu__item" to='/logout'><span> Log Out</span></Link>
-          <Link className="menu__item" to='/logout'><span> <Link to='/users/signup'>Listener Sign Up</Link></span></Link>
-          <Link className="menu__item" to='/logout'><span> <Link to='/artists/signup'>Artist Sign Up</Link></span></Link>
+          <Link className="menu__item"  to='/users/signup'><span>Listener Sign Up</span></Link>
+          <Link className="menu__item"  to='/artists/signup'><span>Artist Sign Up></span></Link>
         </nav>
         <svg className="scene" width="1440" height="800" preserveAspectRatio="xMinYMid slice" viewBox="0 0 1440 800" xmlnsPathdata="http://www.codrops.com/">
           <defs>

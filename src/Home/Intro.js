@@ -4,13 +4,13 @@ export const Intro = (props) => (
   <section className={`section ${props.active === props.title ? 'section--current' : ''}`} id="Intro">
     <div className="section__content">
       <h2 className="section__title">BlockParty</h2>
-      <p className="section__description"><span className="section__description-inner">The world’s first streaming economy presents a custom media exchange platform that rewards artists and their listeners alike every time their content is played. </span></p>
+      <p className="section__description"><span className="section__description-inner">The world’s first streaming economy presents a custom media exchange platform that rewards artists and their listeners alike every time their content is played. <br /> Remember when Kings Of Leon was cool? Remember when they looked like Porny Southern Mechanics? So do we. What if every artist you got in on before they broke big paid you a share of their success? I mean you invested your ears. Now invest your mine.</span></p>
     </div>
     <div className="section__img">
       <div className="section__img-inner">
-      <video autoPlay loop>
-        <source src="/blockPartyHome.mp4" type="video/mp4" />
-        Your browser does not support HTML5 video.
+        <video autoPlay loop>
+          <source src="/drumkit.mp4" type="video/mp4" />
+          Your browser does not support HTML5 video.
       </video>
       </div>
     </div>

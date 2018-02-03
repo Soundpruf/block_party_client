@@ -8,7 +8,12 @@ export const Listeners = (props) => (
       <p className="section__description"><span className="section__description-inner">Listen and Earn. Stream and Support.</span></p>
     </div>
     <div className="section__img">
-      <div className="section__img-inner"></div>
+    <div className="section__img-inner">
+        <video autoPlay loop>
+          <source src="/rockConcert.mp4" type="video/mp4" />
+          Your browser does not support HTML5 video.
+      </video>
+      </div>
     </div>
     <div className="section__more">
       <div className="section__more-inner section__more-inner--bg1">
