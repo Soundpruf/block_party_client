@@ -100,7 +100,7 @@ export default class Home extends Component {
 				<main>
 					<div className="sections">
 						<header className="sections__header">
-							<h1 className="title">BlockParty</h1>
+							<h1 className="title">BlockParty Beta</h1>
 						</header>
 						<nav className="menu">
 							<ul className="menu__inner">
