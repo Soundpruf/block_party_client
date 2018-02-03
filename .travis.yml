@@ -6,7 +6,6 @@ cache:
     - node_modules
 script:
   - CI=false npm run build
-  - npm test
 deploy:
   provider: heroku
   app:
