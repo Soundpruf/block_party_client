@@ -7,11 +7,11 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     
-    <link href="https://fonts.googleapis.com/css?family=Lato|Permanent+Marker|Poppins:400,600,700" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <link type="text/css" rel="preload" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" as="style"/>
+    <link rel="stylesheet" rel="preload" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" as="style">
+    <script async defer src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
     <script>document.documentElement.className="js";var supportsCssVars=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};supportsCssVars()||alert("Please view this demo in a modern browser that supports CSS Variables.");</script>
+    
     <title>Block Party</title>
   </head>
   <body class="loading">

@@ -137,16 +137,14 @@ export default class Home extends Component {
 						<div className="facts">
 							<div className="facts__toggle">
 								<span className="facts__toggle-inner facts__toggle-inner--more">
-									<svg className="icon icon--dot"><use xlinkHref="#icon-dot"></use></svg>
 									<span className="facts__toggle-text">More</span>
 								</span>
 								<span className="facts__toggle-inner facts__toggle-inner--less">
-									<svg className="icon icon--cross"><use xlinkHref="#icon-cross"></use></svg>
 									<span className="facts__toggle-text">Less</span>
 								</span>
 							</div>
 							<button className="button-contentclose">
-								<svg className="icon icon--close"><use xlinkHref="#icon-close"></use></svg>
+							<span className="facts__toggle-text">Close</span>
 							</button>
 						</div>
 

@@ -348,19 +348,15 @@ button:focus {
 }
 
 .section__more-inner--bg1 {
-	background-color: var(--color-bg-more-1);
+	background-color: #ff626b;
 }
 
 .section__more-inner--bg2 {
-	background-color: var(--color-bg-more-2);
+	background-color: #ff626b;
 }
 
 .section__more-inner--bg3 {
-	background-color: var(--color-bg-more-3);
-}
-
-.section__more-inner--bg4 {
-	background-color: var(--color-bg-more-4);
+	background-color: #ff626b;
 }
 
 .section__more-text {
@@ -377,12 +373,14 @@ button:focus {
 
 .section__more-linktext {
 	margin: 0 0.5rem 0 0;
+	color: white;
 	line-height: 1;
 }
 
 .icon--arrowlong {
 	width: 2rem;
 	height: 1.25rem;
+	color: white;
 }
 
 @media screen and (min-width: 55em) and (min-height: 40em) {
