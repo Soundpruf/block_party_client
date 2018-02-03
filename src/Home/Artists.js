@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export const Artists = (props) => (
   <section className={`section ${props.active === props.title ? 'section--current' : ''}`}>
@@ -12,10 +13,10 @@ export const Artists = (props) => (
     <div className="section__more">
       <div className="section__more-inner section__more-inner--bg2">
         <span className="section__more-text">Want to know more?</span>
-        <a href="#" className="section__more-link">
-          <span className="section__more-linktext">Sign up for the beta!</span>
-          <svg className="icon icon--arrowlong"><use xlinkHref="#icon-arrowlong"></use></svg>
-        </a>
+          <Link to='/artists/signup' className="section__more-link">
+            <span className="section__more-linktext">Sign up for the beta!</span>
+            <svg className="icon icon--arrowlong"><use xlinkHref="#icon-arrowlong"></use></svg>
+          </Link>
       </div>
     </div>
     <div className="section__expander"></div>

@@ -1,38 +1,26 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import {Intro} from './Intro'
-import {Artists} from './Artists'
-import {Listeners} from './Listeners'
+import { Intro } from './Intro'
+import { Artists } from './Artists'
+import { Listeners } from './Listeners'
+// import { Menu } from './Menu'
 import '../css/Home.css'
 {/*
-<Header as='h3' icon>
-<Icon name='sound' />
-Sign up as an
-<Header.Subheader>
-<Link to='/users/signup'>Listener</Link>
-</Header.Subheader>
-</Header>
 <p className=""> Remember when Kings Of Leon was cool? Remember when they looked like Porny Southern Mechanics? So do we. What if every artist you got in on before they broke big paid you a share of their success?         I mean you invested your ears. Now invest your mine.</p>
-<Header as='h3' icon>
-<Icon name='music' />
-Sign up as an
-<Header.Subheader color='white'>
-<Link to='/artists/signup'>Artists</Link>
-</Header.Subheader>
-</Header> */}
+ */}
 export default class Home extends Component {
 	state = {
 		activeChild: 'intro',
 		children: ['intro', 'artists', 'listeners']
-}
+	}
 
 	handleNextChild(currentChild) {
 		const { children } = this.state
 		const currentChildIndex = children.indexOf(currentChild)
 		const nextActiveChild = children[currentChildIndex + 1]
-		
+
 		if (nextActiveChild != undefined) {
-			this.setState({activeChild: nextActiveChild})
+			this.setState({ activeChild: nextActiveChild })
 		} else {
 
 		}
@@ -41,9 +29,9 @@ export default class Home extends Component {
 		const { children } = this.state
 		const currentChildIndex = children.indexOf(currentChild)
 		const previousActiveChild = children[currentChildIndex - 1]
-		
+
 		if (previousActiveChild != undefined) {
-			this.setState({activeChild: previousActiveChild})
+			this.setState({ activeChild: previousActiveChild })
 		} else {
 
 		}
@@ -54,16 +42,16 @@ export default class Home extends Component {
 			{
 				name: 'intro',
 				component: <Intro title='intro' active={activeChild} />
-			}, 
-		{
-			name: 'artists',
-			component: <Artists title='artists' active={activeChild} />
-		}, 
-		{
-			name: 'listeners',
-			component: <Listeners title='listeners' active={activeChild} />
-		}
-	]
+			},
+			{
+				name: 'artists',
+				component: <Artists title='artists' active={activeChild} />
+			},
+			{
+				name: 'listeners',
+				component: <Listeners title='listeners' active={activeChild} />
+			}
+		]
 
 		return (
 			<div id="HOME">
@@ -165,8 +153,8 @@ export default class Home extends Component {
 							</button>
 						</nav>
 
-							{children.map(child => child.component)}
-			
+						{children.map(child => child.component)}
+
 					</div>
 				</main>
 			</div>
