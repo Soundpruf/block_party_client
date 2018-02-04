@@ -105,6 +105,9 @@ a, a:hover {
   position: fixed!important;
   height: 100vh!important;
 }
+#profile-card {
+  margin: auto;
+}
 #SideBarDashboard.ui.inverted.vertical.labeled.icon.ui.push.left.wide.visible.sidebar.menu{
   
   background-color: #1a1e28!important;
@@ -118,15 +121,15 @@ a, a:hover {
 
 }
 #Dashboard .pusher {
-  overflow: hidden;
-  height: 100vh;
+  overflow: hidden!important;
+  height: 90vh;
 }
 #SideBarDashboard .card .item {
   color: #1a1e28!important;
   text-align: left;
 }
 /* PORTFOLIO */
-.stream-column, .wrap .ui.stacked.bottom.attached.segment {
+.stream-column {
   height: 80vh;
   overflow-y: scroll;
   padding-bottom: 100px;

@@ -47,21 +47,21 @@ export default class Home extends Component {
 			console.log('production')
 		}
 	}
-	launchMenu(e) {
-		e.preventDefault()
+	// launchMenu(e) {
+	// 	e.preventDefault()
 
-		const menuScriptHelper = document.createElement('script')
-		const menuScript = document.createElement('script')
-		const body = document.querySelector('body')
+	// 	const menuScriptHelper = document.createElement('script')
+	// 	const menuScript = document.createElement('script')
+	// 	const body = document.querySelector('body')
 
-		menuScriptHelper.src = 'home-menu-helper.js'
-		menuScript.src = 'home-menu.js'
+	// 	menuScriptHelper.src = 'home-menu-helper.js'
+	// 	menuScript.src = 'home-menu.js'
 
-		[menuScriptHelper, menuScript].forEach((script) => {
-			body.appendChild(script)
-		})
-		this.setState({ launchMenu: true })
-	}
+	// 	[menuScriptHelper, menuScript].forEach((script) => {
+	// 		body.appendChild(script)
+	// 	})
+	// 	this.setState({ launchMenu: true })
+	// }
 	handleNextChild(currentChild) {
 		const { children } = this.state
 		const currentChildIndex = children.indexOf(currentChild)
@@ -73,7 +73,7 @@ export default class Home extends Component {
 
 		}
 	}
-	handlePrevioustChild(currentChild) {
+	handlePreviousChild(currentChild) {
 		const { children } = this.state
 		const currentChildIndex = children.indexOf(currentChild)
 		const previousActiveChild = children[currentChildIndex - 1]
@@ -187,7 +187,7 @@ export default class Home extends Component {
 								</span>
 							</div>
 							<button className="button-contentclose">
-								<span className="facts__toggle-text">Close</span>
+								<svg className="icon icon--close"><use xlinkHref="#icon-close"></use></svg>
 							</button>
 						</div>
 
@@ -199,7 +199,7 @@ export default class Home extends Component {
 						</div>
 
 						<nav className="sections__nav">
-							<button className="sections__nav-item sections__nav-item--prev" onClick={this.handlePrevioustChild.bind(this, activeChild)}>
+							<button className="sections__nav-item sections__nav-item--prev" onClick={this.handlePreviousChild.bind(this, activeChild)}>
 								<svg className="icon icon--navup"><use xlinkHref="#icon-navup"></use></svg>
 							</button>
 							<button className="sections__nav-item sections__nav-item--next" onClick={this.handleNextChild.bind(this, activeChild)}>

@@ -7,6 +7,7 @@ import Sound from 'react-sound'
 import { Firebase, MusicRef, PhotoRef } from '../Firebase'
 import Loader from './Loader'
 import Portfolio from './Partials/Portfolio/Portfolio'
+import localforage from 'localforage'
 
 
 
@@ -61,11 +62,11 @@ export default class Dashboard extends Component {
         const queries = hash.replace(/^\?/, '').split('&')
         const accessToken = queries[0].replace('#access_token=', '')
         console.log("accessToken: " + accessToken)
+
         if (paths.includes('login')) {
             this.setState({
                 loginFlow: true
             })
-
         } else if (paths.includes('signup')) {
             this.setState({
                 signInFlow: true
@@ -91,10 +92,12 @@ export default class Dashboard extends Component {
                 accessToken: this.state.accessToken
             }
             if (this.state.loginFlow && !this.state.spotifySynced) {
+                console.log('log in flow')
                 this.syncSpotifyLoginFlowWithBlockPartyOnBoard(user_data)
                 // This line is so that I dont call the spotify recent tracks and database api's multiple times while the comopnent updates
                 this.setState({ spotifySynced: true })
             } else if (this.state.signInFlow && !this.state.spotifySynced) {
+                console.log('sign in flow')
                 this.syncSpotifySignUpFlowWithBlockPartyOnBoard(user_data)
                 // This line is so that I dont call the spotify recent tracks and database api's multiple times while the comopnent updates
                 this.setState({ spotifySynced: true })
@@ -301,6 +304,7 @@ export default class Dashboard extends Component {
     }
     addRecentlyStreamedData(currentUser) {
         console.log('running #addRecentlyStreamedData')
+        const _this = this
         const ADD_ARTIST = process.env.NODE_ENV === 'development' ? `http://localhost:5000/users/${currentUser.id}/stream/add-artists` : 'https://block-party-staging-server.herokuapp.com/' + `users/${currentUser.id}/stream/add-artists`
 
         Axios.post(ADD_ARTIST, {
@@ -308,15 +312,24 @@ export default class Dashboard extends Component {
                 recent_tracks: this.state.recent_tracks
             }
         }).then((response) => {
-            let streams = response.data
-            this.setState({
-                user_streams: streams
-            })
+            const { streams, last_updated } = response.data
+            const streamData = {
+                streams: streams,
+                last_updated: last_updated
+            }
+            localforage.setItem('userStreamData', streamData).then(value => 
+                _this.setState({
+                    user_streams: value.streams,
+                    streamsLastUpdated: value.last_updated
+                })
+            ).catch(err => 
+                console.log(err))
+
         }).catch((err) => {
             console.log(err)
         })
-
     }
+    
     playSpotifyTrack(track) {
         console.log(track)
 
@@ -387,7 +400,7 @@ export default class Dashboard extends Component {
                 <Sidebar.Pushable as={Segment}>
                     <Sidebar as={Menu} animation='push' width='wide' visible={visible} icon='labeled' vertical inverted id='SideBarDashboard'>
                         <Menu.Item name='home'>
-                            <Card>
+                            <Card id='profile-card'>
                                 <Card.Content>
                                     <Image floated='left' size='mini' src={this.state.profile_photo} />
                                     <Card.Header>
@@ -421,50 +434,10 @@ export default class Dashboard extends Component {
                             <Icon name='line graph' />
                             <Link to='#'>Trending</Link>
                             </Menu.Item>
-                            <Card>
-                                <Image src={this.state.soundIs_ != 'PLAYING' ? '/tape-min.jpg' : this.state.playlist[counter].photo} />
-
-                                <Sound
-                                    url={this.state.playlist[counter].url}
-                                    playStatus={this.state.soundIs_}
-                                    playFromPosition={0 /* in milliseconds */}
-                                />
-                                <Card.Content textAlign='center'>
-                                    <Card.Header>
-                                        <h1>
-                                            {this.state.playlist[counter].title}, {this.state.playlist[counter].artist}
-                                        </h1>
-                                    </Card.Header>
-                                    <div className="har-loader" style={playSignal}>
-                                        <div className="har-sound-1"></div>
-                                        <div className="har-sound-2"></div>
-                                        <div className="har-sound-3"></div>
-                                        <div className="har-sound-4"></div>
-                                        <div className="har-sound-5"></div>
-                                        <div className="har-sound-6"></div>
-                                        <div className="har-sound-7"></div>
-                                        <div className="har-sound-8"></div>
-                                        <div className="har-sound-9"></div>
-                                    </div>
-                                    <Card.Description>
-                                        <List>
-                                            <Icon name='play' onClick={this.playThatTrack.bind(this)} />
-                                            <Icon name='pause' onClick={this.pauseThatTrack.bind(this)} />
-                                            <Icon name='stop' onClick={this.stopThatTrack.bind(this)} />
-                                        </List>
-                                    </Card.Description>
-                                </Card.Content>
-                                <Card.Content extra>
-                                    <a>
-                                        <Icon name='user' />
-                                        22 Likes
-                                    </a>
-                                </Card.Content>
-                            </Card>
                     </Sidebar>
                     <Sidebar.Pusher >
                         <div className="wrap">
-                            <Portfolio streams={user_streams} top_tracks={top_tracks} top_artists={top_artists} bank={'bank'} breakList={'break list'}/>
+                            <Portfolio streams={user_streams} last_updated={this.state.streamsLastUpdated} top_tracks={top_tracks} top_artists={top_artists} bank={'bank'} breakList={'break list'}/>
                         </div>
                     </Sidebar.Pusher>
                 </Sidebar.Pushable>
@@ -472,3 +445,37 @@ export default class Dashboard extends Component {
         )
     }
 }
+
+
+// PLAYER
+
+// <Card>
+// <Image src={this.state.soundIs_ != 'PLAYING' ? '/tape-min.jpg' : this.state.playlist[counter].photo} />
+
+// <Sound
+//     url={this.state.playlist[counter].url}
+//     playStatus={this.state.soundIs_}
+//     playFromPosition={0 /* in milliseconds */}
+// />
+// <Card.Content textAlign='center'>
+//     <Card.Header>
+//         <h1>
+//             {this.state.playlist[counter].title}, {this.state.playlist[counter].artist}
+//         </h1>
+//     </Card.Header>
+
+//     <Card.Description>
+//         <List>
+//             <Icon name='play' onClick={this.playThatTrack.bind(this)} />
+//             <Icon name='pause' onClick={this.pauseThatTrack.bind(this)} />
+//             <Icon name='stop' onClick={this.stopThatTrack.bind(this)} />
+//         </List>
+//     </Card.Description>
+// </Card.Content>
+// <Card.Content extra>
+//     <a>
+//         <Icon name='user' />
+//         22 Likes
+//     </a>
+// </Card.Content>
+// </Card>

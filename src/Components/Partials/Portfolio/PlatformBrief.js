@@ -29,10 +29,10 @@ export default class PlatformBrief extends Component {
                                 <Table.Row>
                                     <Table.Cell>
                                         <Header as='h4' image>
-                                            <Image src='/assets/images/avatar/small/lena.png' rounded size='mini' />
+                                            <Image src='/images/dwp.jpeg' rounded size='medium' />
                                             <Header.Content>
-                                                Drake
-                             <Header.Subheader>Hip Hop</Header.Subheader>
+                                                Dandylion WarPaint
+                             <Header.Subheader>Sex Rock, Sad Core</Header.Subheader>
                                             </Header.Content>
                                         </Header>
                                     </Table.Cell>

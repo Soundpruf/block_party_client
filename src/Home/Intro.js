@@ -1,4 +1,5 @@
 import React from 'react'
+import{ RecentlyJoinedArtists } from './RecentlyJoinedArtists'
 
 export const Intro = (props) => (
   <section className={`section ${props.active === props.title ? 'section--current' : ''}`} id="Intro">
@@ -39,21 +40,12 @@ export const Intro = (props) => (
       </li>
       <li className="section__facts-item section__facts-item--clickable" data-gallery="gallery1">
         <div className="section__facts-img">
-          <img src="img/thumb1.jpg" alt="Some image" />
           <svg className="icon icon--grid"><use xlinkHref="#icon-grid"></use></svg>
         </div>
         <h3 className="section__facts-title">Recently Signed Artists</h3>
         <span className="section__facts-detail">Check it out</span>
       </li>
     </ul>
-    <div className="section__gallery" id="gallery1">
-      <h3 className="section__gallery-item section__gallery-item--title">Recent Artists</h3>
-      <a className="section__gallery-item" href="#"><img src="img/thumb1.jpg" alt="Some image" /></a>
-      <a className="section__gallery-item" href="#"><img src="img/thumb2.jpg" alt="Some image" /></a>
-      <a className="section__gallery-item" href="#"><img src="img/thumb3.jpg" alt="Some image" /></a>
-      <a className="section__gallery-item" href="#"><img src="img/thumb4.jpg" alt="Some image" /></a>
-      <a className="section__gallery-item" href="#"><img src="img/thumb5.jpg" alt="Some image" /></a>
-      <a className="section__gallery-item" href="#"><img src="img/thumb6.jpg" alt="Some image" /></a>
-    </div>
+      <RecentlyJoinedArtists />
   </section>
 )

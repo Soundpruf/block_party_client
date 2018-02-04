@@ -70,7 +70,7 @@ const Streams = (props) => {
                                 <Feed.Content>
                                     <Feed.Summary>
                                         You've streamed {UTILS.convertTime(stream_data[stream_object].userTimeListened)} minutes of <a>{stream_object}</a>.
-                                        <Feed.Date>Since [last listened]</Feed.Date>
+                                        <Feed.Date>Since {props.last_updated}</Feed.Date>
                                     </Feed.Summary>
                                     <Feed.Extra images>
                                         <Link to='/'><Image circular={true} size='small' src={stream_data[stream_object].photo} />   </Link>
@@ -159,6 +159,7 @@ export default class Portfolio extends Component {
 
     render() {
         const { activeItem } = this.state
+        const { last_updated } = this.props
         const menu_items = Object.keys(this.props)
         const { streams, top_artists, top_tracks } = this.props
         const stream_data = streams.length > 0 ? UTILS.aggregateTotalListens(streams) : []
@@ -167,7 +168,7 @@ export default class Portfolio extends Component {
 
         const setActiveSection = (active_section) => {
             if (active_section === 'streams') {
-                return <Streams stream_data={stream_data} narrow_genre_data={narrow_genre_data} analyzedStreamedData={analyzedStreamedData} />
+                return <Streams stream_data={stream_data} narrow_genre_data={narrow_genre_data} analyzedStreamedData={analyzedStreamedData} last_updated={last_updated} />
             } else if (active_section === 'top_tracks') {
                 return <TopTracks top_tracks={top_tracks} />
             } else if (active_section === 'top_artists') {
